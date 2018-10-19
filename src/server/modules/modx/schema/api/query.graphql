@@ -1,0 +1,36 @@
+
+type Query {
+  
+  user(
+    where: UserWhereUniqueInput!
+  ): User
+  
+  users(
+    first: Int
+    skip: Int
+    where: UserWhereInput
+    orderBy: UserOrderByInput
+  ): [User!]!
+
+  usersDebug(
+    first: Int
+    skip: Int
+    where: UserWhereInput
+    orderBy: UserOrderByInput
+  ): UsersDebugResponse!
+
+  usersConnection(
+    where: UserWhereInput
+    orderBy: UserOrderByInput
+    skip: Int
+    first: Int
+  ): UserConnection!
+
+  resources(
+    first: Int
+    skip: Int
+    where: ResourceWhereInput
+    orderBy: ResourceOrderByInput
+  ): [Resource!]!
+
+}

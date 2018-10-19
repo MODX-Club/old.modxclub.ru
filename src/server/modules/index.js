@@ -5,8 +5,10 @@ import chalk from "chalk";
 
 import { fileLoader, mergeTypes } from 'merge-graphql-schemas';
 
-import {CmsModule} from "@prisma-cms/server";
+// import {CmsModule} from "@prisma-cms/server";
+import CmsModule from "@prisma-cms/prisma-module";
 
+import ModxModule from "./modx";
 
 class CoreModule extends CmsModule {
   
@@ -28,7 +30,7 @@ class CoreModule extends CmsModule {
     super(options);
     
     this.mergeModules([
-      // RouterModuleExtended,
+      ModxModule,
     ]);
 
   }
@@ -77,6 +79,38 @@ class CoreModule extends CmsModule {
 
   }
 
+
+  getResolvers(){
+
+    // console.log("getResolvers", super.getResolvers());
+
+    let {
+      Query,
+      Mutation,
+      Subscription,
+      ...other
+    } = super.getResolvers();
+    
+    let resolvers = {
+      Query,
+    };
+
+    if(Object.keys(Mutation).length){
+      resolvers.Mutation = Mutation;
+    }
+
+    if(Object.keys(Subscription).length){
+      resolvers.Subscription = Subscription;
+    }
+
+    if(other && Object.keys(other).length){
+      Object.assign(resolvers, other);
+    }
+
+    // console.log("getResolvers 2 ", resolvers);
+
+    return resolvers;
+  }
 
 }
 

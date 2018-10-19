@@ -27,6 +27,9 @@ const resolvers = coreModule.getResolvers();
 
 const imagesMiddleware = require("./middleware/ImageThumb");
 
+const {
+  default: ModxDB,
+} = require("./modules/modx/db");
 
 switch (process.env.action) {
 
@@ -42,10 +45,42 @@ switch (process.env.action) {
 
     // console.log("startServer", startServer); 
 
+    const {
+      MYSQL_HOST = "localhost",
+      MYSQL_USER = "root",
+      MYSQL_PASSWORD = "",
+      MYSQL_DB,
+      MYSQL_TABLE_PREFIX = "modx_",
+    } = process.env;
+
+
+    if (!MYSQL_DB) {
+      throw new Error("Environment MYSQL_DB required");
+    }
+
+
     startServer({
       typeDefs: 'src/schema/generated/api.graphql',
       resolvers,
       imagesMiddleware,
+      contextOptions: {
+        db: null,
+        getCurrentUser: (request) => {
+          // console.log("getCurrentUser", request.headers);
+        },
+        modx: new ModxDB({
+          tablePrefix: MYSQL_TABLE_PREFIX,
+        }),
+      },
+      Mailer: null,
+      knexOptions: {
+        connection: {
+          host: MYSQL_HOST,
+          user: MYSQL_USER,
+          database: MYSQL_DB,
+          password: MYSQL_PASSWORD,
+        },
+      },
     });
 
     break;

@@ -1,0 +1,31 @@
+
+type Resource {
+  id: Int!
+  pagetitle: String
+  longtitle: String
+  content: String
+  alias: String
+  published: Boolean!
+  deleted: Boolean!
+  hidemenu: Boolean!
+  searchable: Boolean!
+  class_key: String!
+  context_key: String!
+  uri: String!
+  uri_override: Boolean!
+  createdby: Int!
+  CreatedBy: User!
+}
+
+
+input ResourceWhereInput {
+  id: Int
+  id_in: [Int!]
+  createdby_not_in: [Int!]
+}
+
+enum ResourceOrderByInput {
+  id_ASC
+  id_DESC
+}
+

@@ -1,0 +1,43 @@
+type User {
+  id: Int!
+  username: String
+  fullname: String
+  profileId: Int!
+}
+
+input UserWhereInput {
+  id: Int
+  id_in: [Int!]
+  username: String
+  username_in: [String!]
+}
+
+enum UserOrderByInput {
+  id_ASC
+  id_DESC
+  username_ASC
+  username_DESC
+}
+
+input UserWhereUniqueInput {
+  id: Int
+  username: String
+}
+
+type UsersDebugResponse {
+  SQL: String!
+  users: [User!]!
+}
+
+type UserConnection {
+  edges: [UserEdge]!
+  aggregate: AggregateUser!
+}
+
+type AggregateUser {
+  count: Int!
+}
+
+type UserEdge {
+  node: User!
+}
