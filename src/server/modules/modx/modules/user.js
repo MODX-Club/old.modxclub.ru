@@ -18,6 +18,10 @@ class ModxUserModule extends PrismaModule {
       usersConnection: this.usersConnection,
     });
 
+    Object.assign(resolvers, {
+      User: this.User,
+    });
+
     return resolvers;
 
   }
@@ -31,19 +35,29 @@ class ModxUserModule extends PrismaModule {
   users(source, args, ctx, info) {
 
     return ctx.modx.query.users(source, args, ctx, info);
- 
+
   }
 
   usersDebug(source, args, ctx, info) {
 
     return ctx.modx.query.usersDebug(source, args, ctx, info);
- 
+
   }
 
   usersConnection(source, args, ctx, info) {
 
     return ctx.modx.query.usersConnection(source, args, ctx, info);
- 
+
+  }
+
+  User = {
+
+    Resources: (source, args, ctx, info) => {
+
+      return ctx.modx.userResources(source, args, ctx, info);
+
+    }
+
   }
 
 }

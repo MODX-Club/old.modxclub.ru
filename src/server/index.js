@@ -43,7 +43,7 @@ switch (process.env.action) {
 
     const startServer = require("@prisma-cms/server").default;
 
-    // console.log("startServer", startServer); 
+    //
 
     const {
       MYSQL_HOST = "localhost",
@@ -66,7 +66,7 @@ switch (process.env.action) {
       contextOptions: {
         db: null,
         getCurrentUser: (request) => {
-          // console.log("getCurrentUser", request.headers);
+          //
         },
         modx: new ModxDB({
           tablePrefix: MYSQL_TABLE_PREFIX,

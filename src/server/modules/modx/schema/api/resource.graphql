@@ -3,7 +3,7 @@ type Resource {
   id: Int!
   pagetitle: String
   longtitle: String
-  content: String
+  content: Json
   alias: String
   published: Boolean!
   deleted: Boolean!
@@ -14,6 +14,10 @@ type Resource {
   uri: String!
   uri_override: Boolean!
   createdby: Int!
+  template: Int!
+  publishedon: DateTime
+  createdon: DateTime
+  editedon: DateTime
   CreatedBy: User!
 }
 
@@ -21,11 +25,36 @@ type Resource {
 input ResourceWhereInput {
   id: Int
   id_in: [Int!]
+  id_not_in: [Int!]
+  createdby_in: [Int!]
   createdby_not_in: [Int!]
+  template_in: [Int!]
+  template_not_in: [Int!]
+  published: Boolean
+  deleted: Boolean
+  hidemenu: Boolean
+  searchable: Boolean
 }
 
 enum ResourceOrderByInput {
   id_ASC
   id_DESC
+  publishedon_ASC
+  publishedon_DESC
+  editedon_ASC
+  editedon_DESC
+}
+
+type ResourceConnection {
+  edges: [ResourceEdge]!
+  aggregate: AggregateResource!
+}
+
+type AggregateResource {
+  count: Int!
+}
+
+type ResourceEdge {
+  node: Resource!
 }
 

@@ -1,4 +1,7 @@
 
+scalar DateTime
+scalar Json
+
 type Query {
   
   user(
@@ -26,11 +29,19 @@ type Query {
     first: Int
   ): UserConnection!
 
+
   resources(
     first: Int
     skip: Int
     where: ResourceWhereInput
     orderBy: ResourceOrderByInput
   ): [Resource!]!
+
+  resourcesConnection(
+    where: ResourceWhereInput
+    orderBy: ResourceOrderByInput
+    skip: Int
+    first: Int
+  ): ResourceConnection!
 
 }

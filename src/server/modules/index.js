@@ -10,8 +10,20 @@ import CmsModule from "@prisma-cms/prisma-module";
 
 import ModxModule from "./modx";
 
+import { GraphQLScalarType } from 'graphql';
+import GraphQLJSON from 'graphql-type-json';
+
+
+const DateTime = new GraphQLScalarType({
+  name: 'DateTime',
+  description: 'The `DateTime` scalar type represents timestamp values as Date',
+  serialize(value) {
+    return value ? new Date(value * 1000) : value;
+  },
+});
+
 class CoreModule extends CmsModule {
-  
+
 
 
   constructor(options = {}) {
@@ -22,19 +34,19 @@ class CoreModule extends CmsModule {
 
     modules = modules.concat([
     ]);
-    
+
     Object.assign(options, {
       modules,
     });
-    
+
     super(options);
-    
+
     this.mergeModules([
       ModxModule,
     ]);
 
   }
-  
+
 
   getSchema(types = []) {
 
@@ -54,7 +66,7 @@ class CoreModule extends CmsModule {
 
   }
 
-  
+
   getApiSchema(types = []) {
 
 
@@ -72,7 +84,7 @@ class CoreModule extends CmsModule {
   }
 
 
-  getExcludableApiTypes(){
+  getExcludableApiTypes() {
 
     return super.getExcludableApiTypes([
     ]);
@@ -80,9 +92,9 @@ class CoreModule extends CmsModule {
   }
 
 
-  getResolvers(){
+  getResolvers() {
 
-    // console.log("getResolvers", super.getResolvers());
+    //
 
     let {
       Query,
@@ -90,24 +102,27 @@ class CoreModule extends CmsModule {
       Subscription,
       ...other
     } = super.getResolvers();
-    
+
     let resolvers = {
       Query,
+
+      DateTime,
+      Json: GraphQLJSON,
     };
 
-    if(Object.keys(Mutation).length){
+    if (Object.keys(Mutation).length) {
       resolvers.Mutation = Mutation;
     }
 
-    if(Object.keys(Subscription).length){
+    if (Object.keys(Subscription).length) {
       resolvers.Subscription = Subscription;
     }
 
-    if(other && Object.keys(other).length){
+    if (other && Object.keys(other).length) {
       Object.assign(resolvers, other);
     }
 
-    // console.log("getResolvers 2 ", resolvers);
+
 
     return resolvers;
   }

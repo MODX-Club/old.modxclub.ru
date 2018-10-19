@@ -3,13 +3,24 @@ type User {
   username: String
   fullname: String
   profileId: Int!
+  sudo: Boolean
+  image: String
+  Resources(
+    first: Int
+    skip: Int
+    where: ResourceWhereInput
+    orderBy: ResourceOrderByInput
+  ): [Resource!]!
 }
 
 input UserWhereInput {
   id: Int
   id_in: [Int!]
+  id_not_in: [Int!]
   username: String
   username_in: [String!]
+  username_not_in: [String!]
+  blocked: Boolean
 }
 
 enum UserOrderByInput {

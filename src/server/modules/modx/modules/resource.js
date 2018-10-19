@@ -2,6 +2,7 @@
 
 import PrismaModule from "@prisma-cms/prisma-module";
 
+import chalk from "chalk";
 
 class ModxResourceModule extends PrismaModule {
 
@@ -14,6 +15,7 @@ class ModxResourceModule extends PrismaModule {
 
     Object.assign(resolvers.Query, {
       resources: this.resources,
+      resourcesConnection: this.resourcesConnection,
     });
 
     Object.assign(resolvers, {
@@ -24,9 +26,10 @@ class ModxResourceModule extends PrismaModule {
 
   }
 
+
   Resource = {
 
-    CreatedBy: (source, args, ctx, info) => {
+    CreatedBy(source, args, ctx, info) {
 
       const {
         createdby,
@@ -38,13 +41,53 @@ class ModxResourceModule extends PrismaModule {
         },
       }, ctx, info) : null;
 
-    }
+    },
+ 
+
+    content(source, args, ctx, info) {
+  
+      let {
+        content,
+      } = source || {}
+
+
+      if(content){
+
+        try{
+
+          let json = JSON.parse(content);
+
+          if(json){
+            content = json;
+          }
+
+        }
+        catch(error){
+
+        }
+
+      }
+      
+      return content;
+    },
+   
+
   }
+
+
+
 
   resources(source, args, ctx, info) {
 
     return ctx.modx.query.resources(source, args, ctx, info);
- 
+
+  }
+
+
+  resourcesConnection(source, args, ctx, info) {
+
+    return ctx.modx.query.resourcesConnection(source, args, ctx, info);
+
   }
 
 }

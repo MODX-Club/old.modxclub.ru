@@ -1,6 +1,7 @@
 
 import chalk from "chalk";
 
+
 export class ModxDB {
 
 
@@ -17,6 +18,7 @@ export class ModxDB {
     return this.config || {}
   }
 
+
   getTablePrefix() {
 
     const {
@@ -25,6 +27,7 @@ export class ModxDB {
 
     return tablePrefix;
   }
+
 
   getTableName(tableName, alias) {
 
@@ -39,63 +42,10 @@ export class ModxDB {
     return name;
   }
 
+
   resources = async (source, args, ctx, info) => {
 
-
-    const {
-      knex,
-    } = ctx;
-
-    let {
-      first,
-      skip,
-      where: argsWhere = {},
-    } = args;
-
-    const query = knex(this.getTableName("site_content"));
-
-    let where = {}
-    let whereIn = {}
-
-
-    for (var field in argsWhere) {
-
-      let condition = argsWhere[field];
-
-      let whereNotInMatch = field.match(/(.*)\_not_in$/);
-
-      if (whereNotInMatch) {
-        query.whereNotIn(whereNotInMatch[1], condition);
-        continue;
-      }
-
-      let whereInMatch = field.match(/(.*)\_in$/);
-
-      if (whereInMatch) {
-        query.whereIn(whereInMatch[1], condition);
-        continue;
-      }
-
-
-      // else 
-      where[field] = condition;
-
-    }
-
-
-
-    if (first) {
-      query.limit(first);
-    }
-
-    if (skip) {
-      query.offset(skip);
-    }
-
-    query.where(where);
-
-
-    return query.then();
+    return this.getResourcesQuery(args, ctx);
 
   }
 
@@ -134,107 +84,44 @@ export class ModxDB {
 
     const query = this.getUsersQuery(args, ctx);
 
-    let countQuery = query.clone();
-
-    let users = await query.then();
-
-    countQuery.clearWhere();
-    countQuery.clearOrder();
-    countQuery.clearSelect();
-    countQuery.select("user.id");
-
-    // console.log("countQuery", countQuery);
-    console.log(chalk.green("countQuery toString"), countQuery.toString());
-
-    Object.assign(countQuery._single, {
-      limit: undefined,
-      offset: undefined,
-    });
-
-
-    console.log("countQuery singl", countQuery._single);
-    // console.log("users", users);
-
-    // let qQuery = knex.count("t1.username as count").from(countQuery.as("t1"));
-    let qQuery = knex.count("* as count").from(countQuery.as("t1"));
-
-
-    console.log("qQuery", qQuery.toString());
-
-
-    let count = await qQuery.then(r => r && r[0].count || 0);
-
-    return {
-      aggregate: {
-        count,
-      },
-      edges: users && users.map(node => ({
-        node,
-      })) || [],
-    }
+    return this.objectsConnection(ctx, query, "user.id");
 
   }
 
 
-  getUsersQuery = (args, ctx) => {
+  resourcesConnection = async (source, args, ctx, info) => {
+
     const {
       knex,
     } = ctx;
 
-    let {
-      first,
-      skip,
-      where: argsWhere = {},
-    } = args;
+    const query = this.getResourcesQuery(args, ctx);
 
-    const query = knex(this.getTableName("users", "user"))
-      .innerJoin(this.getTableName("user_attributes", "profile"), "user.id", "profile.internalKey")
-      .select("profile.*")
-      .select("user.*")
-      .select("profile.id as profileId")
-      // .options({rowMode: 'array'})
-      // .select([
-      //   "users.*",
-      //   "profile.*",
-      // ])
-      ;
+    return this.objectsConnection(ctx, query, "resource.id");
 
-    let where = {}
-    let whereIn = {}
-
-    // query.whereRaw("user.id != profile.internalKey");
-
-    for (var field in argsWhere) {
-
-      let condition = argsWhere[field];
-
-      let match = field.match(/(.*)\_in$/);
-
-      if (match) {
-        query.whereIn(`user.${match[1]}`, condition);
-      }
-      else {
-        where[`user.${field}`] = condition;
-      }
-
-    }
-
-
-    if (first) {
-      query.limit(first);
-    }
-
-    if (skip) {
-      query.offset(skip);
-    }
-
-    query.where(where);
-
-    console.log("query.toString()", query.toString());
-
-    return query;
   }
 
+
+  userResources = (source, args, ctx, info) => {
+
+    const {
+      id: userId,
+    } = source || {};
+
+
+    let {
+      where = {},
+      ...other
+    } = args;
+
+    where.createdby = userId;
+
+    return userId ? ctx.modx.query.resources(null, {
+      where,
+      ...other,
+    }, ctx, info) : null;
+
+  }
 
   usersDebug = async (source, args, ctx, info) => {
 
@@ -256,9 +143,153 @@ export class ModxDB {
     return query.toString().replace(new RegExp(tablePrefix, 'g'), '');
   }
 
+
+  getUsersQuery = (args, ctx) => {
+
+
+    return this.getQuery(args, ctx, "users", "user")
+      .innerJoin(this.getTableName("user_attributes", "profile"), "user.id", "profile.internalKey")
+      .select("profile.*")
+      .select("user.*")
+      .select("profile.id as profileId")
+      ;
+
+  }
+
+
+  getResourcesQuery = (args, ctx) => {
+
+
+    return this.getQuery(args, ctx, "site_content", "resource");
+
+  }
+
+
+  getQuery = (args, ctx, tableName, alias) => {
+
+
+    const {
+      knex,
+    } = ctx;
+
+    let {
+      first,
+      skip,
+      where: argsWhere = {},
+      orderBy,
+    } = args;
+
+    const query = knex(this.getTableName(tableName, alias));
+
+    let where = {}
+    let whereIn = {}
+
+    const tableAlias = alias || tableName;
+
+    for (var field in argsWhere) {
+
+      let condition = argsWhere[field];
+
+      let whereNotInMatch = field.match(/(.*)\_not_in$/);
+
+      if (whereNotInMatch) {
+        query.whereNotIn(`${tableAlias}.${whereNotInMatch[1]}`, condition);
+        continue;
+      }
+
+      let whereInMatch = field.match(/(.*)\_in$/);
+
+      if (whereInMatch) {
+        query.whereIn(`${tableAlias}.${whereNotInMatch[1]}`, condition);
+        continue;
+      }
+
+      // else 
+      where[`${tableAlias}.${field}`] = condition;
+
+    }
+
+
+    if (orderBy) {
+
+      let match = orderBy.match(/^(.+)\_(ASC|DESC)$/);
+
+      let by;
+      let dir;
+
+      if (match) {
+        by = match[1];
+        dir = match[2].toLowerCase();
+      }
+      else {
+        by = orderBy;
+      }
+
+      query.orderBy(`${tableAlias}.${by}`, dir);
+
+    }
+
+
+    if (first) {
+      query.limit(first);
+    }
+
+    if (skip) {
+      query.offset(skip);
+    }
+
+    query.where(where);
+
+    return query;
+
+  }
+
+
+  objectsConnection = async (ctx, query, uniqueColumn) => {
+
+    const {
+      knex,
+    } = ctx;
+
+
+    let countQuery = query.clone();
+
+    let objects = await query.then();
+
+    countQuery.clearWhere();
+    countQuery.clearOrder();
+    countQuery.clearSelect();
+    countQuery.select(uniqueColumn);
+
+
+    Object.assign(countQuery._single, {
+      limit: undefined,
+      offset: undefined,
+    });
+
+
+    // let qQuery = knex.count("t1.username as count").from(countQuery.as("t1"));
+    let qQuery = knex.count("* as count").from(countQuery.as("t1"));
+
+
+    let count = await qQuery.then(r => r && r[0].count || 0);
+
+    return {
+      aggregate: {
+        count,
+      },
+      edges: objects && objects.map(node => ({
+        node,
+      })) || [],
+    }
+
+  }
+
+
   query = {
 
     resources: this.resources,
+    resourcesConnection: this.resourcesConnection,
 
     user: this.user,
     users: this.users,
@@ -266,7 +297,6 @@ export class ModxDB {
     usersDebug: this.usersDebug,
 
   }
-
 
 }
 
