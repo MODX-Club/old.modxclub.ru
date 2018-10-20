@@ -14,6 +14,19 @@ export class ModxDB {
   }
 
 
+  query = {
+
+    resources: (source, args, ctx, info) => this.resources(source, args, ctx, info),
+    resourcesConnection: (source, args, ctx, info) => this.resourcesConnection(source, args, ctx, info),
+
+    user: (source, args, ctx, info) => this.user(source, args, ctx, info),
+    users: (source, args, ctx, info) => this.users(source, args, ctx, info),
+    usersConnection: (source, args, ctx, info) => this.usersConnection(source, args, ctx, info),
+    usersDebug: (source, args, ctx, info) => this.usersDebug(source, args, ctx, info),
+
+  }
+
+
   getConfig() {
     return this.config || {}
   }
@@ -43,14 +56,14 @@ export class ModxDB {
   }
 
 
-  resources = async (source, args, ctx, info) => {
+  async resources(source, args, ctx, info) {
 
     return this.getResourcesQuery(args, ctx);
 
   }
 
 
-  user = async (source, args, ctx, info) => {
+  async user(source, args, ctx, info) {
 
     let {
       where,
@@ -69,14 +82,14 @@ export class ModxDB {
   }
 
 
-  users = async (source, args, ctx, info) => {
+  users(source, args, ctx, info) {
 
     return this.getUsersQuery(args, ctx);
 
   }
 
 
-  usersConnection = async (source, args, ctx, info) => {
+  usersConnection(source, args, ctx, info) {
 
     const {
       knex,
@@ -89,7 +102,7 @@ export class ModxDB {
   }
 
 
-  resourcesConnection = async (source, args, ctx, info) => {
+  resourcesConnection(source, args, ctx, info) {
 
     const {
       knex,
@@ -102,7 +115,7 @@ export class ModxDB {
   }
 
 
-  userResources = (source, args, ctx, info) => {
+  userResources(source, args, ctx, info) {
 
     const {
       id: userId,
@@ -123,7 +136,7 @@ export class ModxDB {
 
   }
 
-  usersDebug = async (source, args, ctx, info) => {
+  async usersDebug(source, args, ctx, info) {
 
     let query = this.getUsersQuery(args, ctx);
 
@@ -136,7 +149,7 @@ export class ModxDB {
   }
 
 
-  debugQuery = (query) => {
+  debugQuery(query) {
 
     const tablePrefix = this.getTablePrefix();
 
@@ -144,7 +157,7 @@ export class ModxDB {
   }
 
 
-  getUsersQuery = (args, ctx) => {
+  getUsersQuery(args, ctx) {
 
 
     return this.getQuery(args, ctx, "users", "user")
@@ -157,7 +170,7 @@ export class ModxDB {
   }
 
 
-  getResourcesQuery = (args, ctx) => {
+  getResourcesQuery(args, ctx) {
 
 
     return this.getQuery(args, ctx, "site_content", "resource");
@@ -165,7 +178,7 @@ export class ModxDB {
   }
 
 
-  getQuery = (args, ctx, tableName, alias) => {
+  getQuery(args, ctx, tableName, alias) {
 
 
     const {
@@ -245,7 +258,7 @@ export class ModxDB {
   }
 
 
-  objectsConnection = async (ctx, query, uniqueColumn) => {
+  async objectsConnection(ctx, query, uniqueColumn) {
 
     const {
       knex,
@@ -285,18 +298,6 @@ export class ModxDB {
 
   }
 
-
-  query = {
-
-    resources: this.resources,
-    resourcesConnection: this.resourcesConnection,
-
-    user: this.user,
-    users: this.users,
-    usersConnection: this.usersConnection,
-    usersDebug: this.usersDebug,
-
-  }
 
 }
 

@@ -26,54 +26,55 @@ class ModxResourceModule extends PrismaModule {
 
   }
 
+  CreatedBy(source, args, ctx, info) {
 
-  Resource = {
+    const {
+      createdby,
+    } = source || {};
 
-    CreatedBy(source, args, ctx, info) {
-
-      const {
-        createdby,
-      } = source || {};
-
-      return createdby ? ctx.modx.query.user(null, {
-        where: {
-          id: createdby,
-        },
-      }, ctx, info) : null;
-
-    },
- 
-
-    content(source, args, ctx, info) {
-  
-      let {
-        content,
-      } = source || {}
-
-
-      if(content){
-
-        try{
-
-          let json = JSON.parse(content);
-
-          if(json){
-            content = json;
-          }
-
-        }
-        catch(error){
-
-        }
-
-      }
-      
-      return content;
-    },
-   
+    return createdby ? ctx.modx.query.user(null, {
+      where: {
+        id: createdby,
+      },
+    }, ctx, info) : null;
 
   }
 
+  content(source, args, ctx, info) {
+
+    let {
+      content,
+    } = source || {}
+
+
+    if (content) {
+
+      try {
+
+        let json = JSON.parse(content);
+
+        if (json) {
+          content = json;
+        }
+
+      }
+      catch (error) {
+
+      }
+
+    }
+
+    return content;
+  }
+
+
+  Resource = {
+
+    CreatedBy: (source, args, ctx, info) => this.CreatedBy(source, args, ctx, info),
+
+    content: (source, args, ctx, info) => this.content(source, args, ctx, info),
+
+  }
 
 
 
