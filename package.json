@@ -40,7 +40,7 @@
     "@babel/polyfill": "^7.0.0",
     "@babel/runtime": "^7.1.2",
     "@prisma-cms/component": "^1.0.2",
-    "@prisma-cms/front": "^1.9.1-beta",
+    "@prisma-cms/front": "^1.9.2-beta",
     "@prisma-cms/ui": "^1.2.0",
     "@types/react": "^16.1.0",
     "apollo-boost": "^0.1.16",

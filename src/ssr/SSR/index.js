@@ -7,25 +7,28 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 
 import fetch from 'node-fetch';
 
-import React, { Component } from 'react';
+import React from 'react';
 
 import { getDataFromTree } from "react-apollo"
 
 import ReactDOM from 'react-dom/server';
 
 
-import { createMuiTheme, createGenerateClassName } from 'material-ui/styles';
+import {
+  // createMuiTheme,
+  createGenerateClassName,
+} from 'material-ui/styles';
 
 import MainApp from '../../App';
 
 
 import chalk from "chalk";
 
-import { MuiThemeProvider } from 'material-ui/styles';
+// import { MuiThemeProvider } from 'material-ui/styles';
 
 import URI from 'urijs';
 
-import moment from "moment";
+// import moment from "moment";
 
 // import htmlToJson from 'html-to-json';
 
@@ -61,7 +64,7 @@ class Server {
     } = props;
 
     api = new Prisma({
-      typeDefs: 'src/server/schema/generated/api.graphql',
+      typeDefs: 'src/schema/generated/api.graphql',
       endpoint: 'http://localhost:4000',
       secret: 'mysecret123',
       debug: false,
@@ -69,6 +72,8 @@ class Server {
     });
 
     this.App = App || MainApp;
+
+    this.props = props;
 
   }
 
@@ -152,36 +157,12 @@ class Server {
     let buildPath = basePath + "build/";
 
 
-    // if (process.env.NODE_ENV === 'production') {
-
-    //   let match = html.match(/<script [^>]*?src="(.*?)"/);
-
-    //   if (match) {
-    //     js_src = `/build${match[1]}`;
-    //   }
-
-    //   let css_match = html.match(/<link .*?href="(.*?)"/);
-
-    //   if (css_match) {
-    //     css_src = `/build${css_match[1]}`;
-    //   }
-
-    // }
-    // else {
-
-    //   js_src = `/dev/static/js/bundle.js`;
-    // }
-
-
-
-    // let css_match = html.match(/<link [^>]*?href="([^\"]*?\.css)" rel="stylesheet"/);
-
-    // if (css_match) {
-    //   css_src = `/build${css_match[1]}`;
-    // }
 
     const {
       App: MainApp,
+      props: {
+        queryFragments,
+      },
     } = this;
 
 
@@ -213,7 +194,10 @@ class Server {
         > */}
         <ApolloProvider client={client}>
           <StaticRouter location={req.url} context={context}>
-            <MainApp />
+            <MainApp
+              sheetsManager={new Map()}
+              queryFragments={queryFragments}
+            />
           </StaticRouter>
         </ApolloProvider>
         {/* </MuiThemeProvider> */}
@@ -240,66 +224,12 @@ class Server {
         status = status || 200;
 
 
-        // const result = await htmlToJson.parse(HTML, {
-        //   'head': function ($doc, $) {
-
-        //     let head = $doc.find('head');
-
-        //     // return item ? item.attr("href") : null;
-
-        //     // console.log(chalk.green("TITLE"), $(head).find("title").html());
-        //     // console.log(chalk.green("TITLE"), $(head).find("title").remove().html());
-
-        //     return $(head);
-
-        //   },
-        //   // 'links': async function ($doc, $) {
-
-        //   //   let links = await this.map('a', item => {
-        //   //     // let text = item.text();
-        //   //     // return text ? text.replace('\n', '').trim().toLocaleLowerCase() : null;
-
-        //   //     const href = item.attr("href");
-
-        //   //     return href
-        //   //   }) || [];
-
-
-
-        //   //   switch (currentHost) {
-
-
-        //   //   }
-
-        //   //   return links;
-        //   // }
-        // });
-
-
-        // let {
-        //   head,
-        // } = result;
-
         function Html({
           content,
           state,
           sheets = "",
         }) {
 
-
-          // head = $(head);
-
-          // head = head.remove("title");
-
-          // let headHTML = head.find("title").remove().html()
-
-
-
-          // console.log(chalk.green("title"), title.html());
-
-          // let headHTML = head.html()
-
-          // console.log(chalk.green("head"), head.html());
 
 
           const $ = cheerio.load(HTML, {
@@ -320,8 +250,6 @@ class Server {
           let head = $("head");
           let body = $("body");
 
-
-
           if (title) {
             head.find("title").html(title);
           }
@@ -329,7 +257,7 @@ class Server {
           // description = "Sdfdsfsdf";
 
           if (description) {
-            
+
             let meta = head.find("meta[name=description]");
 
             if (!meta.length) {
@@ -347,10 +275,8 @@ class Server {
             meta.attr("content", description);
           }
 
- 
-
           if (canonical) {
-            
+
             let meta = head.find("link[rel=canonical]");
 
             if (!meta.length) {
@@ -361,7 +287,6 @@ class Server {
 
               head.append(meta);
             }
- 
 
             meta.attr("href", canonical);
           }
@@ -467,13 +392,6 @@ class Server {
           return response;
         }
 
-        // const html = <Html
-        //   content={content}
-        //   state={initialState}
-        //   sheets={sheets}
-        // />;
-
-        // const output = await ReactDOM.renderToStaticMarkup(html);
 
         const output = Html({
           content,
@@ -651,5 +569,4 @@ class Server {
 }
 
 
-// module.exports = new Server().middleware;
 module.exports = Server;

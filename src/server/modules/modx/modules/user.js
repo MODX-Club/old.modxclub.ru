@@ -16,6 +16,8 @@ class ModxUserModule extends PrismaModule {
       users: this.users,
       usersDebug: this.usersDebug,
       usersConnection: this.usersConnection,
+      userGroups: () => [],
+      me: () => null,
     });
 
     Object.assign(resolvers, {

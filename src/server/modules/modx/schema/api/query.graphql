@@ -4,6 +4,8 @@ scalar Json
 
 type Query {
   
+  me: User
+
   user(
     where: UserWhereUniqueInput!
   ): User
@@ -28,6 +30,15 @@ type Query {
     skip: Int
     first: Int
   ): UserConnection!
+
+  userGroups(
+    where: UserGroupWhereInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [UserGroup]!
 
 
   resources(
