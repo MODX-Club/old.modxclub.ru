@@ -36,12 +36,14 @@ class ModxUserModule extends PrismaModule {
     Object.assign(resolvers.Mutation, {
       signin: this.signin,
       signup: this.signup,
+      updateUserProcessor: this.updateUserProcessor,
     });
 
 
     Object.assign(resolvers, {
       User: this.User,
       AuthPayload: this.AuthPayload,
+      UserResponse: this.AuthPayload,
     });
 
     return resolvers;
@@ -214,12 +216,12 @@ class ModxUserModule extends PrismaModule {
 
         let json = await r.json();
 
-        console.log(chalk.green("signup json"), json);
+        // console.log(chalk.green("signup json"), json);
 
 
         const cookie = headers.get("set-cookie");
 
-        console.log(chalk.green("signup response cookie"), cookie);
+        // console.log(chalk.green("signup response cookie"), cookie);
 
 
         let {
@@ -239,7 +241,113 @@ class ModxUserModule extends PrismaModule {
           data = {
             id: parseInt(object.id),
           };
-          
+
+          token = "true";
+
+          // console.log(chalk.green("signin response json"), json);
+          response.cookie(cookie);
+
+        }
+        else {
+
+          if (responseData && responseData.length) {
+
+            responseData.map(n => {
+
+              const {
+                id,
+                msg,
+              } = n || {};
+
+              if (id && msg) {
+                errors.push({
+                  key: id,
+                  message: msg
+                });
+              }
+
+            });
+
+          }
+
+        }
+
+
+        return {
+          success,
+          message,
+          errors,
+          token,
+          data,
+        }
+      });
+
+    return result;
+
+  }
+
+
+  async updateUserProcessor(source, args, ctx, info) {
+
+    const {
+      modxRequest,
+      response,
+    } = ctx;
+
+    let {
+      data: {
+        password,
+        ...data
+      },
+    } = args;
+
+
+
+    const result = await modxRequest("/assets/components/modxsite/connectors/connector.php", {
+      data: {
+        ...data,
+        password,
+        new_password: password,
+        pub_action: "user/own_profile/update",
+      },
+    }, ctx)
+      .then(async r => {
+
+
+        const {
+          headers,
+        } = r;
+
+
+
+        let json = await r.json();
+
+        // console.log(chalk.green("updateUserProcessor json"), json);
+
+
+        const cookie = headers.get("set-cookie");
+
+        // console.log(chalk.green("signup response cookie"), cookie);
+
+
+        let {
+          success = false,
+          message = '',
+          data: responseData = [],
+          object,
+        } = json || {};
+
+
+        let data;
+        let errors = []
+        let token;
+
+        if (success && cookie && object && object.id) {
+
+          data = {
+            id: parseInt(object.id),
+          };
+
           token = "true";
 
           // console.log(chalk.green("signin response json"), json);

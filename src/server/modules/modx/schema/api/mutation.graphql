@@ -13,4 +13,9 @@ type Mutation{
 
   signout: Boolean!
 
+  updateUserProcessor(
+    where: UserWhereUniqueInput
+    data: UserUpdateInput!
+  ): UserResponse!
+
 }

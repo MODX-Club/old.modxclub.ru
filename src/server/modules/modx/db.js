@@ -104,7 +104,7 @@ export class ModxDB {
 
     const query = this.getUsersQuery(args, ctx);
 
-    return this.objectsConnection(ctx, query, "user.id");
+    return this.objectsConnection(ctx, query, "users.id");
 
   }
 

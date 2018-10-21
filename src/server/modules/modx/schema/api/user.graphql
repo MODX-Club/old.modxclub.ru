@@ -70,6 +70,20 @@ input UserCreateInput{
   fullname: String
 }
 
+input UserUpdateInput{
+  password: String
+  fullname: String
+  username: String
+  email: String
+}
+
+type UserResponse {
+  success: Boolean!
+  message: String
+  errors: [Error!]!
+  data: User
+}
+
 # input SigninData{
 #   login_context: String
 #   modahsh: String
