@@ -21,6 +21,7 @@ input UserWhereInput {
   username_in: [String!]
   username_not_in: [String!]
   blocked: Boolean
+  OR: [UserWhereInput!]
 }
 
 enum UserOrderByInput {
@@ -53,15 +54,33 @@ type UserEdge {
   node: User!
 }
 
-
-
-type UserGroup{
-  id: ID!
-  name: String!
+type AuthPayload {
+  success: Boolean!
+  message: String
+  errors: [Error!]!
+  token: String
+  data: User
 }
 
-input UserGroupWhereInput{
-  id: ID
-  Users_some: UserWhereInput
-}
+# input SigninData{
+#   login_context: String
+#   modahsh: String
+#   returnUrl: String
+#   username: String!
+#   password: String!
+#   login: Boolean
+# }
+
+
+# type LoginPayload{
+#   user_id: Int
+#   t: String
+# }
+
+# type SigninResponse {
+#   success: Boolean!
+#   message: String
+#   data: Json
+#   object: LoginPayload
+# }
 

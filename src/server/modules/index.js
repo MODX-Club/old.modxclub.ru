@@ -102,6 +102,7 @@ class CoreModule extends CmsModule {
       Subscription,
       ...other
     } = super.getResolvers();
+    
 
     let resolvers = {
       Query,

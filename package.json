@@ -31,6 +31,7 @@
     "knex": "^0.15.2",
     "merge-graphql-schemas": "^1.5.7",
     "mysql": "^2.16.0",
+    "php-session-unserialize": "^0.2.1",
     "prettier-eslint-cli": "4.7.0",
     "prisma-binding": "^2.1.5",
     "promises-all": "^1.0.0",

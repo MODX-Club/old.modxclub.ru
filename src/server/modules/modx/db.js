@@ -1,6 +1,11 @@
 
 import chalk from "chalk";
 
+// import {
+//   unserialize,
+// } from 'php-unserialize';
+
+import unserialize from 'php-session-unserialize';
 
 export class ModxDB {
 
@@ -23,6 +28,8 @@ export class ModxDB {
     users: (source, args, ctx, info) => this.users(source, args, ctx, info),
     usersConnection: (source, args, ctx, info) => this.usersConnection(source, args, ctx, info),
     usersDebug: (source, args, ctx, info) => this.usersDebug(source, args, ctx, info),
+
+    userBySession: (source, args, ctx, info) => this.userBySession(source, args, ctx, info),
 
   }
 
@@ -269,7 +276,7 @@ export class ModxDB {
 
     let objects = await query.then();
 
-    countQuery.clearWhere();
+    // countQuery.clearWhere();
     countQuery.clearOrder();
     countQuery.clearSelect();
     countQuery.select(uniqueColumn);
@@ -298,6 +305,84 @@ export class ModxDB {
 
   }
 
+
+  async userBySession(source, args, ctx, info) {
+
+    const {
+      PHPSESSID,
+    } = args;
+
+    const {
+      knex,
+    } = ctx;
+
+    if (!PHPSESSID) {
+      return null;
+    }
+
+    const result = await knex(this.getTableName("session"))
+      .where({
+        id: PHPSESSID,
+      })
+      .then(r => r && r[0] || null);
+
+    // console.log("userBySession result", result);
+
+    const {
+      data,
+    } = result || {};
+
+    let userId;
+
+    if (data) {
+
+      let unserialized;
+
+      try {
+
+        unserialized = unserialize(data);
+
+        console.log("unserialize", typeof unserialized, unserialized);
+
+        if (unserialized) {
+
+          const {
+            "modx.user.contextTokens": contextTokens,
+          } = unserialized;
+
+          console.log("contextTokens", contextTokens);
+
+          // if (contextTokens) {
+
+          //   console.log("contextTokens typeof", typeof contextTokens, contextTokens.length, contextTokens.web);
+
+          // }
+
+          const {
+            web,
+          } = contextTokens || {}
+
+
+          userId = web;
+
+        }
+
+      }
+      catch (error) {
+        console.error(chalk.red("Error"), error);
+        throw new Error("Auth error");
+      }
+
+    }
+    // console.log("userId", userId);
+
+    return userId ? this.user(null, {
+      where: {
+        id: userId,
+      },
+    }, ctx) : null;
+
+  }
 
 }
 

@@ -34,6 +34,9 @@ input ResourceWhereInput {
   deleted: Boolean
   hidemenu: Boolean
   searchable: Boolean
+  context_key: String
+  context_key_in: [String]
+  context_key_not_in: [String]
 }
 
 enum ResourceOrderByInput {

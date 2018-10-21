@@ -2,6 +2,11 @@
 scalar DateTime
 scalar Json
 
+type Error {
+  key: String!
+  message: String!
+}
+
 type Query {
   
   me: User

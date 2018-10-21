@@ -1,0 +1,14 @@
+
+
+
+type UserGroup{
+  id: ID!
+  name: String!
+}
+
+input UserGroupWhereInput{
+  id: ID
+  Users_some: UserWhereInput
+}
+
+

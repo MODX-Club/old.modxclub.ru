@@ -1,0 +1,12 @@
+
+
+type Mutation{
+
+  signin(
+    where: UserWhereUniqueInput!
+    password: String!
+  ): AuthPayload!
+
+  signout: Boolean!
+
+}
