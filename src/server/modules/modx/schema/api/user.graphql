@@ -5,6 +5,8 @@ type User {
   profileId: Int!
   sudo: Boolean
   image: String
+  email: String
+  hasEmail: Boolean
   Resources(
     first: Int
     skip: Int
@@ -18,8 +20,7 @@ input UserWhereInput {
   id_in: [Int!]
   id_not_in: [Int!]
   username: String
-  username_in: [String!]
-  username_not_in: [String!]
+  email: String
   blocked: Boolean
   OR: [UserWhereInput!]
 }

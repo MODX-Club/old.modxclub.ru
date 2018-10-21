@@ -37,7 +37,7 @@ const FormData = require("form-data");
 
 async function modxRequest(url, options, ctx) {
 
-  console.log(chalk.green("modxRequest url"), url, options);
+  // console.log(chalk.green("modxRequest url"), url, options);
 
   let {
     // rejectUnauthorized = false,
@@ -72,10 +72,6 @@ async function modxRequest(url, options, ctx) {
   }
 
 
-  console.log(chalk.green("Request data"), data);
-
-  console.log(chalk.green("Request headers"), request.headers);
-
 
   const siteUrl = process.env.siteUrl;
 
@@ -105,13 +101,6 @@ async function modxRequest(url, options, ctx) {
         value = value === true ? 1 : 0;
       }
       else if (typeof value === "object") {
-        // value = JSON.stringify(value);
-
-        // field = "where[createdby]";
-        // value = 480;
-        // value = undefined
-
-        // let complex = [];
 
         for (var i in value) {
 
@@ -123,7 +112,6 @@ async function modxRequest(url, options, ctx) {
             v = v === true ? 1 : 0;
           }
 
-          // console.log(chalk.green("signin field value Processed f v"), f , v);
 
           body.append(f, v);
 
@@ -134,8 +122,6 @@ async function modxRequest(url, options, ctx) {
       else {
 
       }
-
-      console.log(chalk.green("signin field value Processed"), field, value);
 
       body.append(field, value);
     }
@@ -151,9 +137,9 @@ async function modxRequest(url, options, ctx) {
 
   token && body.append("t", token);
 
-  console.log(chalk.green("Request cookie"), cookie);
-  console.log(chalk.green("Request headers"), headers);
-  console.log(chalk.green("Request body"), body);
+  // console.log(chalk.green("Request cookie"), cookie);
+  // console.log(chalk.green("Request headers"), headers);
+  // console.log(chalk.green("Request body"), body);
 
   // return;
 
@@ -172,6 +158,70 @@ async function modxRequest(url, options, ctx) {
       // this.error(error);
       throw (error);
     });
+
+}
+
+
+let getCurrentUser = async function (ctx) {
+  //
+
+  let currentUser;
+
+  const {
+    request,
+    modx,
+  } = ctx;
+
+  if (!request) {
+    return null;
+  }
+
+  // console.log(chalk.green("getCurrentUser headers"), request.headers);
+  // console.log(chalk.green("getCurrentUser ctx"), ctx.knex);
+
+  const {
+    headers: {
+      cookie,
+    },
+  } = request;
+
+  let PHPSESSID;
+
+
+  cookie && cookie.split(";").map(n => {
+
+    let {
+      0: name,
+      1: value,
+    } = n.split("=");
+
+    if (name && name.trim() === "PHPSESSID") {
+
+      // console.log(chalk.green("getCurrentUser headers PHPSESSID"), `'${value}'`);
+
+      PHPSESSID = value && value.trim() || null;
+
+
+    }
+
+  })
+
+
+  /**
+   * Если был получен кукис, пытаемся получить сессию из базы
+   */
+  if (PHPSESSID) {
+
+    currentUser = await modx.query.userBySession(null, {
+      PHPSESSID,
+    }, ctx);
+
+    // console.log(chalk.green("getCurrentUser headers user"), currentUser);
+
+
+  }
+
+  return currentUser;
 
 }
 
@@ -210,68 +260,7 @@ switch (process.env.action) {
       imagesMiddleware,
       contextOptions: {
         db: null,
-        getCurrentUser: async (ctx) => {
-          //
-
-          let currentUser;
-
-          const {
-            request,
-            modx,
-          } = ctx;
-
-          if (!request) {
-            return null;
-          }
-
-          console.log(chalk.green("getCurrentUser headers"), request.headers);
-          // console.log(chalk.green("getCurrentUser ctx"), ctx.knex);
-
-          const {
-            headers: {
-              cookie,
-            },
-          } = request;
-
-          let PHPSESSID;
-
-
-          cookie && cookie.split(";").map(n => {
-
-            let {
-              0: name,
-              1: value,
-            } = n.split("=");
-
-            if (name && name.trim() === "PHPSESSID") {
-
-              console.log(chalk.green("getCurrentUser headers PHPSESSID"), `'${value}'`);
-
-              PHPSESSID = value && value.trim() || null;
-
-
-            }
-
-          })
-
-
-          /**
-           * Если был получен кукис, пытаемся получить сессию из базы
-           */
-          if (PHPSESSID) {
-
-            currentUser = await modx.query.userBySession(null, {
-              PHPSESSID,
-            }, ctx);
-
-            // console.log(chalk.green("getCurrentUser headers user"), currentUser);
-
-
-          }
-
-          return currentUser;
-
-        },
+        getCurrentUser,
         modx: new ModxDB({
           tablePrefix: MYSQL_TABLE_PREFIX,
         }),

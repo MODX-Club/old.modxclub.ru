@@ -13,7 +13,7 @@ class ModxUserModule extends PrismaModule {
     let resolvers = super.getResolvers();
 
 
-    console.log("resolvers", resolvers);
+    // console.log("resolvers", resolvers);
 
 
     Object.assign(resolvers.Query, {
@@ -54,7 +54,21 @@ class ModxUserModule extends PrismaModule {
 
       return ctx.modx.userResources(source, args, ctx, info);
 
-    }
+    },
+
+    email: (source, args, ctx, info) => {
+
+      const {
+        currentUser,
+      } = ctx;
+
+      const {
+        email,
+      } = source || {}
+
+      return email && currentUser && currentUser.email === email ? email : null;
+
+    },
 
   }
 

@@ -166,6 +166,39 @@ export class ModxDB {
 
   getUsersQuery(args, ctx) {
 
+    const {
+      knex,
+    } = ctx;
+
+    let users = knex(this.getTableName("users", "user"))
+      .innerJoin(this.getTableName("user_attributes", "profile"), "user.id", "profile.internalKey")
+      .as("users")
+      .select("user.*")
+      .select("profile.email")
+      .select("profile.fullname")
+      .select("profile.phone")
+      .select("profile.mobilephone")
+      .select("profile.blocked")
+      .select("profile.blockeduntil")
+      .select("profile.blockedafter")
+      .select("profile.logincount")
+      .select("profile.lastlogin")
+      .select("profile.thislogin")
+      .select("profile.failedlogincount")
+      .select("profile.sessionid")
+      .select("profile.dob")
+      .select("profile.gender")
+      .select("profile.address")
+      .select("profile.country")
+      .select("profile.city")
+      .select("profile.photo")
+      .select("profile.comment")
+      .select("profile.id as profileId")
+      ;
+
+    let query = knex(users).as("users");
+
+    return this.getQuery(args, ctx, "users", "users", query)
 
     return this.getQuery(args, ctx, "users", "user")
       .innerJoin(this.getTableName("user_attributes", "profile"), "user.id", "profile.internalKey")
@@ -185,8 +218,7 @@ export class ModxDB {
   }
 
 
-  getQuery(args, ctx, tableName, alias) {
-
+  getQuery(args, ctx, tableName, alias, query) {
 
     const {
       knex,
@@ -195,39 +227,20 @@ export class ModxDB {
     let {
       first,
       skip,
-      where: argsWhere = {},
+      where,
       orderBy,
     } = args;
 
-    const query = knex(this.getTableName(tableName, alias));
 
-    let where = {}
-    let whereIn = {}
+    if (!query) {
+      query = knex(this.getTableName(tableName, alias));
+    }
+
 
     const tableAlias = alias || tableName;
 
-    for (var field in argsWhere) {
 
-      let condition = argsWhere[field];
-
-      let whereNotInMatch = field.match(/(.*)\_not_in$/);
-
-      if (whereNotInMatch) {
-        query.whereNotIn(`${tableAlias}.${whereNotInMatch[1]}`, condition);
-        continue;
-      }
-
-      let whereInMatch = field.match(/(.*)\_in$/);
-
-      if (whereInMatch) {
-        query.whereIn(`${tableAlias}.${whereInMatch[1]}`, condition);
-        continue;
-      }
-
-      // else 
-      where[`${tableAlias}.${field}`] = condition;
-
-    }
+    this.where(query, where, tableAlias);
 
 
     if (orderBy) {
@@ -258,9 +271,53 @@ export class ModxDB {
       query.offset(skip);
     }
 
-    query.where(where);
-
     return query;
+
+  }
+
+
+  where(query, argsWhere, tableAlias, OR = false) {
+
+    let where = {}
+
+    console.log(chalk.green("where argsWhere"), argsWhere);
+
+    for (var field in argsWhere) {
+
+      let condition = argsWhere[field];
+
+      if (field === "OR") {
+
+        condition.map(n => {
+
+          this.where(query, n, tableAlias, true);
+
+        });
+
+        continue;
+      }
+
+
+      let whereNotInMatch = field.match(/(.*)\_not_in$/);
+
+      if (whereNotInMatch) {
+        query.whereNotIn(`${tableAlias}.${whereNotInMatch[1]}`, condition);
+        continue;
+      }
+
+      let whereInMatch = field.match(/(.*)\_in$/);
+
+      if (whereInMatch) {
+        query.whereIn(`${tableAlias}.${whereInMatch[1]}`, condition);
+        continue;
+      }
+
+      // else 
+      where[`${tableAlias}.${field}`] = condition;
+
+    }
+
+    return OR ? query.orWhere(where) : query.where(where);
 
   }
 
@@ -342,7 +399,6 @@ export class ModxDB {
 
         unserialized = unserialize(data);
 
-        console.log("unserialize", typeof unserialized, unserialized);
 
         if (unserialized) {
 
@@ -350,18 +406,10 @@ export class ModxDB {
             "modx.user.contextTokens": contextTokens,
           } = unserialized;
 
-          console.log("contextTokens", contextTokens);
-
-          // if (contextTokens) {
-
-          //   console.log("contextTokens typeof", typeof contextTokens, contextTokens.length, contextTokens.web);
-
-          // }
 
           const {
             web,
           } = contextTokens || {}
-
 
           userId = web;
 
