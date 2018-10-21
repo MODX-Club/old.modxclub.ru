@@ -280,45 +280,63 @@ export class ModxDB {
 
     let where = {}
 
-    console.log(chalk.green("where argsWhere"), argsWhere);
 
-    for (var field in argsWhere) {
+    query[OR ? "orWhere" : "andWhere"](builder => {
 
-      let condition = argsWhere[field];
 
-      if (field === "OR") {
+      for (var field in argsWhere) {
 
-        condition.map(n => {
+        let condition = argsWhere[field];
 
-          this.where(query, n, tableAlias, true);
+        if (field === "OR") {
 
-        });
+          builder.andWhere(builder => {
 
-        continue;
+            condition.map(n => {
+  
+              this.where(builder, n, tableAlias, true);
+  
+            });
+
+          });
+
+          continue;
+        }
+
+
+        let whereNotInMatch = field.match(/(.*)\_not_in$/);
+
+        if (whereNotInMatch) {
+
+          const field = `${tableAlias}.${whereNotInMatch[1]}`;
+
+          builder.orWhereNotIn(field, condition);
+
+          continue;
+        }
+
+        let whereInMatch = field.match(/(.*)\_in$/);
+
+        if (whereInMatch) {
+
+          const field = `${tableAlias}.${whereInMatch[1]}`;
+
+          builder.orWhereIn(field, condition);
+          continue;
+        }
+
+        // else 
+        where[`${tableAlias}.${field}`] = condition;
+
       }
+      
+      return builder.where(where);
 
+    });
 
-      let whereNotInMatch = field.match(/(.*)\_not_in$/);
+    return query;
 
-      if (whereNotInMatch) {
-        query.whereNotIn(`${tableAlias}.${whereNotInMatch[1]}`, condition);
-        continue;
-      }
-
-      let whereInMatch = field.match(/(.*)\_in$/);
-
-      if (whereInMatch) {
-        query.whereIn(`${tableAlias}.${whereInMatch[1]}`, condition);
-        continue;
-      }
-
-      // else 
-      where[`${tableAlias}.${field}`] = condition;
-
-    }
-
-    return OR ? query.orWhere(where) : query.where(where);
-
+ 
   }
 
 

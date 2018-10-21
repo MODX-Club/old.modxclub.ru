@@ -104,7 +104,7 @@ class ModxUserModule extends PrismaModule {
    */
   async signin(source, args, ctx, info) {
 
-    console.log(chalk.green("signin args"), args);
+    // console.log(chalk.green("signin args"), args);
 
     const {
       modxRequest,
@@ -133,7 +133,7 @@ class ModxUserModule extends PrismaModule {
 
         for (var i in r.headers) {
 
-          console.log(chalk.green(`signin response headers "${i}"`), r.headers[i]);
+          // console.log(chalk.green(`signin response headers "${i}"`), r.headers[i]);
 
         }
 
@@ -144,7 +144,7 @@ class ModxUserModule extends PrismaModule {
 
         const cookie = headers.get("set-cookie");
 
-        // console.log(chalk.green("signin response cookie"), cookie);
+        console.log(chalk.green("signin response cookie"), cookie);
 
         response.cookie(cookie);
 
@@ -165,6 +165,9 @@ class ModxUserModule extends PrismaModule {
         if (success) {
 
           data = where;
+          token = "true";
+
+          // console.log(chalk.green("signin response json"), json);
 
         }
 
