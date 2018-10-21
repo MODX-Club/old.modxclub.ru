@@ -4,8 +4,8 @@ import PrismaModule from "@prisma-cms/prisma-module";
 
 import chalk from "chalk";
 
-class ModxUserModule extends PrismaModule {
 
+class ModxUserModule extends PrismaModule {
 
 
   getResolvers() {
@@ -35,6 +35,7 @@ class ModxUserModule extends PrismaModule {
 
     Object.assign(resolvers.Mutation, {
       signin: this.signin,
+      signup: this.signup,
     });
 
 
@@ -131,12 +132,6 @@ class ModxUserModule extends PrismaModule {
     }, ctx)
       .then(async r => {
 
-        for (var i in r.headers) {
-
-          // console.log(chalk.green(`signin response headers "${i}"`), r.headers[i]);
-
-        }
-
         const {
           headers,
         } = r;
@@ -144,9 +139,6 @@ class ModxUserModule extends PrismaModule {
 
         const cookie = headers.get("set-cookie");
 
-        console.log(chalk.green("signin response cookie"), cookie);
-
-        response.cookie(cookie);
 
         let json = await r.json();
 
@@ -162,12 +154,12 @@ class ModxUserModule extends PrismaModule {
         let errors = []
         let token;
 
-        if (success) {
+        if (success && cookie) {
 
           data = where;
           token = "true";
 
-          // console.log(chalk.green("signin response json"), json);
+          response.cookie(cookie);
 
         }
 
@@ -184,19 +176,143 @@ class ModxUserModule extends PrismaModule {
     return result;
   }
 
+
+
+  async signup(source, args, ctx, info) {
+
+    const {
+      modxRequest,
+      response,
+    } = ctx;
+
+    let {
+      data: {
+        password,
+        username,
+        email,
+      },
+    } = args;
+
+
+
+    const result = await modxRequest("/assets/components/modxsite/connectors/connector.php", {
+      data: {
+        password,
+        username,
+        email,
+        pub_action: "registration",
+      },
+    }, ctx)
+      .then(async r => {
+
+
+        const {
+          headers,
+        } = r;
+
+
+
+        let json = await r.json();
+
+        console.log(chalk.green("signup json"), json);
+
+
+        const cookie = headers.get("set-cookie");
+
+        console.log(chalk.green("signup response cookie"), cookie);
+
+
+        let {
+          success = false,
+          message = '',
+          data: responseData = [],
+          object,
+        } = json || {};
+
+
+        let data;
+        let errors = []
+        let token;
+
+        if (success && cookie && object && object.id) {
+
+          data = {
+            id: parseInt(object.id),
+          };
+          
+          token = "true";
+
+          // console.log(chalk.green("signin response json"), json);
+          response.cookie(cookie);
+
+        }
+        else {
+
+          if (responseData && responseData.length) {
+
+            responseData.map(n => {
+
+              const {
+                id,
+                msg,
+              } = n || {};
+
+              if (id && msg) {
+                errors.push({
+                  key: id,
+                  message: msg
+                });
+              }
+
+            });
+
+          }
+
+        }
+
+
+        return {
+          success,
+          message,
+          errors,
+          token,
+          data,
+        }
+      });
+
+    return result;
+
+  }
+
+
   AuthPayload = {
 
     data: async (source, args, ctx, info) => {
 
       const {
+        id,
         username,
       } = source && source.data || {}
 
-      return username ? await ctx.modx.query.user(null, {
-        where: {
+      let where;
+
+      if (id) {
+        where = {
+          id,
+        }
+      }
+      else if (username) {
+        where = {
           username,
-        },
-      }, ctx, info) : null;
+        }
+      }
+      else {
+        return null;
+      }
+
+      return await ctx.modx.query.user(null, {
+        where,
+      }, ctx, info);
 
     },
 

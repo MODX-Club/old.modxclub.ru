@@ -6,6 +6,10 @@ type Mutation{
     where: UserWhereUniqueInput!
     password: String!
   ): AuthPayload!
+  
+  signup(
+    data: UserCreateInput!
+  ): AuthPayload!
 
   signout: Boolean!
 

@@ -63,6 +63,13 @@ type AuthPayload {
   data: User
 }
 
+input UserCreateInput{
+  username: String!
+  email: String!
+  password: String!
+  fullname: String
+}
+
 # input SigninData{
 #   login_context: String
 #   modahsh: String
