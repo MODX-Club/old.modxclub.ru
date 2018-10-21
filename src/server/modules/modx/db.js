@@ -220,7 +220,7 @@ export class ModxDB {
       let whereInMatch = field.match(/(.*)\_in$/);
 
       if (whereInMatch) {
-        query.whereIn(`${tableAlias}.${whereNotInMatch[1]}`, condition);
+        query.whereIn(`${tableAlias}.${whereInMatch[1]}`, condition);
         continue;
       }
 
