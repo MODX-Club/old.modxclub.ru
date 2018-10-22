@@ -14,6 +14,7 @@ import ProjectMemberModule from "./modules/projectMember";
 
 import BlogModule from "./modules/society/blog";
 import TopicModule from "./modules/society/topic";
+import ThreadModule from "./modules/society/thread";
 
 
 class ModxclubModules extends PrismaModule {
@@ -33,6 +34,7 @@ class ModxclubModules extends PrismaModule {
 
       BlogModule,
       TopicModule,
+      ThreadModule,
     ]);
 
   }

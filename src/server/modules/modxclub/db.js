@@ -42,6 +42,10 @@ export class ModxclubDB extends ModxDB {
       topics: (source, args, ctx, info) => this.topics(source, args, ctx, info),
       topicsConnection: (source, args, ctx, info) => this.topicsConnection(source, args, ctx, info),
 
+      thread: (source, args, ctx, info) => this.thread(source, args, ctx, info),
+      threads: (source, args, ctx, info) => this.threads(source, args, ctx, info),
+      threadsConnection: (source, args, ctx, info) => this.threadsConnection(source, args, ctx, info),
+
     });
 
   }
@@ -408,6 +412,25 @@ export class ModxclubDB extends ModxDB {
    * ProjectMembers
    */
 
+  async projectMember(source, args, ctx, info) {
+
+    let {
+      where,
+    } = args;
+
+    if (!Object.keys(where).length) {
+      throw new Error("Where args required");
+    }
+
+    let objects = await this.projectMembers(null, {
+      where,
+      limit: 1,
+    }, ctx, info);
+
+    return objects && objects[0] || null
+  }
+
+
   projectMembers(source, args, ctx, info) {
 
 
@@ -445,6 +468,25 @@ export class ModxclubDB extends ModxDB {
   /**
    * Blogs
    */
+
+  async blog(source, args, ctx, info) {
+
+    let {
+      where,
+    } = args;
+
+    if (!Object.keys(where).length) {
+      throw new Error("Where args required");
+    }
+
+    let objects = await this.blogs(null, {
+      where,
+      limit: 1,
+    }, ctx, info);
+
+    return objects && objects[0] || null
+  }
+
 
   blogs(source, args, ctx, info) {
 
@@ -509,6 +551,24 @@ export class ModxclubDB extends ModxDB {
    * Topics
    */
 
+  async topic(source, args, ctx, info) {
+
+    let {
+      where,
+    } = args;
+
+    if (!Object.keys(where).length) {
+      throw new Error("Where args required");
+    }
+
+    let objects = await this.topics(null, {
+      where,
+      limit: 1,
+    }, ctx, info);
+
+    return objects && objects[0] || null
+  }
+
   topics(source, args, ctx, info) {
 
     const {
@@ -564,6 +624,75 @@ export class ModxclubDB extends ModxDB {
 
   /**
    * Eof Topics
+   */
+
+
+  /**
+   * Threads
+   */
+
+  async thread(source, args, ctx, info) {
+
+    let {
+      where,
+    } = args;
+
+    if (!Object.keys(where).length) {
+      throw new Error("Where args required");
+    }
+
+    let objects = await this.threads(null, {
+      where,
+      limit: 1,
+    }, ctx, info);
+
+    return objects && objects[0] || null
+  }
+
+  threads(source, args, ctx, info) {
+
+
+    const query = this.getThreadsQuery(args, ctx);
+
+    return this.request(query);
+
+  }
+
+
+  threadsConnection(source, args, ctx, info) {
+
+    const query = this.getThreadsQuery(args, ctx);
+
+
+    return this.objectsConnection(ctx, query, "thread.id");
+
+  }
+
+
+
+  getThreadsQuery(args, ctx) {
+
+    const {
+      knex,
+    } = ctx;
+
+    let threads = knex(this.getTableName("society_threads", "threads"))
+      .select("threads.*")
+      .select("threads.createdon as createdAt")
+      .select("threads.editedon as updatedAt")
+      .as("thread")
+      ; 
+
+
+    let query = knex(threads).as("thread");
+
+    return this.getQuery(args, ctx, "society_threads", "thread", query);
+
+
+  }
+
+  /**
+   * Eof Threads
    */
 
 
