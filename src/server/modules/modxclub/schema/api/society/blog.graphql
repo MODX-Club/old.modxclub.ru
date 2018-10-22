@@ -17,8 +17,8 @@ type Blog {
   createdby: Int!
   template: Int!
   publishedon: DateTime
-  createdon: DateTime
-  editedon: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime
   CreatedBy: User!
   personal: Boolean!
 }
@@ -37,6 +37,10 @@ input BlogWhereUniqueInput {
 enum BlogOrderByInput {
   id_ASC
   id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type BlogConnection {

@@ -1,7 +1,8 @@
 
 type Topic {
   id: Int!
-  pagetitle: String
+  name: String!
+  pagetitle: String!
   longtitle: String
   content: Json
   alias: String
@@ -16,8 +17,8 @@ type Topic {
   createdby: Int!
   template: Int!
   publishedon: DateTime
-  createdon: DateTime
-  editedon: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime
   CreatedBy: User!
   Tags: [TopicTag!]!
 }
@@ -34,6 +35,10 @@ input TopicWhereUniqueInput {
 enum TopicOrderByInput {
   id_ASC
   id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type TopicConnection {

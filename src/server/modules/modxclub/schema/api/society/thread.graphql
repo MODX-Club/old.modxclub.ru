@@ -5,7 +5,7 @@ type Thread {
   target_class: SocietyTargetEnum!
   comments_count: Int!
   createdAt: DateTime!
-  editedAt: DateTime
+  updatedAt: DateTime
   rating: Float!
   positive_votes: Int!
   negative_votes: Int!

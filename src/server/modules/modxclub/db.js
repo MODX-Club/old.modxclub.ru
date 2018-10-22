@@ -38,6 +38,10 @@ export class ModxclubDB extends ModxDB {
       blogs: (source, args, ctx, info) => this.blogs(source, args, ctx, info),
       blogsConnection: (source, args, ctx, info) => this.blogsConnection(source, args, ctx, info),
 
+      topic: (source, args, ctx, info) => this.topic(source, args, ctx, info),
+      topics: (source, args, ctx, info) => this.topics(source, args, ctx, info),
+      topicsConnection: (source, args, ctx, info) => this.topicsConnection(source, args, ctx, info),
+
     });
 
   }
@@ -436,6 +440,8 @@ export class ModxclubDB extends ModxDB {
    * Eof ProjectMembers
    */
 
+
+   
   /**
    * Blogs
    */
@@ -477,6 +483,8 @@ export class ModxclubDB extends ModxDB {
       })
       .select("blogs.*")
       .select("blogs.pagetitle as name")
+      .select("blogs.createdon as createdAt")
+      .select("blogs.editedon as updatedAt")
       .select(knex.raw("if(blogs.template = 16, 1, 0) as personal"))
       .as("blog")
       ;
@@ -493,6 +501,69 @@ export class ModxclubDB extends ModxDB {
 
   /**
    * Eof Blogs
+   */
+
+
+
+  /**
+   * Topics
+   */
+
+  topics(source, args, ctx, info) {
+
+    const {
+      knex,
+    } = ctx;
+
+    const query = this.getTopicsQuery(args, ctx);
+
+    return this.request(query);
+
+  }
+
+
+  topicsConnection(source, args, ctx, info) {
+
+
+    const query = this.getTopicsQuery(args, ctx);
+
+
+    return this.objectsConnection(ctx, query, "topic.id");
+
+  }
+
+
+
+  getTopicsQuery(args, ctx) {
+
+    const {
+      knex,
+    } = ctx;
+
+    let topics = knex(this.getTableName("site_content", "topics"))
+      .where({
+        parent: 309,
+      })
+      .select("topics.*")
+      .select("topics.pagetitle as name")
+      .select("topics.createdon as createdAt")
+      .select("topics.editedon as updatedAt")
+      .select(knex.raw("if(topics.template = 16, 1, 0) as personal"))
+      .as("topic")
+      ;
+
+    this.prepareResourcesQuery(topics);
+
+
+    let query = knex(topics).as("topic");
+
+
+    return this.getQuery(args, ctx, "topics", "topic", query);
+
+  }
+
+  /**
+   * Eof Topics
    */
 
 

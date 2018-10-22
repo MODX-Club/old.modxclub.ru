@@ -8,7 +8,7 @@ type Comment {
   Parent: Comment
   text: String!
   createdAt: DateTime
-  editedAt: DateTime
+  updatedAt: DateTime
   createdby: Int!
   Author: User!
   published: Boolean!
