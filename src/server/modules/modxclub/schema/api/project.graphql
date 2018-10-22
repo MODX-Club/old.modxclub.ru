@@ -1,0 +1,35 @@
+
+type Project {
+  id: Int!
+  name: String!
+  uri: String!
+  site_url: String!
+  Members: [ProjectMember!]!
+}
+
+input ProjectWhereUniqueInput {
+  id: Int
+}
+
+input ProjectWhereInput {
+  id: Int
+}
+
+enum ProjectOrderByInput {
+  id_ASC
+  id_DESC
+}
+
+type ProjectConnection {
+  edges: [ProjectEdge]!
+  aggregate: AggregateProject!
+}
+
+
+type AggregateProject {
+  count: Int!
+}
+
+type ProjectEdge {
+  node: Project!
+}

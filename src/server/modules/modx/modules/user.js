@@ -13,7 +13,7 @@ class ModxUserModule extends PrismaModule {
     let resolvers = super.getResolvers();
 
 
-    // console.log("resolvers", resolvers);
+
 
 
     Object.assign(resolvers.Query, {
@@ -162,7 +162,7 @@ class ModxUserModule extends PrismaModule {
    */
   async signin(source, args, ctx, info) {
 
-    // console.log(chalk.green("signin args"), args);
+
 
     const {
       modxRequest,
@@ -271,12 +271,12 @@ class ModxUserModule extends PrismaModule {
 
         let json = await r.json();
 
-        // console.log(chalk.green("signup json"), json);
+
 
 
         const cookie = headers.get("set-cookie");
 
-        // console.log(chalk.green("signup response cookie"), cookie);
+
 
 
         let {
@@ -299,7 +299,7 @@ class ModxUserModule extends PrismaModule {
 
           token = "true";
 
-          // console.log(chalk.green("signin response json"), json);
+
           response.cookie(cookie);
 
         }
@@ -377,12 +377,12 @@ class ModxUserModule extends PrismaModule {
 
         let json = await r.json();
 
-        // console.log(chalk.green("updateUserProcessor json"), json);
+
 
 
         const cookie = headers.get("set-cookie");
 
-        // console.log(chalk.green("signup response cookie"), cookie);
+
 
 
         let {
@@ -405,7 +405,7 @@ class ModxUserModule extends PrismaModule {
 
           token = "true";
 
-          // console.log(chalk.green("signin response json"), json);
+
           response.cookie(cookie);
 
         }

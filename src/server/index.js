@@ -38,7 +38,7 @@ const FormData = require("form-data");
 
 async function modxRequest(url, options, ctx) {
 
-  // console.log(chalk.green("modxRequest url"), url, options);
+
 
   let {
     // rejectUnauthorized = false,
@@ -93,7 +93,7 @@ async function modxRequest(url, options, ctx) {
     for (var field in data) {
       let value = data[field];
 
-      console.log(chalk.green("signin field value"), field, value);
+
 
       if (typeof value === "undefined") {
         continue;
@@ -138,9 +138,9 @@ async function modxRequest(url, options, ctx) {
 
   token && body.append("t", token);
 
-  // console.log(chalk.green("Request cookie"), cookie);
-  // console.log(chalk.green("Request headers"), headers);
-  // console.log(chalk.green("Request body"), body);
+
+
+
 
   // return;
 
@@ -177,8 +177,8 @@ let getCurrentUser = async function (ctx) {
     return null;
   }
 
-  // console.log(chalk.green("getCurrentUser headers"), request.headers);
-  // console.log(chalk.green("getCurrentUser ctx"), ctx.knex);
+
+
 
   const {
     headers: {
@@ -198,7 +198,7 @@ let getCurrentUser = async function (ctx) {
 
     if (name && name.trim() === "PHPSESSID") {
 
-      // console.log(chalk.green("getCurrentUser headers PHPSESSID"), `'${value}'`);
+
 
       PHPSESSID = value && value.trim() || null;
 
@@ -217,7 +217,7 @@ let getCurrentUser = async function (ctx) {
       PHPSESSID,
     }, ctx);
 
-    // console.log(chalk.green("getCurrentUser headers user"), currentUser);
+
 
 
   }
@@ -258,7 +258,7 @@ switch (process.env.action) {
       tablePrefix: MYSQL_TABLE_PREFIX,
     });
 
-    // console.log("modx", modx);
+
 
     startServer({
       typeDefs: 'src/schema/generated/api.graphql',

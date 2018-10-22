@@ -64,4 +64,44 @@ type Query {
   ): UserNoticeConnection!
    
 
+  project(
+    where: ProjectWhereUniqueInput
+  ): [Project!]!
+
+  projects(
+    where: ProjectWhereInput
+    orderBy: ProjectOrderByInput
+    skip: Int
+    first: Int
+  ): [Project!]!
+   
+  projectsConnection(
+    where: ProjectWhereInput
+    orderBy: ProjectOrderByInput
+    skip: Int
+    first: Int
+  ): ProjectConnection!
+   
+
+  projectMember(
+    where: ProjectMemberWhereUniqueInput
+    orderBy: ProjectMemberOrderByInput
+    skip: Int
+    first: Int
+  ): [ProjectMember!]!
+
+  projectMembers(
+    where: ProjectMemberWhereInput
+    orderBy: ProjectMemberOrderByInput
+    skip: Int
+    first: Int
+  ): [ProjectMember!]!
+   
+  projectMembersConnection(
+    where: ProjectMemberWhereInput
+    orderBy: ProjectMemberOrderByInput
+    skip: Int
+    first: Int
+  ): ProjectMemberConnection!
+
 }

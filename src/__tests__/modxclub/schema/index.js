@@ -35,6 +35,9 @@ const requiredTypes = [
         "noticesConnection",
         "userNotices",
         "userNoticesConnection",
+        "project",
+        "projects",
+        "projectsConnection",
       ],
     },
   },
@@ -50,6 +53,7 @@ const requiredTypes = [
         "Companies",
         "Services",
         "Notices",
+        "Projects",
       ],
     },
   },
@@ -84,6 +88,7 @@ const requiredTypes = [
       api: [
         "id",
         "name",
+        "uri",
         "Users",
       ],
     },
@@ -118,6 +123,41 @@ const requiredTypes = [
         "comment",
         "rank",
         "UsersNotices",
+      ],
+    },
+  },
+  {
+    name: "Project",
+    fields: {
+      both: [
+      ],
+      prisma: [
+      ],
+      api: [
+        "id",
+        "name",
+        "uri",
+        "site_url",
+        "Members",
+      ],
+    },
+  },
+  {
+    name: "ProjectMember",
+    fields: {
+      both: [
+      ],
+      prisma: [
+      ],
+      api: [
+        "id",
+        "status",
+        "project_id",
+        "Project",
+        "user_id",
+        "User",
+        "service_id",
+        "Service",
       ],
     },
   },

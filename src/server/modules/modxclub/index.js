@@ -8,6 +8,10 @@ import PrismaModule from "@prisma-cms/prisma-module";
 import CompanyModule from "./modules/company";
 import NoticeModule from "./modules/notice";
 import UserNoticeModule from "./modules/userNotice";
+import ServiceModule from "./modules/service";
+import ProjectModule from "./modules/project";
+import ProjectMemberModule from "./modules/projectMember";
+
 
 class ModxclubModules extends PrismaModule {
 
@@ -20,6 +24,9 @@ class ModxclubModules extends PrismaModule {
       CompanyModule,
       NoticeModule,
       UserNoticeModule,
+      ServiceModule,
+      ProjectModule,
+      ProjectMemberModule,
     ]);
 
   }

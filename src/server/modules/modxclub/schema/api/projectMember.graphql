@@ -1,0 +1,39 @@
+
+type ProjectMember {
+  id: Int!
+  status: Boolean!
+  project_id: Int!
+  user_id: Int!
+  service_id: Int!
+  Project: Project!
+  User: User!
+  Service: Service!
+}
+ 
+
+input ProjectMemberWhereUniqueInput {
+  id: Int
+}
+
+input ProjectMemberWhereInput {
+  id: Int
+}
+
+enum ProjectMemberOrderByInput {
+  id_ASC
+  id_DESC
+}
+
+type ProjectMemberConnection {
+  edges: [ProjectMemberEdge]!
+  aggregate: AggregateProjectMember!
+}
+
+
+type AggregateProjectMember {
+  count: Int!
+}
+
+type ProjectMemberEdge {
+  node: ProjectMember!
+}

@@ -456,7 +456,7 @@ export class ModxDB {
       })
       .then(r => r && r[0] || null);
 
-    // console.log("userBySession result", result);
+
 
     const {
       data,
@@ -495,7 +495,7 @@ export class ModxDB {
       }
 
     }
-    // console.log("userId", userId);
+
 
     return userId ? this.user(null, {
       where: {

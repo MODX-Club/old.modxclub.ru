@@ -1,6 +1,7 @@
 
 import ModxDB from "../modx/db";
 
+import chalk from "chalk";
 
 export class ModxclubDB extends ModxDB {
 
@@ -20,6 +21,18 @@ export class ModxclubDB extends ModxDB {
 
       userNotices: (source, args, ctx, info) => this.userNotices(source, args, ctx, info),
       userNoticesConnection: (source, args, ctx, info) => this.userNoticesConnection(source, args, ctx, info),
+
+      service: (source, args, ctx, info) => this.service(source, args, ctx, info),
+      services: (source, args, ctx, info) => this.services(source, args, ctx, info),
+      servicesConnection: (source, args, ctx, info) => this.servicesConnection(source, args, ctx, info),
+
+      project: (source, args, ctx, info) => this.project(source, args, ctx, info),
+      projects: (source, args, ctx, info) => this.projects(source, args, ctx, info),
+      projectsConnection: (source, args, ctx, info) => this.projectsConnection(source, args, ctx, info),
+
+      projectMember: (source, args, ctx, info) => this.projectMember(source, args, ctx, info),
+      projectMembers: (source, args, ctx, info) => this.projectMembers(source, args, ctx, info),
+      projectMembersConnection: (source, args, ctx, info) => this.projectMembersConnection(source, args, ctx, info),
 
     });
 
@@ -168,6 +181,8 @@ export class ModxclubDB extends ModxDB {
    * Eof Notices
    */
 
+
+
   /**
    * UserUserNotices
    */
@@ -216,6 +231,215 @@ export class ModxclubDB extends ModxDB {
 
   /**
    * Eof UserNotices
+   */
+
+
+  /**
+   * Services
+   */
+
+  async service(source, args, ctx, info) {
+
+    let {
+      where,
+    } = args;
+
+    if (!Object.keys(where).length) {
+      throw new Error("Where args required");
+    }
+
+    let objects = await this.services(null, {
+      where,
+      limit: 1,
+    }, ctx, info);
+
+    return objects && objects[0] || null
+  }
+
+
+  services(source, args, ctx, info) {
+
+    const {
+      knex,
+    } = ctx;
+
+    const query = this.getServicesQuery(args, ctx);
+
+    return this.request(query);
+
+  }
+
+
+  servicesConnection(source, args, ctx, info) {
+
+    const {
+      knex,
+    } = ctx;
+
+    const query = this.getServicesQuery(args, ctx);
+
+
+    return this.objectsConnection(ctx, query, "service.id");
+
+  }
+
+
+
+  getServicesQuery(args, ctx) {
+
+    const {
+      knex,
+    } = ctx;
+
+    let services = knex(this.getTableName("site_content", "services"))
+      .where({
+        parent: 1473,
+      })
+      .select("services.*")
+      .select("services.pagetitle as name")
+      .as("service")
+      ;
+
+
+    let query = knex(services).as("service");
+
+
+
+    return this.getQuery(args, ctx, "services", "service", query);
+
+
+  }
+
+
+  /**
+   * Eof Services
+   */
+
+
+  /**
+   * Projects
+   */
+
+  async project(source, args, ctx, info) {
+
+    let {
+      where,
+    } = args;
+
+    if (!Object.keys(where).length) {
+      throw new Error("Where args required");
+    }
+
+    let objects = await this.projects(null, {
+      where,
+      limit: 1,
+    }, ctx, info);
+
+    return objects && objects[0] || null
+  }
+
+
+  projects(source, args, ctx, info) {
+
+    const {
+      knex,
+    } = ctx;
+
+    const query = this.getProjectsQuery(args, ctx);
+
+    return this.request(query);
+
+  }
+
+
+  projectsConnection(source, args, ctx, info) {
+
+    const {
+      knex,
+    } = ctx;
+
+    const query = this.getProjectsQuery(args, ctx);
+
+
+    return this.objectsConnection(ctx, query, "project.id");
+
+  }
+
+
+
+  getProjectsQuery(args, ctx) {
+
+    const {
+      knex,
+    } = ctx;
+
+    let projects = knex(this.getTableName("site_content", "projects"))
+      .where({
+        parent: 1443,
+      })
+      .select("projects.*")
+      .select("projects.longtitle as name")
+      .select("projects.pagetitle as site_url")
+      .as("project")
+      ;
+
+
+    let query = knex(projects).as("project");
+
+
+
+    return this.getQuery(args, ctx, "projects", "project", query);
+
+
+  }
+
+  /**
+   * Eof Projects
+   */
+
+
+
+  /**
+   * ProjectMembers
+   */
+
+  projectMembers(source, args, ctx, info) {
+
+    const {
+      knex,
+    } = ctx;
+
+    const query = this.getProjectMembersQuery(args, ctx);
+
+    return this.request(query);
+
+  }
+
+
+  projectMembersConnection(source, args, ctx, info) {
+
+    const {
+      knex,
+    } = ctx;
+
+    const query = this.getProjectMembersQuery(args, ctx);
+
+
+    return this.objectsConnection(ctx, query, "projectMember.id");
+
+  }
+
+
+
+  getProjectMembersQuery(args, ctx) {
+
+    return this.getQuery(args, ctx, "modxsite_projects_members", "projectMember");
+
+
+  }
+
+  /**
+   * Eof ProjectMembers
    */
 
 

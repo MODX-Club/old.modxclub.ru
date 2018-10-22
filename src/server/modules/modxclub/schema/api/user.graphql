@@ -16,13 +16,20 @@ type User {
     skip: Int
     first: Int
   ): [Company!]!
-  
+
   Notices(
     where: UserNoticeWhereInput
     orderBy: UserNoticeOrderByInput
     skip: Int
     first: Int
   ): [UserNotice!]!
+
+  Projects(
+    where: ProjectMemberWhereInput
+    orderBy: ProjectMemberOrderByInput
+    skip: Int
+    first: Int
+  ): [ProjectMember!]!
 }
 
 

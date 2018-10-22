@@ -2,6 +2,7 @@
 type Service {
   id: Int!
   name: String!
+  uri: String!
   Users: [User!]!
 }
 
