@@ -1,0 +1,42 @@
+
+type Thread {
+  id: Int!
+  target_id: Int!
+  target_class: SocietyTargetEnum!
+  comments_count: Int!
+  createdAt: DateTime!
+  editedAt: DateTime
+  rating: Float!
+  positive_votes: Int!
+  negative_votes: Int!
+  neutral_votes: Int!
+  Comments: [Comment!]!
+  Votes: [Comment!]!
+}
+
+input ThreadWhereInput {
+  id: Int
+}
+
+input ThreadWhereUniqueInput {
+  id: Int
+}
+
+enum ThreadOrderByInput {
+  id_ASC
+  id_DESC
+}
+
+type ThreadConnection {
+  edges: [ThreadEdge]!
+  aggregate: AggregateThread!
+}
+
+
+type AggregateThread {
+  count: Int!
+}
+
+type ThreadEdge {
+  node: Thread!
+}

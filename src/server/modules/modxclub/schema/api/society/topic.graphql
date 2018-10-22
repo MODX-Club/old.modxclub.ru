@@ -1,0 +1,51 @@
+
+type Topic {
+  id: Int!
+  pagetitle: String
+  longtitle: String
+  content: Json
+  alias: String
+  published: Boolean!
+  deleted: Boolean!
+  hidemenu: Boolean!
+  searchable: Boolean!
+  class_key: String!
+  context_key: String!
+  uri: String!
+  uri_override: Boolean!
+  createdby: Int!
+  template: Int!
+  publishedon: DateTime
+  createdon: DateTime
+  editedon: DateTime
+  CreatedBy: User!
+  Tags: [TopicTag!]!
+}
+
+
+input TopicWhereInput {
+  id: Int
+}
+
+input TopicWhereUniqueInput {
+  id: Int
+}
+
+enum TopicOrderByInput {
+  id_ASC
+  id_DESC
+}
+
+type TopicConnection {
+  edges: [TopicEdge]!
+  aggregate: AggregateTopic!
+}
+
+
+type AggregateTopic {
+  count: Int!
+}
+
+type TopicEdge {
+  node: Topic!
+}

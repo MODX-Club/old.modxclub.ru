@@ -1,0 +1,45 @@
+
+
+type Comment {
+  id: Int!
+  thread_id: Int!
+  Thread: Thread!
+  parent: Int
+  Parent: Comment
+  text: String!
+  createdAt: DateTime
+  editedAt: DateTime
+  createdby: Int!
+  Author: User!
+  published: Boolean!
+  deleted: Boolean!
+  comments_count: Int
+}
+
+
+input CommentWhereInput {
+  id: Int
+}
+
+input CommentWhereUniqueInput {
+  id: Int
+}
+
+enum CommentOrderByInput {
+  id_ASC
+  id_DESC
+}
+
+type CommentConnection {
+  edges: [CommentEdge]!
+  aggregate: AggregateComment!
+}
+
+
+type AggregateComment {
+  count: Int!
+}
+
+type CommentEdge {
+  node: Comment!
+}

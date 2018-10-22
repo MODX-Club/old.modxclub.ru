@@ -1,0 +1,47 @@
+
+type Vote {
+  id: Int!
+  target_id: Int!
+  target_class: SocietyTargetEnum!
+  thread_id: Int!
+  Thread: Thread!
+  user_id: Int!
+  User: User!
+  direction: VoteDirectionEnum!
+  value: Float
+  createdAt: DateTime!
+}
+
+enum VoteDirectionEnum {
+  Positive
+  Negative
+  Neutral
+}
+
+
+input VoteWhereInput {
+  id: Int
+}
+
+input VoteWhereUniqueInput {
+  id: Int
+}
+
+enum VoteOrderByInput {
+  id_ASC
+  id_DESC
+}
+
+type VoteConnection {
+  edges: [VoteEdge]!
+  aggregate: AggregateVote!
+}
+
+
+type AggregateVote {
+  count: Int!
+}
+
+type VoteEdge {
+  node: Vote!
+}

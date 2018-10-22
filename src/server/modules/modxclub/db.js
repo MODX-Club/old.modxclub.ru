@@ -34,6 +34,10 @@ export class ModxclubDB extends ModxDB {
       projectMembers: (source, args, ctx, info) => this.projectMembers(source, args, ctx, info),
       projectMembersConnection: (source, args, ctx, info) => this.projectMembersConnection(source, args, ctx, info),
 
+      blog: (source, args, ctx, info) => this.blog(source, args, ctx, info),
+      blogs: (source, args, ctx, info) => this.blogs(source, args, ctx, info),
+      blogsConnection: (source, args, ctx, info) => this.blogsConnection(source, args, ctx, info),
+
     });
 
   }
@@ -343,10 +347,6 @@ export class ModxclubDB extends ModxDB {
 
   projects(source, args, ctx, info) {
 
-    const {
-      knex,
-    } = ctx;
-
     const query = this.getProjectsQuery(args, ctx);
 
     return this.request(query);
@@ -356,9 +356,6 @@ export class ModxclubDB extends ModxDB {
 
   projectsConnection(source, args, ctx, info) {
 
-    const {
-      knex,
-    } = ctx;
 
     const query = this.getProjectsQuery(args, ctx);
 
@@ -409,9 +406,6 @@ export class ModxclubDB extends ModxDB {
 
   projectMembers(source, args, ctx, info) {
 
-    const {
-      knex,
-    } = ctx;
 
     const query = this.getProjectMembersQuery(args, ctx);
 
@@ -421,10 +415,6 @@ export class ModxclubDB extends ModxDB {
 
 
   projectMembersConnection(source, args, ctx, info) {
-
-    const {
-      knex,
-    } = ctx;
 
     const query = this.getProjectMembersQuery(args, ctx);
 
@@ -444,6 +434,65 @@ export class ModxclubDB extends ModxDB {
 
   /**
    * Eof ProjectMembers
+   */
+
+  /**
+   * Blogs
+   */
+
+  blogs(source, args, ctx, info) {
+
+    const {
+      knex,
+    } = ctx;
+
+    const query = this.getBlogsQuery(args, ctx);
+
+    return this.request(query);
+
+  }
+
+
+  blogsConnection(source, args, ctx, info) {
+
+
+    const query = this.getBlogsQuery(args, ctx);
+
+
+    return this.objectsConnection(ctx, query, "blog.id");
+
+  }
+
+
+
+  getBlogsQuery(args, ctx) {
+
+    const {
+      knex,
+    } = ctx;
+
+    let blogs = knex(this.getTableName("site_content", "blogs"))
+      .where({
+        parent: 23,
+      })
+      .select("blogs.*")
+      .select("blogs.pagetitle as name")
+      .select(knex.raw("if(blogs.template = 16, 1, 0) as personal"))
+      .as("blog")
+      ;
+
+    this.prepareResourcesQuery(blogs);
+
+
+    let query = knex(blogs).as("blog");
+
+
+    return this.getQuery(args, ctx, "blogs", "blog", query);
+
+  }
+
+  /**
+   * Eof Blogs
    */
 
 

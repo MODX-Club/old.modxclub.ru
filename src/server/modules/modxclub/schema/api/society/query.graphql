@@ -1,0 +1,110 @@
+
+enum SocietyTargetEnum{
+  SocietyComment
+  modResource
+}
+
+
+ 
+
+type Query {
+   
+ 
+  blog(
+    where: BlogWhereUniqueInput
+  ): [Blog!]!
+
+  blogs(
+    where: BlogWhereInput
+    orderBy: BlogOrderByInput
+    skip: Int
+    first: Int
+  ): [Blog!]!
+   
+  blogsConnection(
+    where: BlogWhereInput
+    orderBy: BlogOrderByInput
+    skip: Int
+    first: Int
+  ): BlogConnection!
+   
+ 
+  topic(
+    where: TopicWhereUniqueInput
+  ): [Topic!]!
+
+  topics(
+    where: TopicWhereInput
+    orderBy: TopicOrderByInput
+    skip: Int
+    first: Int
+  ): [Topic!]!
+   
+  topicsConnection(
+    where: TopicWhereInput
+    orderBy: TopicOrderByInput
+    skip: Int
+    first: Int
+  ): TopicConnection!
+   
+   
+ 
+  comment(
+    where: CommentWhereUniqueInput
+  ): [Comment!]!
+
+  comments(
+    where: CommentWhereInput
+    orderBy: CommentOrderByInput
+    skip: Int
+    first: Int
+  ): [Comment!]!
+   
+  commentsConnection(
+    where: CommentWhereInput
+    orderBy: CommentOrderByInput
+    skip: Int
+    first: Int
+  ): CommentConnection!
+   
+   
+ 
+  thread(
+    where: ThreadWhereUniqueInput
+  ): [Thread!]!
+
+  threads(
+    where: ThreadWhereInput
+    orderBy: ThreadOrderByInput
+    skip: Int
+    first: Int
+  ): [Thread!]!
+   
+  threadsConnection(
+    where: ThreadWhereInput
+    orderBy: ThreadOrderByInput
+    skip: Int
+    first: Int
+  ): ThreadConnection!
+   
+   
+ 
+  vote(
+    where: VoteWhereUniqueInput
+  ): [Vote!]!
+
+  votes(
+    where: VoteWhereInput
+    orderBy: VoteOrderByInput
+    skip: Int
+    first: Int
+  ): [Vote!]!
+   
+  votesConnection(
+    where: VoteWhereInput
+    orderBy: VoteOrderByInput
+    skip: Int
+    first: Int
+  ): VoteConnection!
+   
+}

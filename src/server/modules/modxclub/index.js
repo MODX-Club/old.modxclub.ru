@@ -12,6 +12,8 @@ import ServiceModule from "./modules/service";
 import ProjectModule from "./modules/project";
 import ProjectMemberModule from "./modules/projectMember";
 
+import BlogModule from "./modules/society/blog";
+
 
 class ModxclubModules extends PrismaModule {
 
@@ -27,6 +29,8 @@ class ModxclubModules extends PrismaModule {
       ServiceModule,
       ProjectModule,
       ProjectMemberModule,
+
+      BlogModule,
     ]);
 
   }

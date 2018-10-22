@@ -1,0 +1,54 @@
+
+type Blog {
+  id: Int!
+  name: String!
+  pagetitle: String!
+  longtitle: String
+  content: Json
+  alias: String
+  published: Boolean!
+  deleted: Boolean!
+  hidemenu: Boolean!
+  searchable: Boolean!
+  class_key: String!
+  context_key: String!
+  uri: String!
+  uri_override: Boolean!
+  createdby: Int!
+  template: Int!
+  publishedon: DateTime
+  createdon: DateTime
+  editedon: DateTime
+  CreatedBy: User!
+  personal: Boolean!
+}
+
+
+
+input BlogWhereInput {
+  id: Int
+  personal: Boolean
+}
+
+input BlogWhereUniqueInput {
+  id: Int
+}
+
+enum BlogOrderByInput {
+  id_ASC
+  id_DESC
+}
+
+type BlogConnection {
+  edges: [BlogEdge]!
+  aggregate: AggregateBlog!
+}
+
+
+type AggregateBlog {
+  count: Int!
+}
+
+type BlogEdge {
+  node: Blog!
+}

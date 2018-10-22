@@ -1,0 +1,8 @@
+
+type TopicTag {
+  id: Int!
+  name: String!
+  active: Boolean!
+  topic_id: Int!
+  Topic: Topic!
+}
