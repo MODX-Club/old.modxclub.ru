@@ -54,6 +54,10 @@ export class ModxclubDB extends ModxDB {
       comments: (source, args, ctx, info) => this.comments(source, args, ctx, info),
       commentsConnection: (source, args, ctx, info) => this.commentsConnection(source, args, ctx, info),
 
+      vote: (source, args, ctx, info) => this.vote(source, args, ctx, info),
+      votes: (source, args, ctx, info) => this.votes(source, args, ctx, info),
+      votesConnection: (source, args, ctx, info) => this.votesConnection(source, args, ctx, info),
+
     });
 
   }
@@ -812,7 +816,7 @@ export class ModxclubDB extends ModxDB {
 
 
   /**
-   * Comments
+   * Votes
    */
 
   async comment(source, args, ctx, info) {
@@ -836,7 +840,7 @@ export class ModxclubDB extends ModxDB {
   comments(source, args, ctx, info) {
 
 
-    const query = this.getCommentsQuery(args, ctx);
+    const query = this.getVotesQuery(args, ctx);
 
     return this.request(query);
 
@@ -845,7 +849,7 @@ export class ModxclubDB extends ModxDB {
 
   commentsConnection(source, args, ctx, info) {
 
-    const query = this.getCommentsQuery(args, ctx);
+    const query = this.getVotesQuery(args, ctx);
 
 
     return this.objectsConnection(ctx, query, "comment.id");
@@ -854,7 +858,7 @@ export class ModxclubDB extends ModxDB {
 
 
 
-  getCommentsQuery(args, ctx) {
+  getVotesQuery(args, ctx) {
 
     const {
       knex,
@@ -876,7 +880,76 @@ export class ModxclubDB extends ModxDB {
   }
 
   /**
-   * Eof Comments
+   * Eof Votes
+   */
+
+  /**
+   * Votes
+   */
+
+  async vote(source, args, ctx, info) {
+
+    let {
+      where,
+    } = args;
+
+    if (!Object.keys(where).length) {
+      throw new Error("Where args required");
+    }
+
+    let objects = await this.votes(null, {
+      where,
+      limit: 1,
+    }, ctx, info);
+
+    return objects && objects[0] || null
+  }
+
+  votes(source, args, ctx, info) {
+
+
+    const query = this.getVotesQuery(args, ctx);
+
+    return this.request(query);
+
+  }
+
+
+  votesConnection(source, args, ctx, info) {
+
+    const query = this.getVotesQuery(args, ctx);
+
+
+    return this.objectsConnection(ctx, query, "vote.id");
+
+  }
+
+
+
+  getVotesQuery(args, ctx) {
+
+    const {
+      knex,
+    } = ctx;
+
+    let votes = knex(this.getTableName("society_votes", "votes"))
+      .select("votes.*")
+      .select(knex.raw(`IF(votes.vote_direction = '1' , 'Positive', if(votes.vote_direction = '-1', 'Negative', 'Neutral')) as direction`))
+      .select(knex.raw(`unix_timestamp(votes.vote_date) as createdAt`))
+      .select("votes.vote_value as value")
+      .as("vote")
+      ;
+
+
+    let query = knex(votes).as("vote");
+
+    return this.getQuery(args, ctx, "society_votes", "vote", query);
+
+
+  }
+
+  /**
+   * Eof Votes
    */
 
 }

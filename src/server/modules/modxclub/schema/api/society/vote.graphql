@@ -8,7 +8,7 @@ type Vote {
   user_id: Int!
   User: User!
   direction: VoteDirectionEnum!
-  value: Float
+  value: Int!
   createdAt: DateTime!
 }
 
