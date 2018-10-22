@@ -878,7 +878,7 @@ export class ModxclubDB extends ModxDB {
       .as("comment")
       ;
 
-    console.log(chalk.green("comments query "), comments.toString());
+    // console.log(chalk.green("comments query "), comments.toString());
 
     let query = knex(comments).as("comment");
 
