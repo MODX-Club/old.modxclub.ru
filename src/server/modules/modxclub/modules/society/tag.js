@@ -41,6 +41,11 @@ class ModxTopicTagModule extends PrismaModule {
       topic_ids,
     } = source || {};
 
+
+    if (!topic_ids || !topic_ids.length) {
+      return [];
+    }
+
     let {
       where,
     } = args;
@@ -50,7 +55,7 @@ class ModxTopicTagModule extends PrismaModule {
       id_in: topic_ids,
     }
 
-    return topic_ids && topic_ids.length ? ctx.modx.query.topics(null, args, ctx, info) : null;
+    return ctx.modx.query.topics(null, args, ctx, info);
 
   }
 

@@ -21,6 +21,12 @@ type Blog {
   updatedAt: DateTime
   CreatedBy: User!
   personal: Boolean!
+  Topics(
+    where: TopicWhereInput
+    orderBy: TopicOrderByInput
+    skip: Int
+    first: Int
+  ): [Topic!]!
 }
 
 

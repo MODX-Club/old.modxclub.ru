@@ -31,6 +31,7 @@ class ModxTopicModule extends PrismaModule {
   Topic = {
 
     CreatedBy: (source, args, ctx, info) => this.CreatedBy(source, args, ctx, info),
+    Blog: (source, args, ctx, info) => this.Blog(source, args, ctx, info),
 
   }
  
@@ -44,6 +45,21 @@ class ModxTopicModule extends PrismaModule {
     return createdby ? ctx.modx.query.user(null, {
       where: {
         id: createdby,
+      },
+    }, ctx, info) : null;
+
+  }
+
+
+  Blog(source, args, ctx, info) {
+
+    const {
+      blog_id,
+    } = source || {};
+
+    return blog_id ? ctx.modx.query.blog(null, {
+      where: {
+        id: blog_id,
       },
     }, ctx, info) : null;
 

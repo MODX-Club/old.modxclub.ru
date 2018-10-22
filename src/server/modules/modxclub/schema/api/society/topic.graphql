@@ -21,11 +21,14 @@ type Topic {
   updatedAt: DateTime
   CreatedBy: User!
   Tags: [TopicTag!]!
+  blog_id: Int!
+  Blog: Blog!
 }
 
 
 input TopicWhereInput {
   id: Int
+  blog_id: Int
 }
 
 input TopicWhereUniqueInput {

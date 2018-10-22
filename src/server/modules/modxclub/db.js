@@ -613,6 +613,7 @@ export class ModxclubDB extends ModxDB {
     } = ctx;
 
     let topics = knex(this.getTableName("site_content", "topics"))
+      .innerJoin(this.getTableName("society_blog_topic", "topicBlog"), "topicBlog.topicid", "topics.id")
       .where({
         parent: 309,
       })
@@ -621,6 +622,7 @@ export class ModxclubDB extends ModxDB {
       .select("topics.createdon as createdAt")
       .select("topics.editedon as updatedAt")
       .select(knex.raw("if(topics.template = 16, 1, 0) as personal"))
+      .select("topicBlog.blogid as blog_id")
       .as("topic")
       ;
 
