@@ -9,12 +9,5 @@ import PrismaCmsPageLayout from "@prisma-cms/front/lib/modules/pages/layout";
 export default class PageLayout extends PrismaCmsPageLayout {
 
 
-
-  render(content) {
-
-
-
-    return "content";
-
-  }
+ 
 }

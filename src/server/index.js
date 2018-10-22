@@ -30,7 +30,8 @@ const imagesMiddleware = require("./middleware/ImageThumb");
 
 const {
   default: ModxDB,
-} = require("./modules/modx/db");
+// } = require("./modules/modx/db");
+} = require("./modules/modxclub/db");
 
 const FormData = require("form-data");
 
@@ -253,6 +254,11 @@ switch (process.env.action) {
       throw new Error("Environment MYSQL_DB required");
     }
 
+    const modx = new ModxDB({
+      tablePrefix: MYSQL_TABLE_PREFIX,
+    });
+
+    // console.log("modx", modx);
 
     startServer({
       typeDefs: 'src/schema/generated/api.graphql',
@@ -261,9 +267,7 @@ switch (process.env.action) {
       contextOptions: {
         db: null,
         getCurrentUser,
-        modx: new ModxDB({
-          tablePrefix: MYSQL_TABLE_PREFIX,
-        }),
+        modx,
         modxRequest,
       },
       Mailer: null,

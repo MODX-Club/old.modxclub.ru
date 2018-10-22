@@ -1,0 +1,13 @@
+
+ 
+
+type Query {
+   
+  companiesConnection(
+    where: CompanyWhereInput
+    orderBy: CompanyOrderByInput
+    skip: Int
+    first: Int
+  ): CompanyConnection!
+
+}

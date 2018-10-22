@@ -39,6 +39,8 @@ input UserWhereUniqueInput {
 
 type UsersDebugResponse {
   SQL: String!
+  success: Boolean!
+  error: String
   users: [User!]!
 }
 

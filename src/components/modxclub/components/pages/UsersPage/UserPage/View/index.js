@@ -181,7 +181,9 @@ export default class UserPageView extends EditableView {
 
   renderDefaultView() {
 
-    return <UserView />
+    return <UserView 
+      {...this.props}
+    />
 
     const object = this.getObjectWithMutations();
     const inEditMode = this.isInEditMode();

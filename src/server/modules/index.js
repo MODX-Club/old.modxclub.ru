@@ -9,6 +9,7 @@ import { fileLoader, mergeTypes } from 'merge-graphql-schemas';
 import CmsModule from "@prisma-cms/prisma-module";
 
 import ModxModule from "./modx";
+import ModxclubModule from "./modxclub";
 
 import { GraphQLScalarType } from 'graphql';
 import GraphQLJSON from 'graphql-type-json';
@@ -43,6 +44,7 @@ class CoreModule extends CmsModule {
 
     this.mergeModules([
       ModxModule,
+      ModxclubModule,
     ]);
 
   }

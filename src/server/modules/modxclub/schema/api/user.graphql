@@ -1,0 +1,16 @@
+
+type User {
+  createdAt: DateTime
+
+  works: Int,
+  works_ids: [Int!]!
+  services_id: [Int!]!
+  services_name: [String!]!
+  services_count: [Int!]!     
+  api_key: String
+  balance: Float
+
+  Companies: [Company!]!
+}
+
+

@@ -21,6 +21,7 @@ export class ModxDB {
 
   query = {
 
+    resource: (source, args, ctx, info) => this.resource(source, args, ctx, info),
     resources: (source, args, ctx, info) => this.resources(source, args, ctx, info),
     resourcesConnection: (source, args, ctx, info) => this.resourcesConnection(source, args, ctx, info),
 
@@ -60,6 +61,26 @@ export class ModxDB {
     }
 
     return name;
+  }
+
+
+  async resource(source, args, ctx, info) {
+
+    let {
+      where,
+    } = args;
+
+    if (!Object.keys(where).length) {
+      throw new Error("Where args required");
+    }
+
+    let objects = await this.resources(null, {
+      where,
+      limit: 1,
+    }, ctx, info);
+
+    return objects && objects[0] || null
+
   }
 
 
@@ -147,11 +168,23 @@ export class ModxDB {
 
     let query = this.getUsersQuery(args, ctx);
 
-    let users = await query.then()
+    let error;
+
+    let success = false;
+
+    let users = await this.request(query).then(r => {
+      success = true;
+      return r;
+    })
+      .catch(e => {
+        error = e.message;
+      })
 
     return {
-      users,
+      success,
+      error,
       SQL: this.debugQuery(query),
+      users: users || [],
     }
   }
 
@@ -196,17 +229,18 @@ export class ModxDB {
       .select("profile.id as profileId")
       ;
 
+    this.prepareUsersQuery(users, ctx);
+
     let query = knex(users).as("users");
 
-    return this.getQuery(args, ctx, "users", "users", query)
+    return this.getQuery(args, ctx, "users", "users", query);
 
-    return this.getQuery(args, ctx, "users", "user")
-      .innerJoin(this.getTableName("user_attributes", "profile"), "user.id", "profile.internalKey")
-      .select("profile.*")
-      .select("user.*")
-      .select("profile.id as profileId")
-      ;
+  }
 
+
+  prepareUsersQuery(query, ctx) {
+
+    return query;
   }
 
 
@@ -271,7 +305,7 @@ export class ModxDB {
       query.offset(skip);
     }
 
-    return query;
+    return query
 
   }
 
@@ -293,9 +327,9 @@ export class ModxDB {
           builder.andWhere(builder => {
 
             condition.map(n => {
-  
+
               this.where(builder, n, tableAlias, true);
-  
+
             });
 
           });
@@ -329,14 +363,14 @@ export class ModxDB {
         where[`${tableAlias}.${field}`] = condition;
 
       }
-      
+
       return builder.where(where);
 
     });
 
     return query;
 
- 
+
   }
 
 
@@ -349,7 +383,7 @@ export class ModxDB {
 
     let countQuery = query.clone();
 
-    let objects = await query.then();
+    let objects = await this.request(query).then()
 
     // countQuery.clearWhere();
     countQuery.clearOrder();
@@ -367,7 +401,15 @@ export class ModxDB {
     let qQuery = knex.count("* as count").from(countQuery.as("t1"));
 
 
-    let count = await qQuery.then(r => r && r[0].count || 0);
+    let count = await this.request(qQuery)
+      .then(r => r && r[0].count || 0)
+      .catch(error => {
+
+        console.error(chalk.red("SQL error"), "Error");
+
+        throw new Error("Error");
+
+      });
 
     return {
       aggregate: {
@@ -378,6 +420,19 @@ export class ModxDB {
       })) || [],
     }
 
+  }
+
+
+  async request(query) {
+
+    return await query
+      .catch(error => {
+
+        console.error(chalk.red("SQL error"), error);
+
+        throw new Error("SQL Error");
+
+      });
   }
 
 

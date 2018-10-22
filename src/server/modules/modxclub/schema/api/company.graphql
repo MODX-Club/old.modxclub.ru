@@ -1,0 +1,35 @@
+
+type Company {
+  id: Int!
+  name: String!
+  uri: String!
+  resource_id: Int!
+  Resource: Resource!
+  createdby: Int!
+  createdAt: DateTime!
+  Owner: User!
+}
+
+
+input CompanyWhereInput {
+  id: Int!
+}
+
+enum CompanyOrderByInput {
+  id_ASC
+  id_DESC
+}
+
+type CompanyConnection {
+  edges: [CompanyEdge]!
+  aggregate: AggregateCompany!
+}
+
+
+type AggregateCompany {
+  count: Int!
+}
+
+type CompanyEdge {
+  node: Company!
+}

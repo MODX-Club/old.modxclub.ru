@@ -106,6 +106,9 @@ export default class UserPageConnector extends PrismaCmsConnector {
 
     const UserNoNestingFragment = getQueryFragment("UserNoNestingFragment");
 
+    console.log("UserNoNestingFragment", UserNoNestingFragment);
+
+
     const user = gql`
       query user(
         $where:UserWhereUniqueInput!
@@ -122,63 +125,11 @@ export default class UserPageConnector extends PrismaCmsConnector {
 
     return compose(
       graphql(user, {
-        // name: 'user', 
       }),
       graphql(updateUserProcessor, {
-        // name: 'updateUser', 
       }),
     )(UserPage)
   }
 
 }
-
-
-// export class UserPageConnectorDDD extends Component {
-
-//   static contextTypes = {
-//     getQueryFragment: PropTypes.func.isRequired,
-//   }
-
-//   shouldComponentUpdate() {
-//     return false;
-//   }
-
-//   render() {
-
-//     const {
-//       getQueryFragment,
-//     } = this.context;
-
-//     const UserNoNestingFragment = getQueryFragment("UserNoNestingFragment");
-
-//     const user = gql`
-//       query user(
-//         $where:UserWhereUniqueInput!
-//       ){ 
-//         object:user(
-//           where:$where
-//         ){
-//           ...UserNoNesting
-//         } 
-//       }
-
-//       ${UserNoNestingFragment}
-//     `;
-
-//     const Query = compose(
-//       graphql(user, {
-//         // name: 'user', 
-//       }),
-//       graphql(updateUserProcessor, {
-//         // name: 'updateUser', 
-//       }),
-
-//     )(UserPage);
-
-//     return <Query
-//       {...this.props}
-//     />;
-
-//   }
-
-// }
+ 
