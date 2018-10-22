@@ -6,9 +6,12 @@ import React, { Component } from 'react';
 import Page from '../layout';
 
 
+import Forum from "../../view/forum"
+
+
 export class MainPage extends Page {
 
-	
+
 	setPageMeta(meta = {}) {
 
 		return super.setPageMeta({
@@ -17,6 +20,23 @@ export class MainPage extends Page {
 
 	}
 
+
+	render() {
+
+		const {
+			...other
+		} = this.props;
+
+
+		const {
+			getQueryFragment,
+		} = this.context;
+
+		return super.render(<Forum
+			getQueryFragment={getQueryFragment}
+			{...other}
+		/>)
+	}
 
 }
 

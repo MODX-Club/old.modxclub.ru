@@ -2,12 +2,12 @@
 
 type Comment {
   id: Int!
-  thread_id: Int!
+  thread_id: Int
   Thread: Thread!
   parent: Int
   Parent: Comment
   text: Json!
-  createdAt: DateTime
+  createdAt: DateTime!
   updatedAt: DateTime
   createdby: Int!
   Author: User!
@@ -22,6 +22,7 @@ type Comment {
     skip: Int
     first: Int
   ): [Comment!]!
+  CreatedBy: User!
 }
 
 

@@ -48,10 +48,10 @@ export default class UserMenuItem extends Component {
 
     return <UserLink
       user={user}
-      showName={false}
-      style={{
-        margin: 0,
-      }}
+      // showName={false}
+      // style={{
+      //   margin: 0,
+      // }}
     />;
 
   }

@@ -32,6 +32,9 @@ class ModxTopicModule extends PrismaModule {
 
     CreatedBy: (source, args, ctx, info) => this.CreatedBy(source, args, ctx, info),
     Blog: (source, args, ctx, info) => this.Blog(source, args, ctx, info),
+    Comments: (source, args, ctx, info) => this.Comments(source, args, ctx, info),
+    Thread: (source, args, ctx, info) => this.Thread(source, args, ctx, info),
+    content: (source, args, ctx, info) => this.content(source, args, ctx, info),
 
   }
  
@@ -63,6 +66,75 @@ class ModxTopicModule extends PrismaModule {
       },
     }, ctx, info) : null;
 
+  }
+
+
+  Thread(source, args, ctx, info) {
+
+    const {
+      thread_id,
+    } = source || {};
+
+    // console.log("Thread thread_id", thread_id, source);
+
+    return thread_id ? ctx.modx.query.thread(null, {
+      where: {
+        id: thread_id,
+      },
+    }, ctx, info) : null;
+
+  }
+
+
+  Comments(source, args, ctx, info) {
+
+    const {
+      id: topic_id,
+    } = source || {};
+
+    if(!topic_id){
+      return [];
+    }
+
+    let {
+      where,
+    } = args;
+
+    args.where = {
+      ...where,
+      topic_id,
+    }
+
+    return ctx.modx.query.comments(null, args, ctx, info);
+
+  }
+
+
+  content(source, args, ctx, info) {
+
+    let {
+      content,
+    } = source || {}
+
+
+    if (content) {
+
+      try {
+
+        let json = JSON.parse(content);
+
+        if (json) {
+          content = json;
+        }
+
+      }
+      catch (error) {
+
+      }
+
+    }
+
+    return content;
   }
 
 

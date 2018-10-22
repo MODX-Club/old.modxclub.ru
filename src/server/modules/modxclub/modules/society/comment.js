@@ -30,7 +30,7 @@ class ModxCommentModule extends PrismaModule {
 
   Comment = {
 
-    // CreatedBy: (source, args, ctx, info) => this.CreatedBy(source, args, ctx, info),
+    CreatedBy: (source, args, ctx, info) => this.CreatedBy(source, args, ctx, info),
     Topic: (source, args, ctx, info) => this.Topic(source, args, ctx, info),
     Parent: (source, args, ctx, info) => this.Parent(source, args, ctx, info),
     Thread: (source, args, ctx, info) => this.Thread(source, args, ctx, info),
@@ -41,19 +41,19 @@ class ModxCommentModule extends PrismaModule {
   }
 
 
-  // CreatedBy(source, args, ctx, info) {
+  CreatedBy(source, args, ctx, info) {
 
-  //   const {
-  //     createdby,
-  //   } = source || {};
+    const {
+      createdby,
+    } = source || {};
 
-  //   return createdby ? ctx.modx.query.user(null, {
-  //     where: {
-  //       id: createdby,
-  //     },
-  //   }, ctx, info) : null;
+    return createdby ? ctx.modx.query.user(null, {
+      where: {
+        id: createdby,
+      },
+    }, ctx, info) : null;
 
-  // }
+  }
 
 
   Topic(source, args, ctx, info) {

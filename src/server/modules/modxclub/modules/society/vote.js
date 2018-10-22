@@ -33,6 +33,7 @@ class ModxVoteModule extends PrismaModule {
     // Topics: (source, args, ctx, info) => this.Topics(source, args, ctx, info),
     User: (source, args, ctx, info) => this.User(source, args, ctx, info),
     Thread: (source, args, ctx, info) => this.Thread(source, args, ctx, info),
+    Target: (source, args, ctx, info) => this.Target(source, args, ctx, info),
 
   }
 
@@ -69,7 +70,7 @@ class ModxVoteModule extends PrismaModule {
     }, ctx, info) : null;
 
   }
-  
+
 
   Thread(source, args, ctx, info) {
 
@@ -82,6 +83,80 @@ class ModxVoteModule extends PrismaModule {
         id: thread_id,
       },
     }, ctx, info) : null;
+
+  }
+
+
+  /**
+   * На что оставлен рейтинг.
+   * Цели две: Комментарий или Топик.
+   * Определяем по target_class.
+   * Если SocietyComment, то комментарий.
+   * Если modResource, то топик
+   */
+  async Target(source, args, ctx, info) {
+
+    const {
+      target_id,
+      target_class,
+    } = source || {};
+
+
+    const {
+      modx: {
+        query: {
+          topic,
+          comment,
+        },
+      }
+    } = ctx;
+
+    // console.log("Vote target", source);
+
+    if (!target_id || !target_class) {
+      return null;
+    }
+
+    let __typename;
+    let method;
+
+    let object;
+
+
+
+    switch (target_class) {
+
+      case "SocietyComment":
+
+        __typename = "Comment";
+
+        method = comment;
+
+        break;
+
+      case "modResource":
+
+        __typename = "Topic";
+
+        method = topic;
+
+        break;
+
+      default: throw new Error("Wrong type");
+
+    }
+
+
+    object = await method(null, {
+      where: {
+        id: target_id,
+      },
+    }, ctx, info);
+
+
+    return object ? Object.assign(object, {
+      __typename,
+    }) : null;
 
   }
 

@@ -30,24 +30,60 @@ class ModxThreadModule extends PrismaModule {
 
   Thread = {
 
-    // CreatedBy: (source, args, ctx, info) => this.CreatedBy(source, args, ctx, info),
+    Comments: (source, args, ctx, info) => this.Comments(source, args, ctx, info),
+    Votes: (source, args, ctx, info) => this.Votes(source, args, ctx, info),
 
   }
- 
 
-  // CreatedBy(source, args, ctx, info) {
 
-  //   const {
-  //     createdby,
-  //   } = source || {};
+  Comments(source, args, ctx, info) {
 
-  //   return createdby ? ctx.modx.query.user(null, {
-  //     where: {
-  //       id: createdby,
-  //     },
-  //   }, ctx, info) : null;
+    const {
+      id: thread_id,
+    } = source || {};
 
-  // }
+
+    if (!thread_id) {
+      return [];
+    }
+
+    let {
+      where,
+    } = args;
+
+    args.where = {
+      ...where,
+      thread_id,
+    }
+
+    return ctx.modx.query.comments(null, args, ctx, info);
+
+  }
+
+
+  Votes(source, args, ctx, info) {
+
+    const {
+      id: thread_id,
+    } = source || {};
+
+
+    if (!thread_id) {
+      return [];
+    }
+
+    let {
+      where,
+    } = args;
+
+    args.where = {
+      ...where,
+      thread_id,
+    }
+
+    return ctx.modx.query.votes(null, args, ctx, info);
+
+  }
 
 
   thread(source, args, ctx, info) {

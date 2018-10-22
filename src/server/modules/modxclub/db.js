@@ -614,6 +614,10 @@ export class ModxclubDB extends ModxDB {
 
     let topics = knex(this.getTableName("site_content", "topics"))
       .innerJoin(this.getTableName("society_blog_topic", "topicBlog"), "topicBlog.topicid", "topics.id")
+      .leftJoin(
+        this.getTableName("society_threads", "thread"),
+        knex.raw(`thread.target_class = 'modResource' AND thread.target_id = topics.id`)
+      )
       .where({
         parent: 309,
       })
@@ -623,6 +627,7 @@ export class ModxclubDB extends ModxDB {
       .select("topics.editedon as updatedAt")
       .select(knex.raw("if(topics.template = 16, 1, 0) as personal"))
       .select("topicBlog.blogid as blog_id")
+      .select("thread.id as thread_id")
       .as("topic")
       ;
 
@@ -869,7 +874,8 @@ export class ModxclubDB extends ModxDB {
     let comments = knex(this.getTableName("society_comments", "comments"))
       .leftJoin(
         this.getTableName("society_threads", "thread"),
-        knex.raw(`thread.id = comments.thread_id AND thread.target_class = 'modResource'`)
+        knex.raw(`thread.id = comments.thread_id`)
+        // knex.raw(`thread.id = comments.thread_id AND thread.target_class = 'modResource'`)
       )
       .select("comments.*")
       .select(knex.raw(`UNIX_TIMESTAMP(comments.createdon) as createdAt`))

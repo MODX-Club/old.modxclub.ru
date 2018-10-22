@@ -13,6 +13,8 @@ import MenuIcon from 'material-ui-icons/Menu';
 
 import UserItem from "./User";
 
+import { Link } from "react-router-dom";
+
 export const styles = theme => {
 
   const {
@@ -32,8 +34,8 @@ export const styles = theme => {
       flex: 1,
     },
     menuButton: {
-      marginLeft: -12,
-      marginRight: 20,
+      marginLeft: 5,
+      // marginRight: -12,
     },
   }
 };
@@ -75,64 +77,81 @@ export class MainMenu extends Component {
             color="inherit"
             className={classes.flex}
           >
-            MODXCLUB
+            <Link
+              to="/"
+            >
+              MODXCLUB
+            </Link>
           </Typography>
 
           {/* <Button color="inherit">Login</Button> */}
 
-          {currentUser
-            ?
-            [
-              <Grid
-                key="user"
-                item
-              >
-                <UserItem
-                  key={userId}
-                  user={currentUser}
-                />
-              </Grid>,
-              <Grid
-                key="logout"
-                item
-              >
-                <Button
+          <Grid
+            container
+          >
+            <Grid
+              item
+              xs
+            >
+
+            </Grid>
+
+            {currentUser
+              ?
+              [
+                <Grid
+                  key="user"
+                  item
+                >
+                  <UserItem
+                    key={userId}
+                    user={currentUser}
+                  />
+                </Grid>,
+                <Grid
+                  key="logout"
+                  item
+                >
+                  {/* <Button
                   onClick={() => this.logout()}
                 >
                   Signout
-              </Button>
+              </Button> */}
+
+                </Grid>
+              ]
+              :
+              <Grid
+                key="login"
+                item
+              >
+                <Button
+                  onClick={e => {
+                    // this.setState({
+                    //   opened: true,
+                    // });
+                    const {
+                      openLoginForm,
+                    } = this.context;
+                    openLoginForm();
+                  }}
+                >
+                  <Typography
+                    component="span"
+                  >
+                    Signin
+              </Typography>
+                </Button>
 
               </Grid>
-            ]
-            :
-            <Grid
-              key="login"
-              item
-            >
-              <Button
-                onClick={e => {
-                  // this.setState({
-                  //   opened: true,
-                  // });
-                  const {
-                    openLoginForm,
-                  } = this.context;
-                  openLoginForm();
-                }}
-              >
-                <Typography
-                  component="span"
-                >
-                  Signin
-              </Typography>
-              </Button>
+            }
+          </Grid>
 
-            </Grid>
-          }
 
-          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+
+          {/* <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
             <MenuIcon />
-          </IconButton>
+          </IconButton> */}
 
         </Toolbar>
       </AppBar>

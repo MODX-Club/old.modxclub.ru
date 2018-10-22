@@ -8,7 +8,7 @@ import EditableView from 'apollo-cms/lib/DataView/Object/Editable';
 
 import UserAvatar from './Avatar';
 
-import UserView from "@modxclub/old/view/profile";
+// import UserView from "@modxclub/old/view/profile";
  
 
 let propTypes = { ...EditableView.propTypes }
@@ -181,9 +181,9 @@ export default class UserPageView extends EditableView {
 
   renderDefaultView() {
 
-    return <UserView 
-      {...this.props}
-    />
+    // return <UserView 
+    //   {...this.props}
+    // />
 
     const object = this.getObjectWithMutations();
     const inEditMode = this.isInEditMode();

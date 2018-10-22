@@ -1,4 +1,5 @@
 
+import "../../../../styles/less/styles.css";
 
 import { Component } from "react";
 
@@ -64,7 +65,7 @@ export const getTheme = function (uiTheme) {
   return theme;
 }
 
-export default class App extends PrismaApp {
+export default class ModxclubApp extends PrismaApp {
 
   static defaultProps = {
     ...PrismaApp.defaultProps,

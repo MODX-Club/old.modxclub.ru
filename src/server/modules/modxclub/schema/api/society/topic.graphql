@@ -23,6 +23,14 @@ type Topic {
   Tags: [TopicTag!]!
   blog_id: Int!
   Blog: Blog!
+  Comments(
+    where: CommentWhereInput
+    orderBy: CommentOrderByInput
+    skip: Int
+    first: Int
+  ): [Comment!]!
+  thread_id: Int
+  Thread: Thread
 }
 
 

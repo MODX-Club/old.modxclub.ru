@@ -11,7 +11,12 @@ type Thread {
   negative_votes: Int!
   neutral_votes: Int!
   Comments: [Comment!]!
-  Votes: [Comment!]!
+  Votes(
+    where: VoteWhereInput
+    orderBy: VoteOrderByInput
+    skip: Int
+    first: Int
+  ): [Vote!]!
 }
 
 input ThreadWhereInput {

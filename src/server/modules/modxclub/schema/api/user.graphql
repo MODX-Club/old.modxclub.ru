@@ -9,6 +9,7 @@ type User {
   services_count: [Int!]!     
   api_key: String
   balance: Float
+  photo: String
 
   Companies(
     where: CompanyWhereInput

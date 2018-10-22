@@ -10,6 +10,7 @@ type Vote {
   direction: VoteDirectionEnum!
   value: Int!
   createdAt: DateTime!
+  Target: VoteTarget!
 }
 
 enum VoteDirectionEnum {
@@ -17,6 +18,8 @@ enum VoteDirectionEnum {
   Negative
   Neutral
 }
+
+union VoteTarget = Comment | Topic
 
 
 input VoteWhereInput {
