@@ -4,6 +4,10 @@
 type Query {
    
 
+  company(
+    where: CompanyWhereUniqueInput
+  ): Company
+
   companies(
     where: CompanyWhereInput
     orderBy: CompanyOrderByInput
@@ -18,6 +22,10 @@ type Query {
     first: Int
   ): CompanyConnection!
 
+
+  service(
+    where: ServiceWhereUniqueInput 
+  ): Service
 
   services(
     where: ServiceWhereInput
@@ -34,6 +42,10 @@ type Query {
   ): ServiceConnection!
    
 
+  notice(
+    where: NoticeWhereUniqueInput
+  ): Notice
+
   notices(
     where: NoticeWhereInput
     orderBy: NoticeOrderByInput
@@ -48,6 +60,10 @@ type Query {
     first: Int
   ): NoticeConnection!
    
+
+  userNotice(
+    where: UserNoticeWhereUniqueInput
+  ): UserNotice
 
   userNotices(
     where: UserNoticeWhereInput
@@ -66,7 +82,7 @@ type Query {
 
   project(
     where: ProjectWhereUniqueInput
-  ): [Project!]!
+  ): Project
 
   projects(
     where: ProjectWhereInput
@@ -85,10 +101,7 @@ type Query {
 
   projectMember(
     where: ProjectMemberWhereUniqueInput
-    orderBy: ProjectMemberOrderByInput
-    skip: Int
-    first: Int
-  ): [ProjectMember!]!
+  ): ProjectMember
 
   projectMembers(
     where: ProjectMemberWhereInput

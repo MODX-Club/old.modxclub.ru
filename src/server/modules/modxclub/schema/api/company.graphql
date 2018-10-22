@@ -13,6 +13,10 @@ type Company {
 }
 
 
+input CompanyWhereUniqueInput {
+  id: Int
+}
+
 input CompanyWhereInput {
   id: Int
   createdby: Int

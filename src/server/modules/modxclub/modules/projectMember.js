@@ -14,6 +14,7 @@ class ModxProjectMemberModule extends PrismaModule {
     let resolvers = super.getResolvers();
 
     Object.assign(resolvers.Query, {
+      projectMember: this.projectMember,
       projectMembers: this.projectMembers,
       projectMembersConnection: this.projectMembersConnection,
     });
@@ -108,6 +109,12 @@ class ModxProjectMemberModule extends PrismaModule {
 
 
 
+
+  projectMember(source, args, ctx, info) {
+
+    return ctx.modx.query.projectMember(source, args, ctx, info);
+
+  }
 
   projectMembers(source, args, ctx, info) {
 

@@ -14,6 +14,7 @@ class ModxCompanyModule extends PrismaModule {
     let resolvers = super.getResolvers();
 
     Object.assign(resolvers.Query, {
+      company: this.company,
       companies: this.companies,
       companiesConnection: this.companiesConnection,
     });
@@ -83,6 +84,13 @@ class ModxCompanyModule extends PrismaModule {
   }
 
 
+
+
+  company(source, args, ctx, info) {
+
+    return ctx.modx.query.company(source, args, ctx, info);
+
+  }
 
 
   companies(source, args, ctx, info) {

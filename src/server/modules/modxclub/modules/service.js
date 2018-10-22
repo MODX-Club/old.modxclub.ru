@@ -14,6 +14,7 @@ class ModxServiceModule extends PrismaModule {
     let resolvers = super.getResolvers();
 
     Object.assign(resolvers.Query, {
+      service: this.service,
       services: this.services,
       servicesConnection: this.servicesConnection,
     });
@@ -61,6 +62,12 @@ class ModxServiceModule extends PrismaModule {
 
 
 
+
+  service(source, args, ctx, info) {
+
+    return ctx.modx.query.service(source, args, ctx, info);
+
+  }
 
   services(source, args, ctx, info) {
 

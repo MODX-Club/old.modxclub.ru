@@ -10,6 +10,10 @@ type UserNotice{
 }
 
 
+input UserNoticeWhereUniqueInput {
+  id: Int
+}
+
 input UserNoticeWhereInput {
   id: Int
   user_id: Int

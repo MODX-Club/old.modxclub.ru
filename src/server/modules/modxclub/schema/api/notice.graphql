@@ -13,6 +13,11 @@ type Notice{
   ): [UserNotice!]!
 }
 
+
+input NoticeWhereUniqueInput {
+  id: Int
+}
+
 input NoticeWhereInput {
   id: Int
   id_in: [Int!]

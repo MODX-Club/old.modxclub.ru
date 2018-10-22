@@ -14,6 +14,7 @@ class ModxThreadModule extends PrismaModule {
     let resolvers = super.getResolvers();
 
     Object.assign(resolvers.Query, {
+      thread: this.thread,
       threads: this.threads,
       threadsConnection: this.threadsConnection,
     });
@@ -48,6 +49,12 @@ class ModxThreadModule extends PrismaModule {
 
   // }
 
+
+  thread(source, args, ctx, info) {
+
+    return ctx.modx.query.thread(source, args, ctx, info);
+
+  }
 
   threads(source, args, ctx, info) {
 

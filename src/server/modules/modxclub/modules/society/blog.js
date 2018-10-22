@@ -14,6 +14,7 @@ class ModxBlogModule extends PrismaModule {
     let resolvers = super.getResolvers();
 
     Object.assign(resolvers.Query, {
+      blog: this.blog,
       blogs: this.blogs,
       blogsConnection: this.blogsConnection,
     });
@@ -45,6 +46,13 @@ class ModxBlogModule extends PrismaModule {
         id: createdby,
       },
     }, ctx, info) : null;
+
+  }
+
+
+  blog(source, args, ctx, info) {
+
+    return ctx.modx.query.blog(source, args, ctx, info);
 
   }
 

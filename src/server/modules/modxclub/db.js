@@ -46,6 +46,10 @@ export class ModxclubDB extends ModxDB {
       threads: (source, args, ctx, info) => this.threads(source, args, ctx, info),
       threadsConnection: (source, args, ctx, info) => this.threadsConnection(source, args, ctx, info),
 
+      topicTag: (source, args, ctx, info) => this.topicTag(source, args, ctx, info),
+      topicTags: (source, args, ctx, info) => this.topicTags(source, args, ctx, info),
+      topicTagsConnection: (source, args, ctx, info) => this.topicTagsConnection(source, args, ctx, info),
+
     });
 
   }
@@ -464,7 +468,7 @@ export class ModxclubDB extends ModxDB {
    */
 
 
-   
+
   /**
    * Blogs
    */
@@ -681,7 +685,7 @@ export class ModxclubDB extends ModxDB {
       .select("threads.createdon as createdAt")
       .select("threads.editedon as updatedAt")
       .as("thread")
-      ; 
+      ;
 
 
     let query = knex(threads).as("thread");
@@ -693,6 +697,113 @@ export class ModxclubDB extends ModxDB {
 
   /**
    * Eof Threads
+   */
+
+  /**
+   * TopicTags
+   */
+
+  async topicTag(source, args, ctx, info) {
+
+
+    let {
+      where,
+    } = args;
+
+    if (!Object.keys(where).length) {
+      throw new Error("Where args required");
+    }
+
+    let objects = await this.topicTags(null, {
+      where,
+      limit: 1,
+    }, ctx, info);
+
+
+    return objects && objects[0] || null
+  }
+
+
+  async topicTags(source, args, ctx, info) {
+
+
+    const query = this.getTopicTagsQuery(args, ctx);
+
+    let objects = await this.request(query);
+
+
+    return this.prepareTopicTags(objects);
+  }
+
+
+  prepareTopicTags(objects) {
+
+    objects.map(object => {
+
+      let {
+        topic_ids,
+      } = object;
+
+      topic_ids = topic_ids && topic_ids.split(",").map(n => parseInt(n)).filter(n => n) || []
+
+      Object.assign(object, {
+        topic_ids,
+      });
+
+    });
+
+    return objects;
+
+  }
+
+
+  async topicTagsConnection(source, args, ctx, info) {
+
+    const query = this.getTopicTagsQuery(args, ctx);
+
+
+    let result = await this.objectsConnection(ctx, query, "topicTag.name");
+
+    let {
+      edges,
+    } = result || {}
+
+
+    if (edges && edges.length) {
+      result.edges = this.prepareTopicTags(edges.map(({ node }) => node)).map(node => ({ node }));
+    }
+
+    return result;
+
+  }
+
+
+
+  getTopicTagsQuery(args, ctx) {
+
+    const {
+      knex,
+    } = ctx;
+
+    let topicTags = knex(this.getTableName("society_topic_tags", "topicTags"))
+      .count("* as count")
+      .select(knex.raw("GROUP_CONCAT(topic_id) as topic_ids"))
+      .select("topicTags.tag as name")
+      .groupBy("tag")
+      .as("topicTag")
+      ;
+
+
+    let query = knex(topicTags).as("topicTag");
+
+
+    return this.getQuery(args, ctx, "society_topicTags", "topicTag", query);
+
+
+  }
+
+  /**
+   * Eof TopicTags
    */
 
 

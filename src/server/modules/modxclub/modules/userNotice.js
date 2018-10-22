@@ -13,6 +13,7 @@ class ModxUserNoticeModule extends PrismaModule {
     let resolvers = super.getResolvers();
 
     Object.assign(resolvers.Query, {
+      userNotice: this.userNotice,
       userNotices: this.userNotices,
       userNoticesConnection: this.userNoticesConnection,
     });
@@ -65,6 +66,12 @@ class ModxUserNoticeModule extends PrismaModule {
 
 
 
+
+  userNotice(source, args, ctx, info) {
+
+    return ctx.modx.query.userNotice(source, args, ctx, info);
+
+  }
 
   userNotices(source, args, ctx, info) {
 

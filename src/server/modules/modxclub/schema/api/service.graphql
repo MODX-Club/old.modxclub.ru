@@ -7,6 +7,10 @@ type Service {
 }
 
 
+input ServiceWhereUniqueInput {
+  id: Int
+}
+
 input ServiceWhereInput {
   id: Int
   createdby: Int
