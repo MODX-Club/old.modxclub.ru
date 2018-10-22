@@ -818,7 +818,7 @@ export class ModxclubDB extends ModxDB {
 
 
   /**
-   * Votes
+   * Comments
    */
 
   async comment(source, args, ctx, info) {
@@ -842,7 +842,7 @@ export class ModxclubDB extends ModxDB {
   comments(source, args, ctx, info) {
 
 
-    const query = this.getVotesQuery(args, ctx);
+    const query = this.getCommentsQuery(args, ctx);
 
     return this.request(query);
 
@@ -851,7 +851,7 @@ export class ModxclubDB extends ModxDB {
 
   commentsConnection(source, args, ctx, info) {
 
-    const query = this.getVotesQuery(args, ctx);
+    const query = this.getCommentsQuery(args, ctx);
 
 
     return this.objectsConnection(ctx, query, "comment.id");
@@ -860,19 +860,25 @@ export class ModxclubDB extends ModxDB {
 
 
 
-  getVotesQuery(args, ctx) {
+  getCommentsQuery(args, ctx) {
 
     const {
       knex,
     } = ctx;
 
     let comments = knex(this.getTableName("society_comments", "comments"))
+      .leftJoin(
+        this.getTableName("society_threads", "thread"),
+        knex.raw(`thread.id = comments.thread_id AND thread.target_class = 'modResource'`)
+      )
       .select("comments.*")
-      .select("comments.createdon as createdAt")
-      .select("comments.editedon as updatedAt")
+      .select(knex.raw(`UNIX_TIMESTAMP(comments.createdon) as createdAt`))
+      .select(knex.raw(`UNIX_TIMESTAMP(comments.editedon) as updatedAt`))
+      .select("thread.target_id as topic_id")
       .as("comment")
       ;
 
+    console.log(chalk.green("comments query "), comments.toString());
 
     let query = knex(comments).as("comment");
 
@@ -882,7 +888,7 @@ export class ModxclubDB extends ModxDB {
   }
 
   /**
-   * Eof Votes
+   * Eof Comments
    */
 
   /**

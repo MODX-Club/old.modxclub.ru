@@ -14,11 +14,23 @@ type Comment {
   published: Boolean!
   deleted: Boolean!
   comments_count: Int
+  topic_id: Int
+  Topic: Topic
+  Childs(
+    where: CommentWhereInput
+    orderBy: CommentOrderByInput
+    skip: Int
+    first: Int
+  ): [Comment!]!
 }
 
 
 input CommentWhereInput {
   id: Int
+  parent: Int
+  topic_id: Int
+  thread_id: Int
+  createdby: Int
 }
 
 input CommentWhereUniqueInput {
