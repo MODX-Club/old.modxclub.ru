@@ -29,35 +29,35 @@ class ModxProjectModule extends PrismaModule {
 
   Project = {
 
-    // UsersProjects: (source, args, ctx, info) => this.UsersProjects(source, args, ctx, info),
+    Members: (source, args, ctx, info) => this.Members(source, args, ctx, info),
 
   }
 
 
-  // UsersProjects(source, args, ctx, info) {
+  Members(source, args, ctx, info) {
 
-  //   const {
-  //     id: projectId,
-  //   } = source || {}
+    const {
+      id: projectId,
+    } = source || {}
 
-  //   if (!projectId) {
-  //     return [];
-  //   }
+    if (!projectId) {
+      return [];
+    }
 
-  //   let {
-  //     where,
-  //   } = args;
+    let {
+      where,
+    } = args;
 
-  //   where = {
-  //     ...where,
-  //     project_id: projectId,
-  //   }
+    where = {
+      ...where,
+      project_id: projectId,
+    }
 
-  //   args.where = where;
+    args.where = where;
 
-  //   return ctx.modx.userProjects(source, args, ctx, info);
+    return ctx.modx.projectMembers(source, args, ctx, info);
 
-  // }
+  }
 
 
 

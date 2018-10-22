@@ -74,8 +74,10 @@ class ModxUserModule extends PrismaModule {
     },
 
     Companies: (source, args, ctx, info) => this.Companies(source, args, ctx, info),
-
+    
     Notices: (source, args, ctx, info) => this.Notices(source, args, ctx, info),
+
+    Projects: (source, args, ctx, info) => this.Projects(source, args, ctx, info),
 
   }
 
@@ -128,6 +130,32 @@ class ModxUserModule extends PrismaModule {
     args.where = where;
 
     return ctx.modx.userNotices(source, args, ctx, info);
+
+  }
+
+
+  Projects(source, args, ctx, info) {
+
+    const {
+      id: userId,
+    } = source || {}
+
+    if (!userId) {
+      return [];
+    }
+
+    let {
+      where,
+    } = args;
+
+    where = {
+      ...where,
+      user_id: userId,
+    }
+
+    args.where = where;
+
+    return ctx.modx.projectMembers(source, args, ctx, info);
 
   }
 

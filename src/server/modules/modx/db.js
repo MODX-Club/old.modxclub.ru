@@ -247,8 +247,24 @@ export class ModxDB {
   getResourcesQuery(args, ctx) {
 
 
-    return this.getQuery(args, ctx, "site_content", "resource");
+    let query = this.getQuery(args, ctx, "site_content", "resource");
 
+    this.prepareResourcesQuery(query);
+
+    return query;
+  }
+
+
+  prepareResourcesQuery(query) {
+
+    query.where({
+      deleted: 0,
+      published: 1,
+    });
+
+    // console.log("prepareResourcesQuery SQL", query.toString());
+
+    return query;
   }
 
 

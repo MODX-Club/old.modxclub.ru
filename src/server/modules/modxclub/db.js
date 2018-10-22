@@ -300,6 +300,8 @@ export class ModxclubDB extends ModxDB {
       .as("service")
       ;
 
+    this.prepareResourcesQuery(services);
+
 
     let query = knex(services).as("service");
 
@@ -382,6 +384,8 @@ export class ModxclubDB extends ModxDB {
       .select("projects.pagetitle as site_url")
       .as("project")
       ;
+
+    this.prepareResourcesQuery(projects);
 
 
     let query = knex(projects).as("project");
