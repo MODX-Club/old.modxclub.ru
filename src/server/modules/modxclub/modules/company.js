@@ -29,25 +29,41 @@ class ModxCompanyModule extends PrismaModule {
 
   Company = {
 
-    // CreatedBy: (source, args, ctx, info) => this.CreatedBy(source, args, ctx, info),
+    CreatedBy: (source, args, ctx, info) => this.CreatedBy(source, args, ctx, info),
+
+    Owner: (source, args, ctx, info) => this.Owner(source, args, ctx, info),
+
     Resource: (source, args, ctx, info) => this.Resource(source, args, ctx, info),
 
-    // content: (source, args, ctx, info) => this.content(source, args, ctx, info),
+  }
+
+
+  CreatedBy(source, args, ctx, info) {
+
+    const {
+      createdby,
+    } = source || {};
+
+    return createdby ? ctx.modx.query.user(null, {
+      where: {
+        id: createdby,
+      },
+    }, ctx, info) : null;
 
   }
 
 
   Owner(source, args, ctx, info) {
 
-    // const {
-    //   createdby,
-    // } = source || {};
+    const {
+      owner,
+    } = source || {};
 
-    // return createdby ? ctx.modx.query.user(null, {
-    //   where: {
-    //     id: createdby,
-    //   },
-    // }, ctx, info) : null;
+    return owner ? ctx.modx.query.user(null, {
+      where: {
+        id: owner,
+      },
+    }, ctx, info) : null;
 
   }
 

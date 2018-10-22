@@ -1,0 +1,33 @@
+
+type Service {
+  id: Int!
+  name: String!
+  Users: [User!]!
+}
+
+
+input ServiceWhereInput {
+  id: Int
+  createdby: Int
+  createdby_in: [Int!]
+  createdby_not_in: [Int!]
+}
+
+enum ServiceOrderByInput {
+  id_ASC
+  id_DESC
+}
+
+type ServiceConnection {
+  edges: [ServiceEdge]!
+  aggregate: AggregateService!
+}
+
+
+type AggregateService {
+  count: Int!
+}
+
+type ServiceEdge {
+  node: Service!
+}

@@ -3,18 +3,65 @@
 
 type Query {
    
-  companiesConnection(
-    where: CompanyWhereInput
-    orderBy: CompanyOrderByInput
-    skip: Int
-    first: Int
-  ): CompanyConnection!
-   
+
   companies(
     where: CompanyWhereInput
     orderBy: CompanyOrderByInput
     skip: Int
     first: Int
   ): [Company!]!
+   
+  companiesConnection(
+    where: CompanyWhereInput
+    orderBy: CompanyOrderByInput
+    skip: Int
+    first: Int
+  ): CompanyConnection!
+
+
+  services(
+    where: ServiceWhereInput
+    orderBy: ServiceOrderByInput
+    skip: Int
+    first: Int
+  ): [Service!]!
+   
+  servicesConnection(
+    where: ServiceWhereInput
+    orderBy: ServiceOrderByInput
+    skip: Int
+    first: Int
+  ): ServiceConnection!
+   
+
+  notices(
+    where: NoticeWhereInput
+    orderBy: NoticeOrderByInput
+    skip: Int
+    first: Int
+  ): [Notice!]!
+   
+  noticesConnection(
+    where: NoticeWhereInput
+    orderBy: NoticeOrderByInput
+    skip: Int
+    first: Int
+  ): NoticeConnection!
+   
+
+  userNotices(
+    where: UserNoticeWhereInput
+    orderBy: UserNoticeOrderByInput
+    skip: Int
+    first: Int
+  ): [UserNotice!]!
+   
+  userNoticesConnection(
+    where: UserNoticeWhereInput
+    orderBy: UserNoticeOrderByInput
+    skip: Int
+    first: Int
+  ): UserNoticeConnection!
+   
 
 }

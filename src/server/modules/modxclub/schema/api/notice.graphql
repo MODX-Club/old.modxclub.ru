@@ -1,0 +1,38 @@
+
+
+type Notice{
+  id: Int!
+  name: String!
+  comment: String!
+  rank: Int!
+  UsersNotices(
+    where: UserNoticeWhereInput
+    orderBy: UserNoticeOrderByInput
+    skip: Int
+    first: Int
+  ): [UserNotice!]!
+}
+
+input NoticeWhereInput {
+  id: Int
+  id_in: [Int!]
+}
+
+enum NoticeOrderByInput {
+  id_ASC
+  id_DESC
+}
+
+type NoticeConnection {
+  edges: [NoticeEdge]!
+  aggregate: AggregateNotice!
+}
+
+
+type AggregateNotice {
+  count: Int!
+}
+
+type NoticeEdge {
+  node: Notice!
+}

@@ -16,6 +16,29 @@ const module = new TestModule();
 
 const requiredTypes = [
   {
+    name: "Query",
+    fields: {
+      both: [
+      ],
+      prisma: [
+      ],
+      api: [
+        "me",
+        "user",
+        "users",
+        "usersConnection",
+        "companies",
+        "companiesConnection",
+        "services",
+        "servicesConnection",
+        "notices",
+        "noticesConnection",
+        "userNotices",
+        "userNoticesConnection",
+      ],
+    },
+  },
+  {
     name: "User",
     fields: {
       both: [
@@ -25,6 +48,8 @@ const requiredTypes = [
       api: [
         "createdAt",
         "Companies",
+        "Services",
+        "Notices",
       ],
     },
   },
@@ -41,14 +66,62 @@ const requiredTypes = [
         "uri",
         "resource_id",
         "Resource",
-        "createdby",
         "createdAt",
+        "createdby",
+        "CreatedBy",
+        "owner",
         "Owner",
       ],
     },
   },
+  {
+    name: "Service",
+    fields: {
+      both: [
+      ],
+      prisma: [
+      ],
+      api: [
+        "id",
+        "name",
+        "Users",
+      ],
+    },
+  },
+  {
+    name: "UserNotice",
+    fields: {
+      both: [
+      ],
+      prisma: [
+      ],
+      api: [
+        "id",
+        "user_id",
+        "notice_id",
+        "active",
+        "User",
+        "Notice",
+      ],
+    },
+  },
+  {
+    name: "Notice",
+    fields: {
+      both: [
+      ],
+      prisma: [
+      ],
+      api: [
+        "id",
+        "name",
+        "comment",
+        "rank",
+        "UsersNotices",
+      ],
+    },
+  },
 ]
- 
 
 
 describe('Get prisma Schema', () => {

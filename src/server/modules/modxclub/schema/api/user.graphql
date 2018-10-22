@@ -10,7 +10,19 @@ type User {
   api_key: String
   balance: Float
 
-  Companies: [Company!]!
+  Companies(
+    where: CompanyWhereInput
+    orderBy: CompanyOrderByInput
+    skip: Int
+    first: Int
+  ): [Company!]!
+  
+  Notices(
+    where: UserNoticeWhereInput
+    orderBy: UserNoticeOrderByInput
+    skip: Int
+    first: Int
+  ): [UserNotice!]!
 }
 
 

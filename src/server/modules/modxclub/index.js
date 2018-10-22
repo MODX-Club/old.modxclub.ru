@@ -4,9 +4,10 @@ import { fileLoader, mergeTypes } from 'merge-graphql-schemas';
 
 import PrismaModule from "@prisma-cms/prisma-module";
 
-// import UserModule from "./modules/user";
-// import ResourceModule from "./modules/resource";
+
 import CompanyModule from "./modules/company";
+import NoticeModule from "./modules/notice";
+import UserNoticeModule from "./modules/userNotice";
 
 class ModxclubModules extends PrismaModule {
 
@@ -17,6 +18,8 @@ class ModxclubModules extends PrismaModule {
 
     this.mergeModules([
       CompanyModule,
+      NoticeModule,
+      UserNoticeModule,
     ]);
 
   }

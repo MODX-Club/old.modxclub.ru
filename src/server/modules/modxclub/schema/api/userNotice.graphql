@@ -1,0 +1,36 @@
+
+
+type UserNotice{
+  id: Int!
+  user_id: Int!
+  notice_id: Int!
+  User: User!
+  Notice: Notice!
+  active: Boolean!
+}
+
+
+input UserNoticeWhereInput {
+  id: Int
+  user_id: Int
+  active: Boolean
+}
+
+enum UserNoticeOrderByInput {
+  id_ASC
+  id_DESC
+}
+
+type UserNoticeConnection {
+  edges: [UserNoticeEdge]!
+  aggregate: AggregateUserNotice!
+}
+
+
+type AggregateUserNotice {
+  count: Int!
+}
+
+type UserNoticeEdge {
+  node: UserNotice!
+}

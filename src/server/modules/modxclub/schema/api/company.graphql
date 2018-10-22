@@ -6,8 +6,10 @@ type Company {
   resource_id: Int!
   Resource: Resource!
   createdby: Int!
+  CreatedBy: User!
   createdAt: DateTime!
-  Owner: User!
+  owner: Int
+  Owner: User
 }
 
 
@@ -16,6 +18,9 @@ input CompanyWhereInput {
   createdby: Int
   createdby_in: [Int!]
   createdby_not_in: [Int!]
+  owner: Int
+  owner_in: [Int!]
+  owner_not_in: [Int!]
 }
 
 enum CompanyOrderByInput {

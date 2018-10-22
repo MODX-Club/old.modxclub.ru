@@ -73,33 +73,63 @@ class ModxUserModule extends PrismaModule {
 
     },
 
-    Companies: (source, args, ctx, info) => {
+    Companies: (source, args, ctx, info) => this.Companies(source, args, ctx, info),
 
-      const {
-        id: userId,
-      } = source || {}
-
-      if (!userId) {
-        return [];
-      }
-
-      let {
-        where,
-      } = args;
-
-      where = {
-        ...where,
-        createdby: userId,
-      }
-
-      args.where = where;
-
-      return ctx.modx.companies(source, args, ctx, info);
-
-    },
+    Notices: (source, args, ctx, info) => this.Notices(source, args, ctx, info),
 
   }
 
+
+  Companies(source, args, ctx, info) {
+
+    const {
+      id: userId,
+    } = source || {}
+
+    if (!userId) {
+      return [];
+    }
+
+    let {
+      where,
+    } = args;
+
+    where = {
+      ...where,
+      createdby: userId,
+    }
+
+    args.where = where;
+
+    return ctx.modx.companies(source, args, ctx, info);
+
+  }
+
+
+  Notices(source, args, ctx, info) {
+
+    const {
+      id: userId,
+    } = source || {}
+
+    if (!userId) {
+      return [];
+    }
+
+    let {
+      where,
+    } = args;
+
+    where = {
+      ...where,
+      user_id: userId,
+    }
+
+    args.where = where;
+
+    return ctx.modx.userNotices(source, args, ctx, info);
+
+  }
 
 
   user(source, args, ctx, info) {
