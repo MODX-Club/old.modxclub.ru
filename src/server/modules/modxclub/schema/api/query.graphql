@@ -9,5 +9,12 @@ type Query {
     skip: Int
     first: Int
   ): CompanyConnection!
+   
+  companies(
+    where: CompanyWhereInput
+    orderBy: CompanyOrderByInput
+    skip: Int
+    first: Int
+  ): [Company!]!
 
 }

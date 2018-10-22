@@ -12,7 +12,10 @@ type Company {
 
 
 input CompanyWhereInput {
-  id: Int!
+  id: Int
+  createdby: Int
+  createdby_in: [Int!]
+  createdby_not_in: [Int!]
 }
 
 enum CompanyOrderByInput {

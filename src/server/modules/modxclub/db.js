@@ -10,6 +10,7 @@ export class ModxclubDB extends ModxDB {
     super(props);
 
     Object.assign(this.query, {
+      companies: (source, args, ctx, info) => this.companies(source, args, ctx, info),
       companiesConnection: (source, args, ctx, info) => this.companiesConnection(source, args, ctx, info),
     });
 
@@ -31,6 +32,21 @@ export class ModxclubDB extends ModxDB {
 
 
 
+  companies(source, args, ctx, info) {
+
+    const {
+      knex,
+    } = ctx;
+
+    const query = this.getCompaniesQuery(args, ctx);
+
+    // console.log("companiesConnection SQL", query.toString());
+
+    return this.request(query);
+
+  }
+
+
   companiesConnection(source, args, ctx, info) {
 
     const {
@@ -39,7 +55,7 @@ export class ModxclubDB extends ModxDB {
 
     const query = this.getCompaniesQuery(args, ctx);
 
-    console.log("companiesConnection SQL", query.toString());
+    // console.log("companiesConnection SQL", query.toString());
 
     return this.objectsConnection(ctx, query, "company.id");
 
@@ -68,7 +84,7 @@ export class ModxclubDB extends ModxDB {
 
     // let query = knex(companies).as("companies");
 
-    return this.getQuery(args, ctx, "companies", "companies", companies);
+    return this.getQuery(args, ctx, "companies", "company", companies);
 
   }
 
