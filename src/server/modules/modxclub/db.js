@@ -50,6 +50,10 @@ export class ModxclubDB extends ModxDB {
       topicTags: (source, args, ctx, info) => this.topicTags(source, args, ctx, info),
       topicTagsConnection: (source, args, ctx, info) => this.topicTagsConnection(source, args, ctx, info),
 
+      comment: (source, args, ctx, info) => this.comment(source, args, ctx, info),
+      comments: (source, args, ctx, info) => this.comments(source, args, ctx, info),
+      commentsConnection: (source, args, ctx, info) => this.commentsConnection(source, args, ctx, info),
+
     });
 
   }
@@ -806,6 +810,74 @@ export class ModxclubDB extends ModxDB {
    * Eof TopicTags
    */
 
+
+  /**
+   * Comments
+   */
+
+  async comment(source, args, ctx, info) {
+
+    let {
+      where,
+    } = args;
+
+    if (!Object.keys(where).length) {
+      throw new Error("Where args required");
+    }
+
+    let objects = await this.comments(null, {
+      where,
+      limit: 1,
+    }, ctx, info);
+
+    return objects && objects[0] || null
+  }
+
+  comments(source, args, ctx, info) {
+
+
+    const query = this.getCommentsQuery(args, ctx);
+
+    return this.request(query);
+
+  }
+
+
+  commentsConnection(source, args, ctx, info) {
+
+    const query = this.getCommentsQuery(args, ctx);
+
+
+    return this.objectsConnection(ctx, query, "comment.id");
+
+  }
+
+
+
+  getCommentsQuery(args, ctx) {
+
+    const {
+      knex,
+    } = ctx;
+
+    let comments = knex(this.getTableName("society_comments", "comments"))
+      .select("comments.*")
+      .select("comments.createdon as createdAt")
+      .select("comments.editedon as updatedAt")
+      .as("comment")
+      ;
+
+
+    let query = knex(comments).as("comment");
+
+    return this.getQuery(args, ctx, "society_comments", "comment", query);
+
+
+  }
+
+  /**
+   * Eof Comments
+   */
 
 }
 

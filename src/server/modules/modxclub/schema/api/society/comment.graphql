@@ -6,7 +6,7 @@ type Comment {
   Thread: Thread!
   parent: Int
   Parent: Comment
-  text: String!
+  text: Json!
   createdAt: DateTime
   updatedAt: DateTime
   createdby: Int!
