@@ -72,7 +72,6 @@ const requiredTypes = [
       ],
       api: [
         "createdAt",
-        "photo",
         "Companies",
         "Services",
         "Notices",

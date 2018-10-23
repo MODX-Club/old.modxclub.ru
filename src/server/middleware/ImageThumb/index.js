@@ -39,6 +39,9 @@ const ImageThumbMiddleware = async (req, res, next) => {
   let path = `/uploads/${src}`;
 
   // const abthPath = __dirname + path;
+
+  console.log("ImageThumbMiddleware", path);
+
   const abthPath = process.cwd() + path;
 
 

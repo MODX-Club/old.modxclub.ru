@@ -4,11 +4,21 @@ import PropTypes from 'prop-types';
 import withStyles from "material-ui/styles/withStyles";
 import Typography from "material-ui/Typography";
 import Grid from "material-ui/Grid";
+import Button from "material-ui/Button";
+
+import moment from "moment";
 
 import {
   styles,
   TableView,
 } from "@modxclub/ui/src/list-view";
+
+import {
+  BlogLink,
+  UserLink,
+  TopicLink,
+  TagLink,
+} from "@modxclub/ui";
 
 
 let customStyles = theme => {
@@ -22,13 +32,28 @@ let customStyles = theme => {
   } = theme;
 
   return {
-    ...styles,
+    ...styles(),
 
     tag: {
-      display: "inline-block",
-      padding: "3px 5px",
-      borderRadius: 5,
-      background: defaultBackground,
+      // display: "inline-block",
+      // padding: "3px 5px",
+      // borderRadius: 5,
+      // background: defaultBackground,
+    },
+
+    usersWrapper: {
+      whiteSpace: "nowrap",
+      display: "flex",
+      alignItems: "end",
+    },
+    member: {
+      padding: 2,
+    },
+    topicColumn: {
+      width: "70%",
+    },
+    alignCenter: {
+      textAlign: "center",
     },
   }
 
@@ -58,6 +83,8 @@ class ForumView extends TableView {
     let columns = [
       {
         id: "topic",
+        label: "Топик",
+        className: classes.topicColumn,
         renderer: (value, record) => {
 
           console.log("Topic record", record);
@@ -76,23 +103,21 @@ class ForumView extends TableView {
 
             const {
               id,
-              name,
             } = tag;
 
-            tagsList.push(<Typography
+            tagsList.push(<TagLink
               key={id}
+              object={tag}
               color="textSecondary"
-              component="span"
               className={classes.tag}
-            >
-              {name}
-            </Typography>);
+            />);
           });
 
           return <div>
-            <Typography>
-              {name}
-            </Typography>
+
+            <TopicLink
+              object={record}
+            />
 
             <div
               className={classes.tags}
@@ -101,7 +126,138 @@ class ForumView extends TableView {
             </div>
           </div>;
         },
-      }
+      },
+      {
+        id: "Blog",
+        label: "Блог",
+        className: classes.alignCenter,
+        renderer: (value, record) => {
+
+          console.log("Topic record", record);
+
+          const {
+            id: blogId,
+            name,
+          } = value;
+
+
+          // return value && <BlogLink
+          //   object={value}
+          // >
+          //   <Button
+          //     size="small"
+          //     color="secondary"
+          //   // noWrap={false}
+          //   >
+          //     {name}
+          //   </Button>
+          // </BlogLink> || null;
+
+          return value && <BlogLink
+            object={value}
+            variant="button"
+          >
+            {name}
+          </BlogLink> || null;
+        },
+      },
+      {
+        id: "users",
+        label: "Участники",
+        className: classes.alignCenter,
+        renderer: (value, record) => {
+
+          let users = [];
+
+          const {
+            CreatedBy,
+            Comments,
+          } = record;
+
+          let limit = 5;
+
+          Comments && Comments.map(n => {
+
+            const {
+              CreatedBy,
+            } = n;
+
+            if (users.length >= limit || users.findIndex(n => n.id === CreatedBy.id) !== -1) {
+              return;
+            }
+
+            users.push(CreatedBy);
+
+          });
+
+
+          if (users.length < users && users.findIndex(n => n.id === CreatedBy.id) === -1) {
+            users.push(CreatedBy);
+          }
+
+          return <div
+            className={classes.usersWrapper}
+          >
+            {users.map(n => {
+
+              const {
+                id,
+              } = n;
+
+              return <UserLink
+                key={id}
+                user={n}
+                showName={false}
+                size="small"
+                className={classes.member}
+              />
+
+            })}
+          </div>;
+        },
+      },
+      {
+        id: "Comments",
+        label: "Комментарии",
+        className: classes.alignCenter,
+        renderer: (value, record) => {
+
+          return value && value.length || 0;
+        },
+      },
+      {
+        id: "activity",
+        label: "Активность",
+        className: classes.alignCenter,
+        renderer: (value, record) => {
+
+          let activity;
+
+          const {
+            createdAt,
+            updatedAt,
+            Comments,
+          } = record;
+
+          let date = moment(updatedAt || createdAt);
+
+
+          let latestComment = Comments && Comments[0];
+
+          if (latestComment && latestComment.createdAt) {
+
+            const commentDate = moment(latestComment.createdAt);
+
+            if (commentDate > date) {
+              date = commentDate;
+            }
+
+          }
+
+
+          return date.fromNow();
+        },
+      },
     ]
 
     return columns;

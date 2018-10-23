@@ -9,28 +9,18 @@ import NoPhoto from 'material-ui-icons/PersonOutline';
 
 import Avatar from '@modxclub/ui/src/Avatar';
 
-import {Uploader} from "@prisma-cms/ui/lib/Uploader";
- 
+import Uploader from "@prisma-cms/ui/lib/Uploader";
+
 
 export default class UserProfileAvatar extends Component {
 
   static propTypes = {
     user: PropTypes.object.isRequired,
     updateUser: PropTypes.func.isRequired,
-    editable: PropTypes.bool.isRequired,
+    inEditMode: PropTypes.bool.isRequired,
   }
 
-
-  constructor(props) {
-
-    super(props);
-
-    this.state = {
-      // file: null,
-    };
-
-  }
-
+ 
 
   onUpload(r) {
 
@@ -49,27 +39,36 @@ export default class UserProfileAvatar extends Component {
 
 
   render() {
-
-    const {
-      file,
-    } = this.state;
-
+ 
     const {
       user,
-      editable,
+      inEditMode,
+      ...other
     } = this.props;
 
     if (!user) {
       return null;
     }
- 
 
-    return (
+    const {
+      image,
+    } = user;
+
+
+    let avatar = image ? <Avatar
+      user={user}
+      size="big"
+      {...other}
+    /> : <NoPhoto />;
+
+    return inEditMode ? (
       <Uploader
         onUpload={result => this.onUpload(result)}
         // FileInput={FileInput}
-        editable={editable}
-      />
-    )
+        inEditMode={inEditMode}
+      >
+        {avatar}
+      </Uploader>
+    ) : avatar;
   }
 }

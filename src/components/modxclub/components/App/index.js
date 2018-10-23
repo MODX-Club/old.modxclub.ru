@@ -16,6 +16,8 @@ import pink from 'material-ui/colors/pink';
 import { darken } from 'material-ui/styles/colorManipulator';
 import blue from 'material-ui/colors/blue';
 
+import "moment/locale/ru";
+
 export {
   Renderer,
   queryFragments,

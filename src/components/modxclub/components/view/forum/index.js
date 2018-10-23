@@ -20,13 +20,18 @@ export class ForumConnector extends PrismaCmsComponent {
     getQueryFragment: PropTypes.func.isRequired,
     View: PropTypes.func.isRequired,
     first: PropTypes.number.isRequired,
+    orderBy: PropTypes.string.isRequired,
   };
 
 
   static defaultProps = {
     ...PrismaCmsComponent.defaultProps,
     View,
-    first: 10,
+    first: 12,
+    // where: {
+    //   id: 796,
+    // },
+    orderBy: "createdAt_DESC",
   }
 
 
@@ -49,11 +54,14 @@ export class ForumConnector extends PrismaCmsComponent {
       query topicsConnection(
         $first:Int!
         $skip:Int
+        $where: TopicWhereInput
+        $orderBy: TopicOrderByInput!
       ){
         objectsConnection: topicsConnection(
-          orderBy: createdAt_DESC
+          orderBy: $orderBy
           first: $first
-          skip:$skip
+          skip: $skip
+          where: $where
         ){
           aggregate{
             count
@@ -72,11 +80,16 @@ export class ForumConnector extends PrismaCmsComponent {
         longtitle
         uri
         thread_id
+        createdAt
+        updatedAt
         CreatedBy{
           ...TopicUserNoNesting
         }
-        Comments{
+        Comments(
+          orderBy: id_DESC
+        ){
           id
+          createdAt
           CreatedBy{
             ...TopicUserNoNesting
           }
@@ -105,7 +118,7 @@ export class ForumConnector extends PrismaCmsComponent {
         id
         username
         fullname
-        photo
+        image
       }
 
       fragment VoteNoNesting on Vote {

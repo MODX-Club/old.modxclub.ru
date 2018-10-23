@@ -224,7 +224,7 @@ export class ModxDB {
       .select("profile.address")
       .select("profile.country")
       .select("profile.city")
-      .select("profile.photo")
+      .select("profile.photo as image")
       .select("profile.comment")
       .select("profile.id as profileId")
       ;

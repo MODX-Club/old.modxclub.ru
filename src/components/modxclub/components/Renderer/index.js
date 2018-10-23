@@ -1,6 +1,7 @@
 
 import React from "react";
 
+import PropTypes from "prop-types";
 
 import UsersPage from "@prisma-cms/front/lib/modules/pages/UsersPage";
 
@@ -12,7 +13,7 @@ import MainPage from "../pages/MainPage";
 
 import withStyles from "material-ui/styles/withStyles";
 
-import MainMenu from "../main/mainMenu";
+import MainMenu from "../menu/mainMenu";
 
 export const styles = theme => {
 
@@ -43,8 +44,18 @@ export const styles = theme => {
 
 export class Renderer extends PrismaRendererCmsRenderer {
 
+  static contextTypes = {
+    ...PrismaRendererCmsRenderer.contextTypes,
+    getQueryFragment: PropTypes.func.isRequired,
+  }
 
   getRoutes() {
+
+
+    const {
+      getQueryFragment,
+    } = this.context;
+
 
     let baseRoutes = super.getRoutes();
 
@@ -87,6 +98,7 @@ export class Renderer extends PrismaRendererCmsRenderer {
           } = params || {};
 
           return <UserPage
+            getQueryFragment={getQueryFragment}
             key={username}
             where={{
               username,
@@ -98,7 +110,7 @@ export class Renderer extends PrismaRendererCmsRenderer {
     ].concat(baseRoutes);
 
 
-    console.log("routes", routes);
+    // console.log("routes", routes);
 
     return routes;
   }

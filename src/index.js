@@ -28,7 +28,6 @@ ReactDOM.render(<PrismaCms
         works
         api_key
         balance
-        photo
       } 
     }`,
   }}

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { graphql, compose } from 'react-apollo';
 // import gql from 'graphql-tag';
 
-import UserView from './View';
+import View from './View';
 
 import {
   // user,
@@ -20,7 +20,13 @@ export class UserPage extends Page {
 
   static propTypes = {
     ...Page.propTypes,
-    match: PropTypes.object.isRequired,
+    View: PropTypes.func.isRequired,
+  }
+
+
+  static defaultProps = {
+    ...Page.defaultProps,
+    View,
   }
 
 
@@ -29,64 +35,56 @@ export class UserPage extends Page {
   // }
 
 
-  saveUser = async (data) => {
+  // saveUser = async (data) => {
 
-    const {
-      updateUserProcessor,
-    } = this.props;
+  //   const {
+  //     updateUserProcessor,
+  //   } = this.props;
 
-    const {
-      user: {
-        user,
-      },
-    } = this.props;
+  //   const {
+  //     user: {
+  //       user,
+  //     },
+  //   } = this.props;
 
 
-    if (!user) {
-      return false;
-    }
+  //   if (!user) {
+  //     return false;
+  //   }
 
-    const {
-      id,
-    } = user;
+  //   const {
+  //     id,
+  //   } = user;
 
-    const result = await updateUserProcessor({
-      variables: {
-        updateUserData: data,
-        updateUserWhere: {
-          id,
-        },
-      },
-    })
-      .then(r => r)
-      .catch(e => {
-        console.error(e);
-      });
+  //   const result = await updateUserProcessor({
+  //     variables: {
+  //       updateUserData: data,
+  //       updateUserWhere: {
+  //         id,
+  //       },
+  //     },
+  //   })
+  //     .then(r => r)
+  //     .catch(e => {
+  //       console.error(e);
+  //     });
 
-    console.log("updateUser result", result);
+  //   console.log("updateUser result", result);
 
-    return result;
+  //   return result;
 
-  }
+  // }
 
 
   render() {
 
-
     const {
-      user: currentUser,
-    } = this.context;
-
-
-    const {
+      View,
       ...other
     } = this.props;
 
-    // if(!user){
-    //   return null;
-    // }
 
-    return super.render(<UserView
+    return super.render(<View
       // object={user}
       // data={data}
       // saveObject={this.saveUser}
@@ -102,7 +100,7 @@ export default class UserPageConnector extends PrismaCmsConnector {
 
     const {
       getQueryFragment,
-    } = this.context;
+    } = this.props;
 
     const UserNoNestingFragment = getQueryFragment("UserNoNestingFragment");
 
@@ -132,4 +130,3 @@ export default class UserPageConnector extends PrismaCmsConnector {
   }
 
 }
- 

@@ -1,183 +1,180 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 
 import Grid from 'material-ui/Grid';
+import Button from 'material-ui/Button';
 
-import EditableView from 'apollo-cms/lib/DataView/Object/Editable';
+// import EditableView from 'apollo-cms/lib/DataView/Object/Editable';
 
+import PrismaCmsUserPageView from "@prisma-cms/front/lib/modules/pages/UsersPage/UserPage/View";
 
-import UserAvatar from './Avatar';
+// import UserAvatar from './Avatar';
 
 // import UserView from "@modxclub/old/view/profile";
- 
 
-let propTypes = { ...EditableView.propTypes }
-let contextTypes = { ...EditableView.contextTypes }
 
 
-Object.assign(propTypes, {
-  // user: PropTypes.object.isRequired,
-});
+// let propTypes = { ...EditableView.propTypes }
+// let contextTypes = { ...EditableView.contextTypes }
 
-Object.assign(contextTypes, {
-  loadApiData: PropTypes.func.isRequired,
-  setPageMeta: PropTypes.func.isRequired,
-});
 
+// Object.assign(propTypes, {
+//   // user: PropTypes.object.isRequired,
+// });
 
+// Object.assign(contextTypes, {
+//   loadApiData: PropTypes.func.isRequired,
+//   setPageMeta: PropTypes.func.isRequired,
+// });
 
 
-export default class UserPageView extends EditableView {
 
-  static propTypes = propTypes;
 
-  static contextTypes = contextTypes;
+export default class UserPageView extends PrismaCmsUserPageView {
 
+  // static propTypes = propTypes;
 
-  setPageMeta() {
+  // static contextTypes = contextTypes;
 
-    const {
-      setPageMeta,
-    } = this.context;
 
-    setPageMeta({
-      title: this.getTitle(),
-    });
+  // setPageMeta() {
 
-  }
+  //   const {
+  //     setPageMeta,
+  //   } = this.context;
 
-  componentWillMount() {
+  //   setPageMeta({
+  //     title: this.getTitle(),
+  //   });
 
-    this.setPageMeta();
-  }
+  // }
 
+  // componentWillMount() {
 
-  componentDidUpdate() {
+  //   this.setPageMeta();
+  // }
 
-    this.setPageMeta();
 
-    super.componentDidUpdate && super.componentDidUpdate();
-  }
+  // componentDidUpdate() {
 
+  //   this.setPageMeta();
 
-  getTitle() {
+  //   super.componentDidUpdate && super.componentDidUpdate();
+  // }
 
-    const draftObject = this.getObjectWithMutations();
 
-    const {
-      username,
-      fullname,
-    } = draftObject || {};
 
-    return fullname || username;
-  }
 
+  // getTitle() {
 
+  //   const draftObject = this.getObjectWithMutations();
 
-  renderAvatar() {
+  //   const {
+  //     username,
+  //     fullname,
+  //   } = draftObject || {};
 
-    const draftObject = this.getObjectWithMutations();
+  //   return fullname || username;
+  // }
 
-    return <UserAvatar
-      user={draftObject}
-      updateUser={this.onUpdateAvatar}
-      editable={this.canEdit()}
-    />
-  }
 
 
-  canEdit() {
+  // renderAvatar() {
 
-    const {
-      user: currentUser,
-    } = this.context;
+  //   const draftObject = this.getObjectWithMutations();
 
-    const {
-      data,
-    } = this.props;
+  //   return <UserAvatar
+  //     user={draftObject}
+  //     updateUser={this.onUpdateAvatar}
+  //     inEditMode={this.isInEditMode()}
+  //   />
+  // }
 
-    const {
-      object: user,
-    } = data || {};
 
-    return currentUser && user && (currentUser.id === user.id || currentUser.sudo === true) ? true : false;
-  }
+  // canEdit() {
 
+  //   return false;
+  // }
 
-  async save() {
 
+  // async save() {
 
-    const result = await super.save()
-      .then(r => {
 
-        // console.log("onSave", r);
+  //   const result = await super.save()
+  //     .then(r => {
 
-        const {
-          loadApiData,
-        } = this.context;
+  //       // console.log("onSave", r);
 
-        loadApiData();
+  //       const {
+  //         loadApiData,
+  //       } = this.context;
 
-        return r;
-      })
-      .catch(e => {
-        console.error(e);
-      });
+  //       loadApiData();
 
-    return result;
+  //       return r;
+  //     })
+  //     .catch(e => {
+  //       console.error(e);
+  //     });
 
-  }
+  //   return result;
 
+  // }
 
-  onUpdateAvatar = (file) => {
 
-    console.log("onUpdateAvatar", file);
+  // onUpdateAvatar = (file) => {
 
-    if (file) {
+  //   console.log("onUpdateAvatar", file);
 
-      const {
-        id,
-        path,
-        mimetype,
-      } = file;
+  //   if (file) {
 
-      if (!path) {
+  //     const {
+  //       id,
+  //       path,
+  //       mimetype,
+  //     } = file;
 
-        this.addError("File URL is empty");
+  //     if (!path) {
 
-        return;
-      }
+  //       this.addError("File URL is empty");
 
-      if (!mimetype) {
+  //       return;
+  //     }
 
-        this.addError("Wrong file type");
+  //     if (!mimetype) {
 
-      }
-      else if (!mimetype.match(/image/)) {
+  //       this.addError("Wrong file type");
 
-        this.addError("Only images allow");
+  //     }
+  //     else if (!mimetype.match(/image/)) {
 
-      }
-      else {
+  //       this.addError("Only images allow");
 
-        let image = path;
+  //     }
+  //     else {
 
-        this.updateObject({
-          image,
-        });
+  //       let image = path;
 
-      }
+  //       this.updateObject({
+  //         image,
+  //       });
 
-    }
-    else {
+  //     }
 
-      this.addError("File did not received");
+  //   }
+  //   else {
 
-    }
+  //     this.addError("File did not received");
 
+  //   }
 
-  }
 
+  // }
+
+
+  // state = {
+  //   ...super.state,
+  // }
 
   renderDefaultView() {
 
@@ -199,11 +196,17 @@ export default class UserPageView extends EditableView {
       user: currentUser,
     } = this.context;
 
+
+    const {
+      changePassword,
+    } = this.state;
+
     const {
     } = currentUser || {}
 
     return <Grid
       container
+      spacing={16}
     >
 
       <Grid
@@ -215,10 +218,60 @@ export default class UserPageView extends EditableView {
 
       </Grid>
 
+
+      {inEditMode
+        ?
+        <Fragment>
+
+          <Grid
+            item
+            xs={12}
+          >
+
+            {this.getTextField({
+              name: "fullname",
+              helperText: "Отображаемое на сайте имя",
+              label: "Имя",
+              fullWidth: false,
+            })}
+
+          </Grid>
+
+
+          <Grid
+            item
+            xs={12}
+          >
  
 
+              <input 
+                style={{
+                  height: 1,
+                  opacity: 1,
+                  padding: 0,
+                  margin: 0,
+                  border: 0,
+                }}
+              />
+
+              <div>
+                {this.getTextField({
+                  name: "password",
+                  type: "password",
+                  label: "Пароль",
+                  helperText: "Новый пароль",
+                  fullWidth: false,
+                })}
+              </div>
+ 
+
+          </Grid>
 
 
+        </Fragment>
+        :
+        null
+      }
 
 
     </Grid>;

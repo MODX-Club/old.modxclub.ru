@@ -951,6 +951,10 @@ export class ModxclubDB extends ModxDB {
         knex.raw(`thread.id = comments.thread_id`)
         // knex.raw(`thread.id = comments.thread_id AND thread.target_class = 'modResource'`)
       )
+      .where({
+        deleted: false,
+        published: true,
+      })
       .select("comments.*")
       .select(knex.raw(`UNIX_TIMESTAMP(comments.createdon) as createdAt`))
       .select(knex.raw(`UNIX_TIMESTAMP(comments.editedon) as updatedAt`))
