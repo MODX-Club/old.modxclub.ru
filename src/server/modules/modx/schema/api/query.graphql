@@ -16,14 +16,14 @@ type Query {
   ): User
   
   users(
-    first: Int
+    first: Int!
     skip: Int
     where: UserWhereInput
     orderBy: UserOrderByInput
   ): [User!]!
 
   usersDebug(
-    first: Int
+    first: Int!
     skip: Int
     where: UserWhereInput
     orderBy: UserOrderByInput
@@ -33,7 +33,7 @@ type Query {
     where: UserWhereInput
     orderBy: UserOrderByInput
     skip: Int
-    first: Int
+    first: Int!
   ): UserConnection!
 
   userGroups(
@@ -47,7 +47,7 @@ type Query {
 
 
   resources(
-    first: Int
+    first: Int!
     skip: Int
     where: ResourceWhereInput
     orderBy: ResourceOrderByInput
@@ -57,7 +57,7 @@ type Query {
     where: ResourceWhereInput
     orderBy: ResourceOrderByInput
     skip: Int
-    first: Int
+    first: Int!
   ): ResourceConnection!
 
 }

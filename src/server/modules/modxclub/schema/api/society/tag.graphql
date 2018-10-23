@@ -1,42 +1,43 @@
 
-type TopicTag {
+type Tag {
   name: String!
   count: Int!
   topic_ids: [Int!]!
-  Topics(
-    where: TopicWhereInput
-    orderBy: TopicOrderByInput
-    skip: Int
-    first: Int
-  ): [Topic!]!
+  # Topics(
+  #   where: TopicWhereInput
+  #   orderBy: TopicOrderByInput
+  #   skip: Int
+  #   first: Int
+  # ): [Topic!]!
 }
 
 
-input TopicTagWhereInput {
+input TagWhereInput {
+  name: String
+  topic_id: Int
+}
+
+input TagWhereUniqueInput {
   name: String
 }
 
-input TopicTagWhereUniqueInput {
-  name: String
-}
-
-enum TopicTagOrderByInput {
+enum TagOrderByInput {
   name_ASC
   name_DESC
   count_ASC
   count_DESC
 }
 
-type TopicTagConnection {
-  edges: [TopicTagEdge]!
-  aggregate: AggregateTopicTag!
+type TagConnection {
+  edges: [TagEdge]!
+  aggregate: AggregateTag!
 }
 
 
-type AggregateTopicTag {
+type AggregateTag {
   count: Int!
 }
 
-type TopicTagEdge {
-  node: TopicTag!
+type TagEdge {
+  node: Tag!
 }

@@ -18,14 +18,14 @@ type Query {
     where: BlogWhereInput
     orderBy: BlogOrderByInput
     skip: Int
-    first: Int
+    first: Int!
   ): [Blog!]!
    
   blogsConnection(
     where: BlogWhereInput
     orderBy: BlogOrderByInput
     skip: Int
-    first: Int
+    first: Int!
   ): BlogConnection!
    
  
@@ -37,14 +37,14 @@ type Query {
     where: TopicWhereInput
     orderBy: TopicOrderByInput
     skip: Int
-    first: Int
+    first: Int!
   ): [Topic!]!
    
   topicsConnection(
     where: TopicWhereInput
     orderBy: TopicOrderByInput
     skip: Int
-    first: Int
+    first: Int!
   ): TopicConnection!
    
    
@@ -57,14 +57,14 @@ type Query {
     where: CommentWhereInput
     orderBy: CommentOrderByInput
     skip: Int
-    first: Int
+    first: Int!
   ): [Comment!]!
    
   commentsConnection(
     where: CommentWhereInput
     orderBy: CommentOrderByInput
     skip: Int
-    first: Int
+    first: Int!
   ): CommentConnection!
    
    
@@ -77,14 +77,14 @@ type Query {
     where: ThreadWhereInput
     orderBy: ThreadOrderByInput
     skip: Int
-    first: Int
+    first: Int!
   ): [Thread!]!
    
   threadsConnection(
     where: ThreadWhereInput
     orderBy: ThreadOrderByInput
     skip: Int
-    first: Int
+    first: Int!
   ): ThreadConnection!
    
    
@@ -97,14 +97,14 @@ type Query {
     where: VoteWhereInput
     orderBy: VoteOrderByInput
     skip: Int
-    first: Int
+    first: Int!
   ): [Vote!]!
    
   votesConnection(
     where: VoteWhereInput
     orderBy: VoteOrderByInput
     skip: Int
-    first: Int
+    first: Int!
   ): VoteConnection!
    
  
@@ -116,14 +116,14 @@ type Query {
     where: TopicTagWhereInput
     orderBy: TopicTagOrderByInput
     skip: Int
-    first: Int
+    first: Int!
   ): [TopicTag!]!
    
   topicTagsConnection(
     where: TopicTagWhereInput
     orderBy: TopicTagOrderByInput
     skip: Int
-    first: Int
+    first: Int!
   ): TopicTagConnection!
    
 }

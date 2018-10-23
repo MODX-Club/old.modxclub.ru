@@ -46,6 +46,10 @@ export class ModxclubDB extends ModxDB {
       threads: (source, args, ctx, info) => this.threads(source, args, ctx, info),
       threadsConnection: (source, args, ctx, info) => this.threadsConnection(source, args, ctx, info),
 
+      tag: (source, args, ctx, info) => this.tag(source, args, ctx, info),
+      tags: (source, args, ctx, info) => this.tags(source, args, ctx, info),
+      tagsConnection: (source, args, ctx, info) => this.tagsConnection(source, args, ctx, info),
+
       topicTag: (source, args, ctx, info) => this.topicTag(source, args, ctx, info),
       topicTags: (source, args, ctx, info) => this.topicTags(source, args, ctx, info),
       topicTagsConnection: (source, args, ctx, info) => this.topicTagsConnection(source, args, ctx, info),
@@ -715,10 +719,10 @@ export class ModxclubDB extends ModxDB {
    */
 
   /**
-   * TopicTags
+   * tags
    */
 
-  async topicTag(source, args, ctx, info) {
+  async tag(source, args, ctx, info) {
 
 
     let {
@@ -729,7 +733,7 @@ export class ModxclubDB extends ModxDB {
       throw new Error("Where args required");
     }
 
-    let objects = await this.topicTags(null, {
+    let objects = await this.tags(null, {
       where,
       limit: 1,
     }, ctx, info);
@@ -739,19 +743,19 @@ export class ModxclubDB extends ModxDB {
   }
 
 
-  async topicTags(source, args, ctx, info) {
+  async tags(source, args, ctx, info) {
 
 
-    const query = this.getTopicTagsQuery(args, ctx);
+    const query = this.gettagsQuery(args, ctx);
 
     let objects = await this.request(query);
 
 
-    return this.prepareTopicTags(objects);
+    return this.preparetags(objects);
   }
 
 
-  prepareTopicTags(objects) {
+  preparetags(objects) {
 
     objects.map(object => {
 
@@ -772,12 +776,12 @@ export class ModxclubDB extends ModxDB {
   }
 
 
-  async topicTagsConnection(source, args, ctx, info) {
+  async tagsConnection(source, args, ctx, info) {
 
-    const query = this.getTopicTagsQuery(args, ctx);
+    const query = this.gettagsQuery(args, ctx);
 
 
-    let result = await this.objectsConnection(ctx, query, "topicTag.name");
+    let result = await this.objectsConnection(ctx, query, "tag.name");
 
     let {
       edges,
@@ -785,10 +789,82 @@ export class ModxclubDB extends ModxDB {
 
 
     if (edges && edges.length) {
-      result.edges = this.prepareTopicTags(edges.map(({ node }) => node)).map(node => ({ node }));
+      result.edges = this.preparetags(edges.map(({ node }) => node)).map(node => ({ node }));
     }
 
     return result;
+
+  }
+
+
+
+  gettagsQuery(args, ctx) {
+
+    const {
+      knex,
+    } = ctx;
+
+    let tags = knex(this.getTableName("society_topic_tags", "tags"))
+      .count("* as count")
+      .select(knex.raw("GROUP_CONCAT(topic_id) as topic_ids"))
+      .select("tags.tag as name")
+      .groupBy("tag")
+      .as("tag")
+      ;
+
+
+    let query = knex(tags).as("tag");
+
+
+    return this.getQuery(args, ctx, "society_tags", "tag", query);
+
+
+  }
+
+  /**
+   * Eof tags
+   */
+
+
+
+  /**
+   * topicTags
+   */
+
+  async topicTag(source, args, ctx, info) {
+
+    let {
+      where,
+    } = args;
+
+    if (!Object.keys(where).length) {
+      throw new Error("Where args required");
+    }
+
+    let objects = await this.topicTags(null, {
+      where,
+      limit: 1,
+    }, ctx, info);
+
+    return objects && objects[0] || null
+  }
+
+  topicTags(source, args, ctx, info) {
+
+
+    const query = this.getTopicTagsQuery(args, ctx);
+
+    return this.request(query);
+
+  }
+
+
+  topicTagsConnection(source, args, ctx, info) {
+
+    const query = this.getTopicTagsQuery(args, ctx);
+
+
+    return this.objectsConnection(ctx, query, "topicTag.id");
 
   }
 
@@ -801,16 +877,13 @@ export class ModxclubDB extends ModxDB {
     } = ctx;
 
     let topicTags = knex(this.getTableName("society_topic_tags", "topicTags"))
-      .count("* as count")
-      .select(knex.raw("GROUP_CONCAT(topic_id) as topic_ids"))
+      .select("topicTags.*")
       .select("topicTags.tag as name")
-      .groupBy("tag")
       .as("topicTag")
       ;
 
 
     let query = knex(topicTags).as("topicTag");
-
 
     return this.getQuery(args, ctx, "society_topicTags", "topicTag", query);
 
@@ -818,8 +891,9 @@ export class ModxclubDB extends ModxDB {
   }
 
   /**
-   * Eof TopicTags
+   * Eof topicTags
    */
+
 
 
   /**

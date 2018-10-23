@@ -15,7 +15,8 @@ import ProjectMemberModule from "./modules/projectMember";
 import BlogModule from "./modules/society/blog";
 import TopicModule from "./modules/society/topic";
 import ThreadModule from "./modules/society/thread";
-import TopicTagModule from "./modules/society/tag";
+import TagModule from "./modules/society/tag";
+import TopicTagModule from "./modules/society/topicTag";
 import CommentModule from "./modules/society/comment";
 import VoteModule from "./modules/society/vote";
 
@@ -38,6 +39,7 @@ class ModxclubModules extends PrismaModule {
       BlogModule,
       TopicModule,
       ThreadModule,
+      TagModule,
       TopicTagModule,
       CommentModule,
       VoteModule,

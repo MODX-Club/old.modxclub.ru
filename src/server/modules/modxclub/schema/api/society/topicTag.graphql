@@ -1,0 +1,39 @@
+
+type TopicTag {
+  id: Int!
+  topic_id: Int!
+  name: String!
+  active: Boolean!
+  Topic: Topic!
+}
+
+
+input TopicTagWhereInput {
+  id: Int
+  name: String
+}
+
+input TopicTagWhereUniqueInput {
+  id: Int
+}
+
+enum TopicTagOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+}
+
+type TopicTagConnection {
+  edges: [TopicTagEdge]!
+  aggregate: AggregateTopicTag!
+}
+
+
+type AggregateTopicTag {
+  count: Int!
+}
+
+type TopicTagEdge {
+  node: TopicTag!
+}

@@ -33,6 +33,7 @@ class ModxTopicModule extends PrismaModule {
     CreatedBy: (source, args, ctx, info) => this.CreatedBy(source, args, ctx, info),
     Blog: (source, args, ctx, info) => this.Blog(source, args, ctx, info),
     Comments: (source, args, ctx, info) => this.Comments(source, args, ctx, info),
+    Tags: (source, args, ctx, info) => this.Tags(source, args, ctx, info),
     Thread: (source, args, ctx, info) => this.Thread(source, args, ctx, info),
     content: (source, args, ctx, info) => this.content(source, args, ctx, info),
 
@@ -106,6 +107,30 @@ class ModxTopicModule extends PrismaModule {
     }
 
     return ctx.modx.query.comments(null, args, ctx, info);
+
+  }
+
+
+  Tags(source, args, ctx, info) {
+
+    const {
+      id: topic_id,
+    } = source || {};
+
+    if(!topic_id){
+      return [];
+    }
+
+    let {
+      where,
+    } = args;
+
+    args.where = {
+      ...where,
+      topic_id,
+    }
+
+    return ctx.modx.query.topicTags(null, args, ctx, info);
 
   }
 

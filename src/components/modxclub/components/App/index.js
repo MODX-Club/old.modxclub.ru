@@ -45,9 +45,9 @@ export const getTheme = function (uiTheme) {
         main: darken(pink.A400, 0.08),
       },
       type: paletteType,
-      background: {
-        default: "#fff",
-      },
+      // background: {
+      //   default: "#fff",
+      // },
     },
     typography: {
       fontFamily: "'Open Sans', sans-serif,Tahoma, Helvetica",

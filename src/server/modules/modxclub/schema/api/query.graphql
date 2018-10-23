@@ -12,14 +12,14 @@ type Query {
     where: CompanyWhereInput
     orderBy: CompanyOrderByInput
     skip: Int
-    first: Int
+    first: Int!
   ): [Company!]!
    
   companiesConnection(
     where: CompanyWhereInput
     orderBy: CompanyOrderByInput
     skip: Int
-    first: Int
+    first: Int!
   ): CompanyConnection!
 
 
@@ -31,13 +31,13 @@ type Query {
     where: ServiceWhereInput
     orderBy: ServiceOrderByInput
     skip: Int
-    first: Int
+    first: Int!
   ): [Service!]!
    
   servicesConnection(
     where: ServiceWhereInput
     orderBy: ServiceOrderByInput
-    skip: Int
+    skip: Int!
     first: Int
   ): ServiceConnection!
    
@@ -50,14 +50,14 @@ type Query {
     where: NoticeWhereInput
     orderBy: NoticeOrderByInput
     skip: Int
-    first: Int
+    first: Int!
   ): [Notice!]!
    
   noticesConnection(
     where: NoticeWhereInput
     orderBy: NoticeOrderByInput
     skip: Int
-    first: Int
+    first: Int!
   ): NoticeConnection!
    
 
@@ -69,14 +69,14 @@ type Query {
     where: UserNoticeWhereInput
     orderBy: UserNoticeOrderByInput
     skip: Int
-    first: Int
+    first: Int!
   ): [UserNotice!]!
    
   userNoticesConnection(
     where: UserNoticeWhereInput
     orderBy: UserNoticeOrderByInput
     skip: Int
-    first: Int
+    first: Int!
   ): UserNoticeConnection!
    
 
@@ -88,14 +88,14 @@ type Query {
     where: ProjectWhereInput
     orderBy: ProjectOrderByInput
     skip: Int
-    first: Int
+    first: Int!
   ): [Project!]!
    
   projectsConnection(
     where: ProjectWhereInput
     orderBy: ProjectOrderByInput
     skip: Int
-    first: Int
+    first: Int!
   ): ProjectConnection!
    
 
@@ -107,14 +107,14 @@ type Query {
     where: ProjectMemberWhereInput
     orderBy: ProjectMemberOrderByInput
     skip: Int
-    first: Int
+    first: Int!
   ): [ProjectMember!]!
    
   projectMembersConnection(
     where: ProjectMemberWhereInput
     orderBy: ProjectMemberOrderByInput
     skip: Int
-    first: Int
+    first: Int!
   ): ProjectMemberConnection!
 
 }

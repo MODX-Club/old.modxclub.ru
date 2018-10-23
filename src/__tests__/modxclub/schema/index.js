@@ -285,7 +285,7 @@ const requiredTypes = [
     },
   },
   {
-    name: "TopicTag",
+    name: "Tag",
     fields: {
       both: [
       ],
@@ -295,7 +295,21 @@ const requiredTypes = [
         "name",
         "count",
         "topic_ids",
-        "Topics",
+      ],
+    },
+  },
+  {
+    name: "TopicTag",
+    fields: {
+      both: [
+      ],
+      prisma: [
+      ],
+      api: [
+        "id",
+        "name",
+        "topic_id",
+        "Topic",
       ],
     },
   },
