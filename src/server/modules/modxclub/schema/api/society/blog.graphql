@@ -34,6 +34,7 @@ type Blog {
 input BlogWhereInput {
   id: Int
   personal: Boolean
+  uri: String
 }
 
 input BlogWhereUniqueInput {

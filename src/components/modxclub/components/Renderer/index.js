@@ -9,11 +9,15 @@ import UserPage from "../pages/UsersPage/UserPage";
 
 import PrismaRendererCmsRenderer from "../../../Renderer";
 
-import MainPage from "../pages/MainPage";
-
 import withStyles from "material-ui/styles/withStyles";
 
 import MainMenu from "../menu/mainMenu";
+
+
+import MainPage from "../pages/MainPage";
+import TopicPage from "../pages/Topics/Topic";
+
+
 
 export const styles = theme => {
 
@@ -83,9 +87,10 @@ export class Renderer extends PrismaRendererCmsRenderer {
       },
       {
         exact: true,
-        path: "/",
+        path: ["/", "/topics"],
         component: MainPage,
-      }, {
+      },
+      {
         exact: true,
         path: "/profile/:username",
         render: (props) => {
@@ -102,6 +107,39 @@ export class Renderer extends PrismaRendererCmsRenderer {
             key={username}
             where={{
               username,
+            }}
+            {...props}
+          />
+        }
+      },
+      {
+        exact: false,
+        path: /\/(topics\/.+)/,
+        render: (props) => {
+          const {
+            match: {
+              params: {
+                0: uri,
+              },
+            },
+            // location: {
+            //   pathname,
+            // },
+          } = props;
+
+          // const {
+          //   username,
+
+          // } = params || {};
+
+          console.log("props", props);
+
+
+          return <TopicPage
+            // getQueryFragment={getQueryFragment}
+            // key={username}
+            where={{
+              uri: uri,
             }}
             {...props}
           />

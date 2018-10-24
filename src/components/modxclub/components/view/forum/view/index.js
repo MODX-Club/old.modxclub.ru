@@ -74,6 +74,17 @@ class ForumView extends TableView {
   }
 
 
+
+  constructor(props){
+
+    super(props);
+
+    console.log("ForumView constructor", this);
+
+  }
+
+
+
   getColumns() {
 
     const {
@@ -133,7 +144,9 @@ class ForumView extends TableView {
         className: classes.alignCenter,
         renderer: (value, record) => {
 
-          console.log("Topic record", record);
+          if(!value){
+            return null;
+          }
 
           const {
             id: blogId,

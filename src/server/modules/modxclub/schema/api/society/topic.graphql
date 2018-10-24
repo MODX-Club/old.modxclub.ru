@@ -22,7 +22,7 @@ type Topic {
   CreatedBy: User!
   Tags: [TopicTag!]!
   blog_id: Int!
-  Blog: Blog!
+  Blog: Blog
   Comments(
     where: CommentWhereInput
     orderBy: CommentOrderByInput
@@ -37,6 +37,7 @@ type Topic {
 input TopicWhereInput {
   id: Int
   blog_id: Int
+  uri: String
 }
 
 input TopicWhereUniqueInput {

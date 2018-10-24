@@ -104,7 +104,7 @@ export default class UserPageConnector extends PrismaCmsConnector {
 
     const UserNoNestingFragment = getQueryFragment("UserNoNestingFragment");
 
-    console.log("UserNoNestingFragment", UserNoNestingFragment);
+    // console.log("UserNoNestingFragment", UserNoNestingFragment);
 
 
     const user = gql`
