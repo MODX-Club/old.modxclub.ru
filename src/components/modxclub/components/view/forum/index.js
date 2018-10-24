@@ -26,6 +26,7 @@ export class ForumConnector extends Component {
     orderBy: PropTypes.string.isRequired,
     tagName: PropTypes.string,
     where: PropTypes.object.isRequired,
+    getCommentsText: PropTypes.bool.isRequired,
   };
 
 
@@ -35,6 +36,7 @@ export class ForumConnector extends Component {
     where: {
     },
     orderBy: "createdAt_DESC",
+    getCommentsText: false,
   }
 
 

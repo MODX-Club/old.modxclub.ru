@@ -55,7 +55,6 @@ export class BlogPage extends Page {
     const {
       data,
       View,
-      wnere,
       ...other
     } = this.props;
 

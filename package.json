@@ -42,6 +42,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
     "@babel/runtime": "^7.1.2",
+    "@modxclub/react-editor": "^1.0.2",
     "@prisma-cms/component": "^1.0.7",
     "@prisma-cms/e-commerce": "^1.0.1",
     "@prisma-cms/front": "^1.9.5-beta",
@@ -78,7 +79,7 @@
     "node-less-chokidar": "^0.3.1",
     "node-sass-chokidar": "^1.1.0",
     "prisma-binding": "^2.1.6",
-    "react": "^16.5.2",
+    "react": "16.5.2",
     "react-apollo": "^2.2.3",
     "react-cms-graphql-utils": "^1.1.0",
     "react-dom": "^16.5.2",
@@ -92,6 +93,7 @@
     "xml-writer": "^1.7.0"
   },
   "resolutions": {
+    "react": "16.5.2",
     "graphql": "14.0.2",
     "prisma-binding": "^2.1.6"
   },

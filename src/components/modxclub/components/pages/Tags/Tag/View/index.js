@@ -6,28 +6,31 @@ import EditableView from 'apollo-cms/lib/DataView/Object/Editable';
 
 import Forum from "../../../../view/forum"
 
-class BlogView extends EditableView {
+class TagView extends EditableView {
 
 
   canEdit() {
 
-    const {
-      user: currentUser,
-    } = this.context;
+    // const {
+    //   user: currentUser,
+    // } = this.context;
 
-    const {
-      id: currentUserId,
-      sudo,
-    } = currentUser || {};
+    // const {
+    //   id: currentUserId,
+    //   sudo,
+    // } = currentUser || {};
 
 
-    const {
-      id,
-    } = this.getObjectWithMutations() || {};
+    // const {
+    //   id,
+    // } = this.getObjectWithMutations() || {};
 
-    return !id || sudo === true;
+    // return !id || sudo === true;
+
+    return false;
 
   }
+
 
 
 
@@ -39,7 +42,7 @@ class BlogView extends EditableView {
       name,
     } = object || {};
 
-    return name && `Топики в блоге "${name}"` || null;
+    return name && `Топики с тегом "${name}"` || null;
 
   }
 
@@ -52,26 +55,19 @@ class BlogView extends EditableView {
       ...other
     } = this.props;
 
-
-    // const {
-    //   data: {
-    //     object: blog,
-    //     loading,
-    //   },
-    // } = this.props;
-
+ 
 
     const {
-      id: blogId,
+      name: tagName,
     } = this.getObjectWithMutations();
 
 
     let forum = null;
 
-    if (blogId) {
+    if (tagName) {
       forum = <Forum
         where={{
-          blog_id: blogId,
+          tag: tagName,
         }}
         {...other}
       />
@@ -90,4 +86,4 @@ class BlogView extends EditableView {
 }
 
 
-export default BlogView;
+export default TagView;

@@ -23,6 +23,8 @@ export const topicFragment = `
     ){
       id
       createdAt
+      parent
+      text @include(if:$getCommentsText)
       CreatedBy{
         ...TopicUserNoNesting
       }
@@ -79,6 +81,7 @@ export const topicsListFragment = `
 export const topicsFullFragment = `
   fragment topicsFullFragment on Topic{
     ...topicFragment
+    content
   }
 
   ${topicFragment}
@@ -92,6 +95,7 @@ export const topicsConnectionQuery = gql`
     $skip:Int
     $where: TopicWhereInput
     $orderBy: TopicOrderByInput!
+    $getCommentsText:Boolean = false
   ){
     objectsConnection: topicsConnection(
       orderBy: $orderBy
@@ -119,6 +123,7 @@ export const topicQuery = gql`
 
   query topic(
     $where: TopicWhereUniqueInput!
+    $getCommentsText:Boolean = true
   ){
     object: topic(
       where: $where

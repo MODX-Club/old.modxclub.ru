@@ -7,22 +7,23 @@ import PropTypes from "prop-types";
 import Page from '../../layout';
 
 
-import Forum from "../../../view/forum"
+// import Forum from "../../../view/forum"
 
+import View from "./View";
 
 export class TagPage extends Page {
 
 
   static propTypes = {
     ...Page.propTypes,
-    // View: PropTypes.func.isRequired,
+    View: PropTypes.func.isRequired,
     tagName: PropTypes.string.isRequired,
   }
 
 
   static defaultProps = {
     ...Page.defaultProps,
-    // View,
+    View,
   }
 
   setPageMeta(meta = {}) {
@@ -42,14 +43,24 @@ export class TagPage extends Page {
 
     const {
       tagName,
+      View,
       ...other
     } = this.props;
  
 
-    return super.render(<Forum
-      tagName={tagName}
+    return super.render(<View
+      data={{
+        object: {
+          name: tagName,
+        },
+      }}
       {...other}
     />)
+
+    // return super.render(<Forum
+    //   tagName={tagName}
+    //   {...other}
+    // />)
   }
 
 }

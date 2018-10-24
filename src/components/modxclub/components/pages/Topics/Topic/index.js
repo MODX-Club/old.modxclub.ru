@@ -72,8 +72,13 @@ export class TopicPage extends Page {
 
 const test = (props) => {
 
+  const {
+    getCommentsText = true,
+  } = props;
+
   return <Connector
     View={TopicPage}
+    getCommentsText={getCommentsText}
     {...props}
   />
 
