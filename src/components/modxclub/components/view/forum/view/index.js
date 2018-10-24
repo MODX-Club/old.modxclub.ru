@@ -34,11 +34,8 @@ let customStyles = theme => {
   return {
     ...styles(),
 
-    tag: {
-      // display: "inline-block",
-      // padding: "3px 5px",
-      // borderRadius: 5,
-      // background: defaultBackground,
+    tags: {
+      marginTop: 5,
     },
 
     usersWrapper: {
@@ -89,7 +86,17 @@ class ForumView extends TableView {
 
     const {
       classes,
+      data: {
+        variables: {
+          where,
+        },
+      },
     } = this.props;
+
+
+    const {
+      tag: activeTag,
+    } = where || {};
 
     let columns = [
       {
@@ -114,13 +121,15 @@ class ForumView extends TableView {
 
             const {
               id,
+              name,
             } = tag;
 
             tagsList.push(<TagLink
               key={id}
               object={tag}
               color="textSecondary"
-              className={classes.tag}
+              className={[classes.tag].join(" ")}
+              textClassName={[activeTag === name ? "active" : ""].join(" ")}
             />);
           });
 
@@ -128,7 +137,13 @@ class ForumView extends TableView {
 
             <TopicLink
               object={record}
-            />
+            >
+              <Typography
+                variant="subheading"
+              >
+                {name}
+              </Typography>
+            </TopicLink>
 
             <div
               className={classes.tags}

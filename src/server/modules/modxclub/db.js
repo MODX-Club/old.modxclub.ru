@@ -41,6 +41,7 @@ export class ModxclubDB extends ModxDB {
       topic: (source, args, ctx, info) => this.topic(source, args, ctx, info),
       topics: (source, args, ctx, info) => this.topics(source, args, ctx, info),
       topicsConnection: (source, args, ctx, info) => this.topicsConnection(source, args, ctx, info),
+      // topicsByTagsConnection: (source, args, ctx, info) => this.topicsByTagsConnection(source, args, ctx, info),
 
       thread: (source, args, ctx, info) => this.thread(source, args, ctx, info),
       threads: (source, args, ctx, info) => this.threads(source, args, ctx, info),
@@ -585,6 +586,7 @@ export class ModxclubDB extends ModxDB {
     return objects && objects[0] || null
   }
 
+
   topics(source, args, ctx, info) {
 
     const {
@@ -612,11 +614,82 @@ export class ModxclubDB extends ModxDB {
 
   getTopicsQuery(args, ctx) {
 
+
+    let {
+      where: {
+        tag,
+        tag_in,
+        ...where
+      },
+    } = args;
+
+    args.where = {
+      ...where
+    };
+
+
     const {
       knex,
     } = ctx;
 
-    let topics = knex(this.getTableName("site_content", "topics"))
+    let topics = this.getTopicsPureQuery(ctx);
+
+    this.prepareResourcesQuery(topics);
+
+
+    /**
+     * Фильтрация по тегу
+     */
+    if (tag || tag_in) {
+
+      let tagsQuery = this.getTagsPureQuery(ctx);
+
+
+      tagsQuery.clearSelect();
+      tagsQuery._clearGrouping("group");
+
+      tagsQuery.select("topic_id");
+
+      if (tag) {
+        tagsQuery.where({
+          tag,
+        });
+      }
+
+      if (tag_in) {
+        tagsQuery.whereIn("tag", tag_in);
+      }
+
+      topics.whereExists(function () {
+
+        this.select('*').from(tagsQuery).whereRaw(`tag.topic_id = topics.id`);
+
+      });
+
+    }
+
+
+    let query = knex(topics).as("topic");
+
+
+
+
+
+
+
+
+    return this.getQuery(args, ctx, "topics", "topic", query);
+
+  }
+
+
+  getTopicsPureQuery(ctx) {
+
+    const {
+      knex,
+    } = ctx;
+
+    let query = knex(this.getTableName("site_content", "topics"))
       .innerJoin(this.getTableName("society_blog_topic", "topicBlog"), "topicBlog.topicid", "topics.id")
       .leftJoin(
         this.getTableName("society_threads", "thread"),
@@ -635,14 +708,7 @@ export class ModxclubDB extends ModxDB {
       .as("topic")
       ;
 
-    this.prepareResourcesQuery(topics);
-
-
-    let query = knex(topics).as("topic");
-
-
-    return this.getQuery(args, ctx, "topics", "topic", query);
-
+    return query;
   }
 
   /**
@@ -746,7 +812,7 @@ export class ModxclubDB extends ModxDB {
   async tags(source, args, ctx, info) {
 
 
-    const query = this.gettagsQuery(args, ctx);
+    const query = this.getTagsQuery(args, ctx);
 
     let objects = await this.request(query);
 
@@ -778,7 +844,7 @@ export class ModxclubDB extends ModxDB {
 
   async tagsConnection(source, args, ctx, info) {
 
-    const query = this.gettagsQuery(args, ctx);
+    const query = this.getTagsQuery(args, ctx);
 
 
     let result = await this.objectsConnection(ctx, query, "tag.name");
@@ -798,19 +864,14 @@ export class ModxclubDB extends ModxDB {
 
 
 
-  gettagsQuery(args, ctx) {
+  getTagsQuery(args, ctx) {
 
     const {
       knex,
     } = ctx;
 
-    let tags = knex(this.getTableName("society_topic_tags", "tags"))
-      .count("* as count")
-      .select(knex.raw("GROUP_CONCAT(topic_id) as topic_ids"))
-      .select("tags.tag as name")
-      .groupBy("tag")
-      .as("tag")
-      ;
+    let tags = this.getTagsPureQuery(ctx);
+    ;
 
 
     let query = knex(tags).as("tag");
@@ -818,8 +879,27 @@ export class ModxclubDB extends ModxDB {
 
     return this.getQuery(args, ctx, "society_tags", "tag", query);
 
-
   }
+
+
+  getTagsPureQuery(ctx) {
+
+    const {
+      knex,
+    } = ctx;
+
+    let query = knex(this.getTableName("society_topic_tags", "tags"))
+      .count("* as count")
+      .select(knex.raw("GROUP_CONCAT(topic_id) as topic_ids"))
+      .select("tags.tag as name")
+      .where("tags.active", 1)
+      .groupBy("tag")
+      .as("tag")
+      ;
+
+    return query;
+  }
+
 
   /**
    * Eof tags
@@ -962,7 +1042,6 @@ export class ModxclubDB extends ModxDB {
       .as("comment")
       ;
 
-    // console.log(chalk.green("comments query "), comments.toString());
 
     let query = knex(comments).as("comment");
 

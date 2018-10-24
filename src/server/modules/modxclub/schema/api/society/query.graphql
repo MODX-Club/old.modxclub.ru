@@ -11,7 +11,7 @@ type Query {
    
  
   blog(
-    where: BlogWhereUniqueInput
+    where: BlogWhereUniqueInput!
   ): Blog
 
   blogs(
@@ -30,7 +30,7 @@ type Query {
    
  
   topic(
-    where: TopicWhereUniqueInput
+    where: TopicWhereUniqueInput!
   ): Topic
 
   topics(
@@ -46,11 +46,22 @@ type Query {
     skip: Int
     first: Int!
   ): TopicConnection!
+
+  
+  # """
+  #   Вывод топиков по тегу
+  # """
+  # topicsByTagsConnection(
+  #   where: TopicByTagsWhereInput
+  #   orderBy: TopicOrderByInput
+  #   skip: Int
+  #   first: Int!
+  # ): TopicConnection!
    
    
  
   comment(
-    where: CommentWhereUniqueInput
+    where: CommentWhereUniqueInput!
   ): Comment
 
   comments(
@@ -70,7 +81,7 @@ type Query {
    
  
   thread(
-    where: ThreadWhereUniqueInput
+    where: ThreadWhereUniqueInput!
   ): Thread
 
   threads(
@@ -90,7 +101,7 @@ type Query {
    
  
   vote(
-    where: VoteWhereUniqueInput
+    where: VoteWhereUniqueInput!
   ): Vote
 
   votes(
@@ -108,8 +119,27 @@ type Query {
   ): VoteConnection!
    
  
+  tag(
+    where: TagWhereUniqueInput!
+  ): Tag
+
+  tags(
+    where: TagWhereInput
+    orderBy: TagOrderByInput
+    skip: Int
+    first: Int!
+  ): [Tag!]!
+   
+  tagsConnection(
+    where: TagWhereInput
+    orderBy: TagOrderByInput
+    skip: Int
+    first: Int!
+  ): TagConnection!
+
+ 
   topicTag(
-    where: TopicTagWhereUniqueInput
+    where: TopicTagWhereUniqueInput!
   ): TopicTag
 
   topicTags(

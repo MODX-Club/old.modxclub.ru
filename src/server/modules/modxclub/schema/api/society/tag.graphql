@@ -13,8 +13,10 @@ type Tag {
 
 
 input TagWhereInput {
-  name: String
   topic_id: Int
+  name: String
+  name_in: [String!]
+  name_not_in: [String!]
 }
 
 input TagWhereUniqueInput {

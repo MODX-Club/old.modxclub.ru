@@ -5,32 +5,9 @@ import gql from "graphql-tag";
 
 import {graphql} from "react-apollo";
 
-export const query = gql`
 
-  query topicsConnection(
-    $first:Int!
-    $skip:Int
-    $where: TopicWhereInput
-    $orderBy: TopicOrderByInput!
-  ){
-    objectsConnection: topicsConnection(
-      orderBy: $orderBy
-      first: $first
-      skip: $skip
-      where: $where
-    ){
-      aggregate{
-        count
-      }
-      edges{
-        node{
-          ...topicsConnectionFields
-        }
-      }
-    }
-  }
-
-  fragment topicsConnectionFields on Topic{
+export const topicFragment = `
+  fragment topicFragment on Topic{
     id
     name
     longtitle
@@ -87,13 +64,79 @@ export const query = gql`
     value
     createdAt
   }
+`
+
+
+export const topicsListFragment = `
+  fragment topicsListFragment on Topic{
+    ...topicFragment
+  }
+
+  ${topicFragment}
+`;
+
+
+export const topicsFullFragment = `
+  fragment topicsFullFragment on Topic{
+    ...topicFragment
+  }
+
+  ${topicFragment}
+`;
+
+
+export const topicsConnectionQuery = gql`
+
+  query topicsConnection(
+    $first:Int!
+    $skip:Int
+    $where: TopicWhereInput
+    $orderBy: TopicOrderByInput!
+  ){
+    objectsConnection: topicsConnection(
+      orderBy: $orderBy
+      first: $first
+      skip: $skip
+      where: $where
+    ){
+      aggregate{
+        count
+      }
+      edges{
+        node{
+          ...topicsListFragment
+        }
+      }
+    }
+  }
+
+  ${topicsListFragment}
+
+`;
+
+
+export const topicQuery = gql`
+
+  query topic(
+    $where: TopicWhereUniqueInput
+  ){
+    object: topic(
+      where: $where
+    ){ 
+      ...topicsFullFragment
+    }
+  }
+
+  ${topicsFullFragment}
 
 `;
 
  
 
+const TopicsQuery = graphql(topicsConnectionQuery);
 
-const TopicQuery = graphql(query);
+const TopicQuery = graphql(topicQuery);
+
 
 export const TopicConnector = TopicQuery(props => {
 
@@ -108,7 +151,7 @@ export const TopicConnector = TopicQuery(props => {
 });
 
 
-export const TopicsConnector = TopicQuery(props => {
+export const TopicsConnector = TopicsQuery(props => {
 
   const {
     View,

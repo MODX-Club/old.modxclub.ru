@@ -16,6 +16,7 @@ import MainMenu from "../menu/mainMenu";
 
 import MainPage from "../pages/MainPage";
 import TopicPage from "../pages/Topics/Topic";
+import TagPage from "../pages/Tags/Tag";
 
 
 
@@ -122,25 +123,35 @@ export class Renderer extends PrismaRendererCmsRenderer {
                 0: uri,
               },
             },
-            // location: {
-            //   pathname,
-            // },
           } = props;
 
-          // const {
-          //   username,
-
-          // } = params || {};
-
-          console.log("props", props);
-
-
           return <TopicPage
-            // getQueryFragment={getQueryFragment}
-            // key={username}
+            key={uri}
             where={{
               uri: uri,
             }}
+            {...props}
+          />
+        }
+      },
+      {
+        exact: false,
+        path: /\/tag\/(.+)/,
+        render: (props) => {
+          const {
+            match: {
+              params: {
+                0: tagName,
+              },
+            },
+          } = props;
+
+          return <TagPage
+            // key={tagName}
+            tagName={tagName}
+            // where={{
+            //   name: tagName,
+            // }}
             {...props}
           />
         }

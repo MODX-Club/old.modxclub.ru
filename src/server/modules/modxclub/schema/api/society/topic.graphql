@@ -34,15 +34,26 @@ type Topic {
 }
 
 
+input TopicWhereUniqueInput {
+  id: Int
+  uri: String
+}
+
 input TopicWhereInput {
   id: Int
   blog_id: Int
   uri: String
+  tag: String
+  tag_in: [String!]
 }
 
-input TopicWhereUniqueInput {
-  id: Int
-}
+# input TopicByTagsWhereInput {
+#   id: Int
+#   blog_id: Int
+#   uri: String
+#   tag: String!
+# }
+
 
 enum TopicOrderByInput {
   id_ASC

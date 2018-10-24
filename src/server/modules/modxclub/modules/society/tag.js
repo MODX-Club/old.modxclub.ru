@@ -1,10 +1,14 @@
 
 
+/**
+ * Теги, сгруппированные по имени
+ */
+
 import PrismaModule from "@prisma-cms/prisma-module";
 
 import chalk from "chalk";
 
-class ModxTopicTagModule extends PrismaModule {
+class ModxTagModule extends PrismaModule {
 
 
 
@@ -14,13 +18,13 @@ class ModxTopicTagModule extends PrismaModule {
     let resolvers = super.getResolvers();
 
     Object.assign(resolvers.Query, {
-      topicTag: this.topicTag,
-      topicTags: this.topicTags,
-      topicTagsConnection: this.topicTagsConnection,
+      tag: this.tag,
+      tags: this.tags,
+      tagsConnection: this.tagsConnection,
     });
 
     Object.assign(resolvers, {
-      TopicTag: this.TopicTag,
+      Tag: this.Tag,
     });
 
     return resolvers;
@@ -28,58 +32,58 @@ class ModxTopicTagModule extends PrismaModule {
   }
 
 
-  TopicTag = {
+  Tag = {
 
-    Topics: (source, args, ctx, info) => this.Topics(source, args, ctx, info),
-
-  }
-
-
-  Topics(source, args, ctx, info) {
-
-    const {
-      topic_ids,
-    } = source || {};
-
-
-    if (!topic_ids || !topic_ids.length) {
-      return [];
-    }
-
-    let {
-      where,
-    } = args;
-
-    args.where = {
-      ...where,
-      id_in: topic_ids,
-    }
-
-    return ctx.modx.query.topics(null, args, ctx, info);
+    // Topics: (source, args, ctx, info) => this.Topics(source, args, ctx, info),
 
   }
 
 
-  topicTag(source, args, ctx, info) {
+  // Topics(source, args, ctx, info) {
 
-    return ctx.modx.query.topicTag(source, args, ctx, info);
+  //   const {
+  //     topic_ids,
+  //   } = source || {};
+
+
+  //   if (!topic_ids || !topic_ids.length) {
+  //     return [];
+  //   }
+
+  //   let {
+  //     where,
+  //   } = args;
+
+  //   args.where = {
+  //     ...where,
+  //     id_in: topic_ids,
+  //   }
+
+  //   return ctx.modx.query.topics(null, args, ctx, info);
+
+  // }
+
+
+  tag(source, args, ctx, info) {
+
+    return ctx.modx.query.tag(source, args, ctx, info);
 
   }
 
-  topicTags(source, args, ctx, info) {
+  tags(source, args, ctx, info) {
 
-    return ctx.modx.query.topicTags(source, args, ctx, info);
+    return ctx.modx.query.tags(source, args, ctx, info);
 
   }
 
 
-  topicTagsConnection(source, args, ctx, info) {
+  tagsConnection(source, args, ctx, info) {
 
-    return ctx.modx.query.topicTagsConnection(source, args, ctx, info);
+    return ctx.modx.query.tagsConnection(source, args, ctx, info);
 
   }
 
 }
 
 
-export default ModxTopicTagModule;
+export default ModxTagModule;

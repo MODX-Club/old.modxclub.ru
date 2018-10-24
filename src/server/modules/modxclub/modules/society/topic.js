@@ -17,6 +17,7 @@ class ModxTopicModule extends PrismaModule {
       topic: this.topic,
       topics: this.topics,
       topicsConnection: this.topicsConnection,
+      // topicsByTagsConnection: this.topicsByTagsConnection,
     });
 
     Object.assign(resolvers, {
@@ -181,6 +182,16 @@ class ModxTopicModule extends PrismaModule {
     return ctx.modx.query.topicsConnection(source, args, ctx, info);
 
   }
+
+
+  /**
+   * Получаем топики с учетом тега
+   */
+  // topicsByTagsConnection(source, args, ctx, info) {
+
+  //   return ctx.modx.query.topicsByTagsConnection(source, args, ctx, info);
+
+  // }
 
 }
 

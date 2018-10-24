@@ -5,7 +5,7 @@ type Query {
    
 
   company(
-    where: CompanyWhereUniqueInput
+    where: CompanyWhereUniqueInput!
   ): Company
 
   companies(
@@ -24,7 +24,7 @@ type Query {
 
 
   service(
-    where: ServiceWhereUniqueInput 
+    where: ServiceWhereUniqueInput!
   ): Service
 
   services(
@@ -43,7 +43,7 @@ type Query {
    
 
   notice(
-    where: NoticeWhereUniqueInput
+    where: NoticeWhereUniqueInput!
   ): Notice
 
   notices(
@@ -62,7 +62,7 @@ type Query {
    
 
   userNotice(
-    where: UserNoticeWhereUniqueInput
+    where: UserNoticeWhereUniqueInput!
   ): UserNotice
 
   userNotices(
@@ -81,7 +81,7 @@ type Query {
    
 
   project(
-    where: ProjectWhereUniqueInput
+    where: ProjectWhereUniqueInput!
   ): Project
 
   projects(
@@ -100,7 +100,7 @@ type Query {
    
 
   projectMember(
-    where: ProjectMemberWhereUniqueInput
+    where: ProjectMemberWhereUniqueInput!
   ): ProjectMember
 
   projectMembers(

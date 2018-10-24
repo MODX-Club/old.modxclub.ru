@@ -26,36 +26,17 @@ export class TopicPage extends Page {
   static defaultProps = {
     ...Page.defaultProps,
     View,
-    first: 1,
-    orderBy: "id_ASC",
   }
 
   setPageMeta(meta = {}) {
 
     return super.setPageMeta({
-      title: "Главная страница",
+      title: "Топик",
     });
 
   }
 
-
-  // render() {
-
-  //   const {
-  //     ...other
-  //   } = this.props;
-
-
-  //   const {
-  //     getQueryFragment,
-  //   } = this.context;
-
-  //   return super.render(<Forum
-  //     getQueryFragment={getQueryFragment}
-  //     {...other}
-  //   />)
-  // }
-
+ 
   render() {
 
     const {

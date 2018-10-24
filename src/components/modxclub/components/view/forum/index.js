@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 
-import PrismaCmsComponent from "@prisma-cms/component";
+// import PrismaCmsComponent from "@prisma-cms/component";
 
 
-import gql from "graphql-tag";
+// import gql from "graphql-tag";
 
-import { graphql } from "react-apollo";
+// import { graphql } from "react-apollo";
 
 import View from "./view";
 
@@ -24,15 +24,16 @@ export class ForumConnector extends Component {
     View: PropTypes.func.isRequired,
     first: PropTypes.number.isRequired,
     orderBy: PropTypes.string.isRequired,
+    tagName: PropTypes.string,
+    where: PropTypes.object.isRequired,
   };
 
 
   static defaultProps = {
     View,
     first: 12,
-    // where: {
-    //   id: 796,
-    // },
+    where: {
+    },
     orderBy: "createdAt_DESC",
   }
 
@@ -42,11 +43,23 @@ export class ForumConnector extends Component {
   }
 
 
+  constructor(props){
+
+    super(props);
+
+    console.log("Forum constructor");
+
+  }
+
 
   render() {
 
-    const {
+    let {
       first,
+      tagName,
+      where: {
+        ...where
+      },
       ...other
     } = this.props;
 
@@ -67,11 +80,20 @@ export class ForumConnector extends Component {
       skip = (page - 1) * first;
     }
 
+
+    if(tagName){
+      where = {
+        ...where,
+        tag: tagName,
+      }
+    }
+
     return (
       <TopicsConnector
         first={first}
         skip={skip}
         page={page}
+        where={where}
         {...other}
       />
     );
