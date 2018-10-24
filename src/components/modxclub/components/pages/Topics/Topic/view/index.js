@@ -23,7 +23,7 @@ import {
 } from "@modxclub/ui"
 
 
-import TextEditor from "@modxclub/react-editor";
+// import TextEditor from "@modxclub/react-editor";
 import TopicEditor from "@modxclub/react-editor";
 // import TopicEditor from "@modxclub/old/editor/topiceditor";
 

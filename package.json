@@ -42,7 +42,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
     "@babel/runtime": "^7.1.2",
-    "@modxclub/react-editor": "^1.0.2",
+    "@modxclub/react-editor": "^1.0.3",
     "@prisma-cms/component": "^1.0.7",
     "@prisma-cms/e-commerce": "^1.0.1",
     "@prisma-cms/front": "^1.9.5-beta",
