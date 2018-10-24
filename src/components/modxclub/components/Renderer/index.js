@@ -17,6 +17,7 @@ import MainMenu from "../menu/mainMenu";
 import MainPage from "../pages/MainPage";
 import TopicPage from "../pages/Topics/Topic";
 import TagPage from "../pages/Tags/Tag";
+import BlogPage from "../pages/Blogs/Blog";
 
 
 
@@ -115,7 +116,7 @@ export class Renderer extends PrismaRendererCmsRenderer {
       },
       {
         exact: false,
-        path: /\/(topics\/.+)/,
+        path: /^\/((topics\/.+)|(blog\/.+[0-9].html$))/,
         render: (props) => {
           const {
             match: {
@@ -136,7 +137,27 @@ export class Renderer extends PrismaRendererCmsRenderer {
       },
       {
         exact: false,
-        path: /\/tag\/(.+)/,
+        path: /^\/(blogs?\/(.+))/,
+        render: (props) => {
+          const {
+            match: {
+              params: {
+                0: uri,
+              },
+            },
+          } = props;
+
+          return <BlogPage
+            where={{
+              uri,
+            }}
+            {...props}
+          />
+        }
+      },
+      {
+        exact: false,
+        path: /^\/tag\/(.+)/,
         render: (props) => {
           const {
             match: {
@@ -147,11 +168,7 @@ export class Renderer extends PrismaRendererCmsRenderer {
           } = props;
 
           return <TagPage
-            // key={tagName}
             tagName={tagName}
-            // where={{
-            //   name: tagName,
-            // }}
             {...props}
           />
         }

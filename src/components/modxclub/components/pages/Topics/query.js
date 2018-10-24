@@ -3,7 +3,7 @@ import React from "react";
 
 import gql from "graphql-tag";
 
-import {graphql} from "react-apollo";
+import { graphql } from "react-apollo";
 
 
 export const topicFragment = `
@@ -118,7 +118,7 @@ export const topicsConnectionQuery = gql`
 export const topicQuery = gql`
 
   query topic(
-    $where: TopicWhereUniqueInput
+    $where: TopicWhereUniqueInput!
   ){
     object: topic(
       where: $where
@@ -131,25 +131,11 @@ export const topicQuery = gql`
 
 `;
 
- 
+
+
+
 
 const TopicsQuery = graphql(topicsConnectionQuery);
-
-const TopicQuery = graphql(topicQuery);
-
-
-export const TopicConnector = TopicQuery(props => {
-
-  const {
-    View,
-    ...other
-  } = props;
-
-  return <View 
-    {...other}
-  />;
-});
-
 
 export const TopicsConnector = TopicsQuery(props => {
 
@@ -158,7 +144,22 @@ export const TopicsConnector = TopicsQuery(props => {
     ...other
   } = props;
 
-  return <View 
+  return <View
+    {...other}
+  />;
+});
+
+
+const TopicQuery = graphql(topicQuery);
+
+export const TopicConnector = TopicQuery(props => {
+
+  const {
+    View,
+    ...other
+  } = props;
+
+  return <View
     {...other}
   />;
 });

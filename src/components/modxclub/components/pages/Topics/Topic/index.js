@@ -30,26 +30,54 @@ export class TopicPage extends Page {
 
   setPageMeta(meta = {}) {
 
+    const {
+      data: {
+        object: topic,
+      },
+    } = this.props;
+
+
+    if (!topic) {
+      return;
+    }
+
+    const {
+      name,
+      longtitle,
+    } = topic;
+
     return super.setPageMeta({
-      title: "Топик",
+      title: longtitle || name,
     });
 
   }
 
- 
+
   render() {
 
     const {
+      View,
       ...other
     } = this.props;
 
-    return <Connector
+    return super.render(<View
       {...other}
-    />;
+    />);
 
 
   }
 
 }
 
-export default TopicPage;
+
+const test = (props) => {
+
+  return <Connector
+    View={TopicPage}
+    {...props}
+  />
+
+}
+
+// export default TopicPage;
+export default test;

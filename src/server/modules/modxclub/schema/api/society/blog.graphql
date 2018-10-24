@@ -39,6 +39,7 @@ input BlogWhereInput {
 
 input BlogWhereUniqueInput {
   id: Int
+  uri: String
 }
 
 enum BlogOrderByInput {

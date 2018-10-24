@@ -8,6 +8,8 @@ import Button from "material-ui/Button";
 
 import moment from "moment";
 
+import Header from "./header";
+
 import {
   styles,
   TableView,
@@ -66,8 +68,10 @@ class ForumView extends TableView {
 
   static defaultProps = {
     ...TableView.defaultProps,
-    title: "Топики",
+    title: "",
     columnData: [],
+    // Header,
+    Toolbar: () => (null),
   }
 
 

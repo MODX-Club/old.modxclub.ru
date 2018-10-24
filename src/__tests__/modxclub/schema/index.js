@@ -48,7 +48,6 @@ const requiredTypes = [
         "topic",
         "topics",
         "topicsConnection",
-        "topicsByTagsConnection",
         "comment",
         "comments",
         "commentsConnection",

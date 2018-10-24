@@ -1,29 +1,54 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-class TopicView extends Component {
+
+import EditableView from 'apollo-cms/lib/DataView/Object/Editable';
+
+
+class TopicView extends EditableView {
 
   // propTypes = {
 
   // };
 
 
-  constructor(props){
+  // constructor(props){
 
-    super(props);
+  //   super(props);
 
-    console.log("TopicView constructor", this);
+  //   console.log("TopicView constructor", this);
+
+  // }
+
+
+  canEdit(){
+
+    const {
+      user: currentUser,
+    } = this.context;
+
+    const {
+      id: currentUserId,
+      sudo,
+    } = currentUser || {};
+
+
+    const {
+      id,
+    } = this.getObjectWithMutations() || {};
+
+    return !id || sudo === true;
 
   }
 
 
-  render() {
-    return (
-      <div>
-        TopicView {Math.random()}
-      </div>
-    );
-  }
+  // render() {
+  //   return (
+  //     <div>
+  //       TopicView {Math.random()}
+  //     </div>
+  //   );
+  // }
 }
  
 

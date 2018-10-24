@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 class Header extends Component {
   render() {
     return (
-      <div>
+      <thead>
         
-      </div>
+      </thead>
     );
   }
 }

@@ -44,11 +44,7 @@ export class TagPage extends Page {
       tagName,
       ...other
     } = this.props;
-
-
-    const {
-      getQueryFragment,
-    } = this.context;
+ 
 
     return super.render(<Forum
       tagName={tagName}
