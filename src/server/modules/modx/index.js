@@ -7,6 +7,19 @@ import PrismaModule from "@prisma-cms/prisma-module";
 import UserModule from "./modules/user";
 import ResourceModule from "./modules/resource";
 
+
+import { GraphQLScalarType } from 'graphql';
+import GraphQLJSON from 'graphql-type-json';
+
+const DateTime = new GraphQLScalarType({
+  name: 'DateTime',
+  description: 'The `DateTime` scalar type represents timestamp values as Date',
+  serialize(value) {
+    return value ? new Date(value * 1000) : value;
+  },
+});
+
+
 class ModxModule extends PrismaModule {
 
 
@@ -39,18 +52,22 @@ class ModxModule extends PrismaModule {
 
 
 
-  // getResolvers() {
+  getResolvers() {
 
 
-  //   let resolvers = super.getResolvers();
+    let resolvers = super.getResolvers();
 
-  //   Object.assign(resolvers.Query, {
-  //     users: this.users,
-  //   });
+    // Object.assign(resolvers.Query, {
+    // });
 
-  //   return resolvers;
+    Object.assign(resolvers, {
+      DateTime,
+      Json: GraphQLJSON,
+    });
 
-  // }
+    return resolvers;
+
+  }
 
 
 }

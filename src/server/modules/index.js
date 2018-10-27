@@ -11,34 +11,12 @@ import CmsModule from "@prisma-cms/prisma-module";
 import ModxModule from "./modx";
 import ModxclubModule from "./modxclub";
 
-import { GraphQLScalarType } from 'graphql';
-import GraphQLJSON from 'graphql-type-json';
-
-
-const DateTime = new GraphQLScalarType({
-  name: 'DateTime',
-  description: 'The `DateTime` scalar type represents timestamp values as Date',
-  serialize(value) {
-    return value ? new Date(value * 1000) : value;
-  },
-});
 
 class CoreModule extends CmsModule {
 
 
 
   constructor(options = {}) {
-
-    let {
-      modules = [],
-    } = options;
-
-    modules = modules.concat([
-    ]);
-
-    Object.assign(options, {
-      modules,
-    });
 
     super(options);
 
@@ -108,9 +86,6 @@ class CoreModule extends CmsModule {
 
     let resolvers = {
       Query,
-
-      DateTime,
-      Json: GraphQLJSON,
     };
 
     if (Object.keys(Mutation).length) {
