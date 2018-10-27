@@ -17,8 +17,6 @@ const resolvers = coreModule.getResolvers();
 const imagesMiddleware = new ImagesMiddleware().processRequest;
 
 
-
-
 async function modxRequest(url, options, ctx) {
 
 
