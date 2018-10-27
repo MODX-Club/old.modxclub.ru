@@ -16,23 +16,24 @@ export class ModxDB {
       config,
     });
 
+    this.query = {
+
+      resource: (source, args, ctx, info) => this.resource(source, args, ctx, info),
+      resources: (source, args, ctx, info) => this.resources(source, args, ctx, info),
+      resourcesConnection: (source, args, ctx, info) => this.resourcesConnection(source, args, ctx, info),
+
+      user: (source, args, ctx, info) => this.user(source, args, ctx, info),
+      users: (source, args, ctx, info) => this.users(source, args, ctx, info),
+      usersConnection: (source, args, ctx, info) => this.usersConnection(source, args, ctx, info),
+      usersDebug: (source, args, ctx, info) => this.usersDebug(source, args, ctx, info),
+
+      userBySession: (source, args, ctx, info) => this.userBySession(source, args, ctx, info),
+
+    }
+
   }
 
 
-  query = {
-
-    resource: (source, args, ctx, info) => this.resource(source, args, ctx, info),
-    resources: (source, args, ctx, info) => this.resources(source, args, ctx, info),
-    resourcesConnection: (source, args, ctx, info) => this.resourcesConnection(source, args, ctx, info),
-
-    user: (source, args, ctx, info) => this.user(source, args, ctx, info),
-    users: (source, args, ctx, info) => this.users(source, args, ctx, info),
-    usersConnection: (source, args, ctx, info) => this.usersConnection(source, args, ctx, info),
-    usersDebug: (source, args, ctx, info) => this.usersDebug(source, args, ctx, info),
-
-    userBySession: (source, args, ctx, info) => this.userBySession(source, args, ctx, info),
-
-  }
 
 
   getConfig() {

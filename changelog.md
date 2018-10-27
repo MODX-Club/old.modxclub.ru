@@ -1,3 +1,17 @@
+2.0.2-beta
+============================================
+- Upgrade @prisma-cms/server
+
+2.0.1-beta
+============================================
+- Upgrade dependencies
+
+2.0.0-beta
+============================================
+- Breaking changs! Move server modules into .mjs
+- Upgrade packages
+- Fix SSR
+
 1.6.7-beta
 ============================================
 - Upgrade pakages

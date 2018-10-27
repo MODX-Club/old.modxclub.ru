@@ -8,12 +8,80 @@ import chalk from "chalk";
 class ModxUserModule extends PrismaModule {
 
 
+  constructor(props) {
+
+    super(props);
+
+    this.User = {
+
+      Resources: (source, args, ctx, info) => {
+
+        return ctx.modx.userResources(source, args, ctx, info);
+
+      },
+
+      email: (source, args, ctx, info) => {
+
+        const {
+          currentUser,
+        } = ctx;
+
+        const {
+          email,
+        } = source || {}
+
+        return email && currentUser && currentUser.email === email ? email : null;
+
+      },
+
+      Companies: (source, args, ctx, info) => this.Companies(source, args, ctx, info),
+
+      Notices: (source, args, ctx, info) => this.Notices(source, args, ctx, info),
+
+      Projects: (source, args, ctx, info) => this.Projects(source, args, ctx, info),
+
+    }
+
+
+
+    this.AuthPayload = {
+
+      data: async (source, args, ctx, info) => {
+
+        const {
+          id,
+          username,
+        } = source && source.data || {}
+
+        let where;
+
+        if (id) {
+          where = {
+            id,
+          }
+        }
+        else if (username) {
+          where = {
+            username,
+          }
+        }
+        else {
+          return null;
+        }
+
+        return await ctx.modx.query.user(null, {
+          where,
+        }, ctx, info);
+
+      },
+
+    }
+
+  }
+
   getResolvers() {
 
     let resolvers = super.getResolvers();
-
-
-
 
 
     Object.assign(resolvers.Query, {
@@ -51,35 +119,6 @@ class ModxUserModule extends PrismaModule {
   }
 
 
-  User = {
-
-    Resources: (source, args, ctx, info) => {
-
-      return ctx.modx.userResources(source, args, ctx, info);
-
-    },
-
-    email: (source, args, ctx, info) => {
-
-      const {
-        currentUser,
-      } = ctx;
-
-      const {
-        email,
-      } = source || {}
-
-      return email && currentUser && currentUser.email === email ? email : null;
-
-    },
-
-    Companies: (source, args, ctx, info) => this.Companies(source, args, ctx, info),
-    
-    Notices: (source, args, ctx, info) => this.Notices(source, args, ctx, info),
-
-    Projects: (source, args, ctx, info) => this.Projects(source, args, ctx, info),
-
-  }
 
 
   Companies(source, args, ctx, info) {
@@ -475,39 +514,6 @@ class ModxUserModule extends PrismaModule {
 
   }
 
-
-  AuthPayload = {
-
-    data: async (source, args, ctx, info) => {
-
-      const {
-        id,
-        username,
-      } = source && source.data || {}
-
-      let where;
-
-      if (id) {
-        where = {
-          id,
-        }
-      }
-      else if (username) {
-        where = {
-          username,
-        }
-      }
-      else {
-        return null;
-      }
-
-      return await ctx.modx.query.user(null, {
-        where,
-      }, ctx, info);
-
-    },
-
-  }
 
 
 }

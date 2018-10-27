@@ -11,6 +11,17 @@ import chalk from "chalk";
 class ModxTagModule extends PrismaModule {
 
 
+  constructor(props) {
+
+    super(props)
+
+    this.Tag = {
+  
+      // Topics: (source, args, ctx, info) => this.Topics(source, args, ctx, info),
+  
+    }
+    
+  }
 
   getResolvers() {
 
@@ -32,11 +43,6 @@ class ModxTagModule extends PrismaModule {
   }
 
 
-  Tag = {
-
-    // Topics: (source, args, ctx, info) => this.Topics(source, args, ctx, info),
-
-  }
 
 
   // Topics(source, args, ctx, info) {

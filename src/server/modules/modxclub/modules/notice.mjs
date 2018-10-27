@@ -7,6 +7,19 @@ import chalk from "chalk";
 class ModxNoticeModule extends PrismaModule {
 
 
+  constructor(props) {
+
+    super(props)
+
+    this.Notice = {
+  
+      // CreatedBy: (source, args, ctx, info) => this.CreatedBy(source, args, ctx, info),
+      UsersNotices: (source, args, ctx, info) => this.UsersNotices(source, args, ctx, info),
+  
+      // content: (source, args, ctx, info) => this.content(source, args, ctx, info),
+  
+    }
+  }
 
   getResolvers() {
 
@@ -28,14 +41,6 @@ class ModxNoticeModule extends PrismaModule {
   }
 
 
-  Notice = {
-
-    // CreatedBy: (source, args, ctx, info) => this.CreatedBy(source, args, ctx, info),
-    UsersNotices: (source, args, ctx, info) => this.UsersNotices(source, args, ctx, info),
-
-    // content: (source, args, ctx, info) => this.content(source, args, ctx, info),
-
-  }
 
 
   UsersNotices(source, args, ctx, info) {

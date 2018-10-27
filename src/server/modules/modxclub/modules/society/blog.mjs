@@ -7,6 +7,17 @@ import chalk from "chalk";
 class ModxBlogModule extends PrismaModule {
 
 
+  constructor(props) {
+
+    super(props)
+
+    this.Blog = {
+  
+      CreatedBy: (source, args, ctx, info) => this.CreatedBy(source, args, ctx, info),
+      Topics: (source, args, ctx, info) => this.Topics(source, args, ctx, info),
+  
+    }
+  }
 
   getResolvers() {
 
@@ -28,12 +39,6 @@ class ModxBlogModule extends PrismaModule {
   }
 
 
-  Blog = {
-
-    CreatedBy: (source, args, ctx, info) => this.CreatedBy(source, args, ctx, info),
-    Topics: (source, args, ctx, info) => this.Topics(source, args, ctx, info),
-
-  }
 
 
   CreatedBy(source, args, ctx, info) {

@@ -7,6 +7,19 @@ import chalk from "chalk";
 class ModxProjectMemberModule extends PrismaModule {
 
 
+  constructor(props) {
+
+    super(props)
+
+    this.ProjectMember = {
+  
+      Project: (source, args, ctx, info) => this.Project(source, args, ctx, info),
+      User: (source, args, ctx, info) => this.User(source, args, ctx, info),
+      Service: (source, args, ctx, info) => this.Service(source, args, ctx, info),
+  
+    }
+
+  }
 
   getResolvers() {
 
@@ -28,13 +41,6 @@ class ModxProjectMemberModule extends PrismaModule {
   }
 
 
-  ProjectMember = {
-
-    Project: (source, args, ctx, info) => this.Project(source, args, ctx, info),
-    User: (source, args, ctx, info) => this.User(source, args, ctx, info),
-    Service: (source, args, ctx, info) => this.Service(source, args, ctx, info),
-
-  }
 
 
 

@@ -7,6 +7,17 @@ import chalk from "chalk";
 class ModxProjectModule extends PrismaModule {
 
 
+  constructor(props) {
+
+    super(props)
+
+    this.Project = {
+  
+      Members: (source, args, ctx, info) => this.Members(source, args, ctx, info),
+  
+    }
+    
+  }
 
   getResolvers() {
 
@@ -28,11 +39,6 @@ class ModxProjectModule extends PrismaModule {
   }
 
 
-  Project = {
-
-    Members: (source, args, ctx, info) => this.Members(source, args, ctx, info),
-
-  }
 
 
   Members(source, args, ctx, info) {

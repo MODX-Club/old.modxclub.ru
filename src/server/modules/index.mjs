@@ -2,8 +2,8 @@
 import fs from "fs";
 
 import chalk from "chalk";
+ 
 
-import { fileLoader, mergeTypes } from 'merge-graphql-schemas';
 
 // import {CmsModule} from "@prisma-cms/server";
 import CmsModule from "@prisma-cms/prisma-module";
@@ -11,6 +11,22 @@ import CmsModule from "@prisma-cms/prisma-module";
 import ModxModule from "./modx";
 import ModxclubModule from "./modxclub";
 
+
+// import LogModule from "@prisma-cms/log-module";
+// import UserModule from "@prisma-cms/user-module";
+// import MailModule from "@prisma-cms/mail-module";
+// import UploadModule from "@prisma-cms/upload-module";
+
+
+import MergeSchema from 'merge-graphql-schemas';
+
+import path from 'path';
+
+const moduleURL = new URL(import.meta.url);
+
+const __dirname = path.dirname(moduleURL.pathname);
+
+const { fileLoader, mergeTypes } = MergeSchema;
 
 class CoreModule extends CmsModule {
 
@@ -21,6 +37,10 @@ class CoreModule extends CmsModule {
     super(options);
 
     this.mergeModules([
+      // UserModule,
+      // LogModule,
+      // MailModule,
+      // UploadModule,
       ModxModule,
       ModxclubModule,
     ]);

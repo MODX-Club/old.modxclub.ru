@@ -7,6 +7,20 @@ import chalk from "chalk";
 class ModxVoteModule extends PrismaModule {
 
 
+  constructor(props) {
+
+    super(props)
+
+    this.Vote = {
+  
+      // Topics: (source, args, ctx, info) => this.Topics(source, args, ctx, info),
+      User: (source, args, ctx, info) => this.User(source, args, ctx, info),
+      Thread: (source, args, ctx, info) => this.Thread(source, args, ctx, info),
+      Target: (source, args, ctx, info) => this.Target(source, args, ctx, info),
+  
+    }
+    
+  }
 
   getResolvers() {
 
@@ -28,14 +42,6 @@ class ModxVoteModule extends PrismaModule {
   }
 
 
-  Vote = {
-
-    // Topics: (source, args, ctx, info) => this.Topics(source, args, ctx, info),
-    User: (source, args, ctx, info) => this.User(source, args, ctx, info),
-    Thread: (source, args, ctx, info) => this.Thread(source, args, ctx, info),
-    Target: (source, args, ctx, info) => this.Target(source, args, ctx, info),
-
-  }
 
 
   // Topics(source, args, ctx, info) {

@@ -7,6 +7,17 @@ import chalk from "chalk";
 class ModxServiceModule extends PrismaModule {
 
 
+  constructor(props) {
+
+    super(props)
+
+    this.Service = {
+  
+      // UsersServices: (source, args, ctx, info) => this.UsersServices(source, args, ctx, info),
+  
+    }
+    
+  }
 
   getResolvers() {
 
@@ -28,11 +39,6 @@ class ModxServiceModule extends PrismaModule {
   }
 
 
-  Service = {
-
-    // UsersServices: (source, args, ctx, info) => this.UsersServices(source, args, ctx, info),
-
-  }
 
 
   // UsersServices(source, args, ctx, info) {

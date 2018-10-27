@@ -6,6 +6,18 @@ import chalk from "chalk";
 
 class ModxUserNoticeModule extends PrismaModule {
 
+  constructor(props) {
+
+    super(props)
+
+    this.UserNotice = {
+  
+      User: (source, args, ctx, info) => this.User(source, args, ctx, info),
+      Notice: (source, args, ctx, info) => this.Notice(source, args, ctx, info),
+  
+    }
+    
+  }
 
   getResolvers() {
 
@@ -27,12 +39,6 @@ class ModxUserNoticeModule extends PrismaModule {
   }
 
 
-  UserNotice = {
-
-    User: (source, args, ctx, info) => this.User(source, args, ctx, info),
-    Notice: (source, args, ctx, info) => this.Notice(source, args, ctx, info),
-
-  }
 
 
   User(source, args, ctx, info) {

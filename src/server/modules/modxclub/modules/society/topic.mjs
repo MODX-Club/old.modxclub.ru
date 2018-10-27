@@ -7,6 +7,23 @@ import chalk from "chalk";
 class ModxTopicModule extends PrismaModule {
 
 
+  constructor(props) {
+
+    super(props)
+
+    this.Topic = {
+
+      CreatedBy: (source, args, ctx, info) => this.CreatedBy(source, args, ctx, info),
+      Blog: (source, args, ctx, info) => this.Blog(source, args, ctx, info),
+      Comments: (source, args, ctx, info) => this.Comments(source, args, ctx, info),
+      Tags: (source, args, ctx, info) => this.Tags(source, args, ctx, info),
+      Thread: (source, args, ctx, info) => this.Thread(source, args, ctx, info),
+      content: (source, args, ctx, info) => this.content(source, args, ctx, info),
+
+    }
+
+
+  }
 
   getResolvers() {
 
@@ -28,18 +45,6 @@ class ModxTopicModule extends PrismaModule {
 
   }
 
-
-  Topic = {
-
-    CreatedBy: (source, args, ctx, info) => this.CreatedBy(source, args, ctx, info),
-    Blog: (source, args, ctx, info) => this.Blog(source, args, ctx, info),
-    Comments: (source, args, ctx, info) => this.Comments(source, args, ctx, info),
-    Tags: (source, args, ctx, info) => this.Tags(source, args, ctx, info),
-    Thread: (source, args, ctx, info) => this.Thread(source, args, ctx, info),
-    content: (source, args, ctx, info) => this.content(source, args, ctx, info),
-
-  }
- 
 
   CreatedBy(source, args, ctx, info) {
 
@@ -94,7 +99,7 @@ class ModxTopicModule extends PrismaModule {
       id: topic_id,
     } = source || {};
 
-    if(!topic_id){
+    if (!topic_id) {
       return [];
     }
 
@@ -118,7 +123,7 @@ class ModxTopicModule extends PrismaModule {
       id: topic_id,
     } = source || {};
 
-    if(!topic_id){
+    if (!topic_id) {
       return [];
     }
 

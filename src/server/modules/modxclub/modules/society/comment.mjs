@@ -7,6 +7,23 @@ import chalk from "chalk";
 class ModxCommentModule extends PrismaModule {
 
 
+  constructor(props) {
+
+    super(props)
+    
+    this.Comment = {
+  
+      CreatedBy: (source, args, ctx, info) => this.CreatedBy(source, args, ctx, info),
+      Topic: (source, args, ctx, info) => this.Topic(source, args, ctx, info),
+      Parent: (source, args, ctx, info) => this.Parent(source, args, ctx, info),
+      Thread: (source, args, ctx, info) => this.Thread(source, args, ctx, info),
+      Childs: (source, args, ctx, info) => this.Childs(source, args, ctx, info),
+  
+      text: (source, args, ctx, info) => this.text(source, args, ctx, info),
+  
+    }
+
+  }
 
   getResolvers() {
 
@@ -28,17 +45,6 @@ class ModxCommentModule extends PrismaModule {
   }
 
 
-  Comment = {
-
-    CreatedBy: (source, args, ctx, info) => this.CreatedBy(source, args, ctx, info),
-    Topic: (source, args, ctx, info) => this.Topic(source, args, ctx, info),
-    Parent: (source, args, ctx, info) => this.Parent(source, args, ctx, info),
-    Thread: (source, args, ctx, info) => this.Thread(source, args, ctx, info),
-    Childs: (source, args, ctx, info) => this.Childs(source, args, ctx, info),
-
-    text: (source, args, ctx, info) => this.text(source, args, ctx, info),
-
-  }
 
 
   CreatedBy(source, args, ctx, info) {

@@ -1,6 +1,4 @@
-
-
-import { fileLoader, mergeTypes } from 'merge-graphql-schemas';
+  
 
 import PrismaModule from "@prisma-cms/prisma-module";
 
@@ -20,6 +18,15 @@ import TopicTagModule from "./modules/society/topicTag";
 import CommentModule from "./modules/society/comment";
 import VoteModule from "./modules/society/vote";
 
+import MergeSchema from 'merge-graphql-schemas';
+
+import path from 'path';
+
+const moduleURL = new URL(import.meta.url);
+
+const __dirname = path.dirname(moduleURL.pathname);
+
+const { fileLoader, mergeTypes } = MergeSchema;
 
 class ModxclubModules extends PrismaModule {
 

@@ -1,7 +1,5 @@
 
 
-import { fileLoader, mergeTypes } from 'merge-graphql-schemas';
-
 import PrismaModule from "@prisma-cms/prisma-module";
 
 import UserModule from "./modules/user";
@@ -10,6 +8,17 @@ import ResourceModule from "./modules/resource";
 
 import { GraphQLScalarType } from 'graphql';
 import GraphQLJSON from 'graphql-type-json';
+
+import MergeSchema from 'merge-graphql-schemas';
+
+import path from 'path';
+
+const moduleURL = new URL(import.meta.url);
+
+const __dirname = path.dirname(moduleURL.pathname);
+
+const { fileLoader, mergeTypes } = MergeSchema;
+
 
 const DateTime = new GraphQLScalarType({
   name: 'DateTime',

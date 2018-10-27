@@ -7,6 +7,18 @@ import chalk from "chalk";
 class ModxThreadModule extends PrismaModule {
 
 
+  constructor(props) {
+
+    super(props)
+
+    this.Thread = {
+  
+      Comments: (source, args, ctx, info) => this.Comments(source, args, ctx, info),
+      Votes: (source, args, ctx, info) => this.Votes(source, args, ctx, info),
+  
+    }
+    
+  }
 
   getResolvers() {
 
@@ -28,12 +40,6 @@ class ModxThreadModule extends PrismaModule {
   }
 
 
-  Thread = {
-
-    Comments: (source, args, ctx, info) => this.Comments(source, args, ctx, info),
-    Votes: (source, args, ctx, info) => this.Votes(source, args, ctx, info),
-
-  }
 
 
   Comments(source, args, ctx, info) {
