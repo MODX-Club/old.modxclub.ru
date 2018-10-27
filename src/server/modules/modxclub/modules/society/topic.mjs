@@ -82,7 +82,6 @@ class ModxTopicModule extends PrismaModule {
       thread_id,
     } = source || {};
 
-    // console.log("Thread thread_id", thread_id, source);
 
     return thread_id ? ctx.modx.query.thread(null, {
       where: {

@@ -263,8 +263,6 @@ export class ModxDB {
       published: 1,
     });
 
-    // console.log("prepareResourcesQuery SQL", query.toString());
-
     return query;
   }
 

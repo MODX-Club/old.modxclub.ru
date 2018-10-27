@@ -19,7 +19,7 @@ class ModxVoteModule extends PrismaModule {
       Target: (source, args, ctx, info) => this.Target(source, args, ctx, info),
   
     }
-    
+
   }
 
   getResolvers() {
@@ -117,7 +117,6 @@ class ModxVoteModule extends PrismaModule {
       }
     } = ctx;
 
-    // console.log("Vote target", source);
 
     if (!target_id || !target_class) {
       return null;
