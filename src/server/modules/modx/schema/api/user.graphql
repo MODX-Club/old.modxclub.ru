@@ -110,7 +110,7 @@ type UserResponse {
 # type SigninResponse {
 #   success: Boolean!
 #   message: String
-#   data: Json
+#   data: JSON
 #   object: LoginPayload
 # }
 

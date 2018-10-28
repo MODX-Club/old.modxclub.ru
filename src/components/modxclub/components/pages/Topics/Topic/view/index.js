@@ -55,6 +55,10 @@ const styles = {
 class TopicView extends EditableView {
 
 
+  static defaultProps = {
+    ...EditableView.defaultProps,
+  }
+
   canEdit() {
 
     const {
@@ -110,6 +114,8 @@ class TopicView extends EditableView {
     const object = this.getObjectWithMutations();
 
     const {
+      id: topicId,
+      topic_tags,
       CreatedBy,
       createdAt,
     } = object || {}
@@ -181,6 +187,25 @@ class TopicView extends EditableView {
             name: "name",
             label: "Название топика",
             helperText: "Укажите название топика",
+          }) : null}
+
+          {inEditMode && !topicId ? this.getTextField({
+            name: "topic_tags",
+            label: "Теги",
+            helperText: "Перечислите теги через запятую",
+            value: topic_tags && topic_tags.join(",")|| "",
+            onChange: event => {
+
+              const {
+                name,
+                value,
+              } = event.target;
+
+              this.updateObject({
+                [name]: value && value.split(",").map(n => n && n.trim() || "") || [],
+              });
+
+            }
           }) : null}
 
         </Grid>

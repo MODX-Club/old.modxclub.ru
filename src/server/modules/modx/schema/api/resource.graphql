@@ -3,7 +3,7 @@ type Resource {
   id: Int!
   pagetitle: String
   longtitle: String
-  content: Json
+  content: JSON
   alias: String
   published: Boolean!
   deleted: Boolean!

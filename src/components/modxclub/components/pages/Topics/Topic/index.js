@@ -68,9 +68,9 @@ export class TopicPage extends Page {
       loading,
     } = data;
 
-    if(!object){
+    if (!object) {
 
-      if(loading){
+      if (loading) {
         return null;
       }
       else {
@@ -81,6 +81,7 @@ export class TopicPage extends Page {
 
     return super.render(<View
       data={data}
+      onSave={this.onSave}
       {...other}
     />);
 

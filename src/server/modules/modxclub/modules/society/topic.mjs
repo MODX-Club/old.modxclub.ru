@@ -4,6 +4,157 @@ import PrismaModule from "@prisma-cms/prisma-module";
 
 import chalk from "chalk";
 
+
+import Processor from "@prisma-cms/prisma-processor";
+
+
+class TopicProcessor extends Processor {
+
+
+
+  // async create(objectType, args, info) {
+
+  //   // return await this.mutate(`create${objectType}`, args, info)
+  //   //   .catch(error => {
+  //   //     this.error({
+  //   //       message: error,
+  //   //       objectType,
+  //   //     });
+  //   //     this.addError(error);
+  //   //     throw (error);
+  //   //   })
+  //   //   ;
+
+  //   // // return this.prepareResponse();
+
+  // }
+
+
+  async mutate(method, args, info) {
+
+    // const {
+    //   db,
+    // } = this.ctx;
+
+    // // console.log("mutatoin db", db);
+    // // console.log("mutatoin db", args);
+    // // console.log("mutatoin info", info);
+
+    // if (!this.hasErrors()) {
+    //   const result = await db.mutation[method](args, info)
+    //     .catch(error => {
+    //       this.addError(error);
+    //       this.error(error);
+    //       throw (error);
+    //     });
+
+    //   return result;
+    // }
+
+    const {
+      ctx,
+    } = this;
+
+    const {
+      modxRequest,
+    } = ctx;
+
+
+    let {
+      data: {
+        name: pagetitle,
+        content,
+        ...data
+      },
+    } = args;
+
+
+    if(content && typeof content === "object"){
+
+      try{
+  
+        content = JSON.stringify(content)
+  
+      }
+      catch(error){
+        throw(error);
+      }
+    }
+
+
+
+    const result = await modxRequest("/assets/components/modxsite/connectors/connector.php", {
+      data: {
+        pub_action: "topics/create",
+        pagetitle,
+        content,
+        plainText: "mock",
+        ...data,
+      },
+    }, ctx)
+      .then(async r => {
+
+        return await r.json();
+
+      })
+      .catch(error => {
+        console.error(chalk.red("Response error"), error);
+        this.addError(error);
+      });
+
+    console.log(chalk.green("result"), result);
+
+
+    const {
+      success,
+      message,
+      data: errors,
+      object,
+    } = result || {}
+
+
+
+    if (success && object) {
+      
+      return object;
+
+    }
+    else {
+
+      this.addError(message || "Ошибка выполнения запроса");
+
+      errors && errors.map(error => {
+
+        let {
+          id: key,
+          msg: message,
+        } = error || {}
+
+
+        switch(key){
+
+          case "pagetitle":
+          
+            key = "name";
+            break;
+
+        }
+        
+
+        if (key && message) {
+          this.addFieldError(key, message);
+        }
+
+      });
+
+    }
+
+    return;
+  }
+
+}
+
+
 class ModxTopicModule extends PrismaModule {
 
 
@@ -22,6 +173,24 @@ class ModxTopicModule extends PrismaModule {
 
     }
 
+    this.TopicResponse = {
+
+      data: (source, args, ctx, info) => {
+
+        const {
+          id,
+        } = source.data || {}
+
+        return id ? ctx.modx.query.topic(null, {
+          where: {
+            id,
+          },
+        }, ctx, info) : null;
+
+      },
+
+    }
+
 
   }
 
@@ -34,11 +203,16 @@ class ModxTopicModule extends PrismaModule {
       topic: this.topic,
       topics: this.topics,
       topicsConnection: this.topicsConnection,
-      // topicsByTagsConnection: this.topicsByTagsConnection,
+    });
+
+    Object.assign(resolvers.Mutation, {
+      createTopicProcessor: this.createTopicProcessor,
+      updateTopicProcessor: this.updateTopicProcessor,
     });
 
     Object.assign(resolvers, {
       Topic: this.Topic,
+      TopicResponse: this.TopicResponse,
     });
 
     return resolvers;
@@ -188,14 +362,19 @@ class ModxTopicModule extends PrismaModule {
   }
 
 
-  /**
-   * Получаем топики с учетом тега
-   */
-  // topicsByTagsConnection(source, args, ctx, info) {
+  createTopicProcessor(source, args, ctx, info) {
 
-  //   return ctx.modx.query.topicsByTagsConnection(source, args, ctx, info);
+    return new TopicProcessor(ctx).createWithResponse("Topic", args, info);
 
-  // }
+  }
+
+
+  updateTopicProcessor(source, args, ctx, info) {
+
+    return new TopicProcessor(ctx).updateWithResponse("Topic", args, info);
+
+  }
+
 
 }
 

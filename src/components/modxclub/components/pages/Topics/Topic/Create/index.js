@@ -6,6 +6,10 @@ import { graphql, compose } from 'react-apollo';
 import { TopicPage } from '../';
 
 
+import {
+  createTopicProcessor,
+} from "../../query";
+
 export class TopicCreatePage extends TopicPage {
 
 
@@ -19,31 +23,37 @@ export class TopicCreatePage extends TopicPage {
   }
 
 
-  onSave(result) {
+  onSave = (result) => {
 
     console.log("onSave", result);
 
-    // if (result) {
+    if (result && result.data) {
 
-    //   const {
-    //     object,
-    //   } = result.data || {}
+      const {
+        history,
+      } = this.props;
 
 
-    //   const {
-    //     id,
-    //   } = object || {};
+      const {
+        location,
+      } = history;
 
-    //   if (id) {
+      const {
+        response: {
+          data: object,
+        },
+      } = result.data || {}
 
-    //     const {
-    //       history,
-    //     } = this.props;
+      const {
+        uri,
+      } = object || {};
 
-    //     history.replace(`/companies/${id}/`);
-    //   }
+      if (uri && location.pathname !== uri) {
 
-    // }
+        history.replace(`/${uri}`);
+      }
+
+    }
 
   }
 
@@ -118,11 +128,11 @@ export class TopicCreatePage extends TopicPage {
 
 
 
-export default class CreatePage extends Component {
+export class CreatePage extends Component {
 
 
   static contextTypes = {
-    user: PropTypes.user,
+    user: PropTypes.object,
   }
 
   render() {
@@ -141,8 +151,12 @@ export default class CreatePage extends Component {
       }}
       _dirty={{
         name: "",
+        topic_tags: [],
+        content: [],
       }}
     />;
 
   }
 }
+
+export default graphql(createTopicProcessor)(CreatePage);

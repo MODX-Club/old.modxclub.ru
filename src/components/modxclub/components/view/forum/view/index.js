@@ -223,7 +223,7 @@ class ForumView extends TableView {
           });
 
 
-          if (users.length < users && users.findIndex(n => n.id === CreatedBy.id) === -1) {
+          if (users.length < limit && users.findIndex(n => n.id === CreatedBy.id) === -1) {
             users.push(CreatedBy);
           }
 

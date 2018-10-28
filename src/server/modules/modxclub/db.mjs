@@ -616,12 +616,14 @@ export class ModxclubDB extends ModxDB {
 
 
     let {
-      where: {
-        tag,
-        tag_in,
-        ...where
-      },
+      where: propsWhere,
     } = args;
+
+    let {
+      tag,
+      tag_in,
+      ...where
+    } = propsWhere || {}
 
     args.where = {
       ...where

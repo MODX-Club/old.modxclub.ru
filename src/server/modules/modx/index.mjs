@@ -71,7 +71,7 @@ class ModxModule extends PrismaModule {
 
     Object.assign(resolvers, {
       DateTime,
-      Json: GraphQLJSON,
+      JSON: GraphQLJSON,
     });
 
     return resolvers;

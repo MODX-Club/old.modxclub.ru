@@ -1,0 +1,13 @@
+
+type Mutation {
+
+  createTopicProcessor(
+    data: TopicCreateInput!
+  ): TopicResponse!
+
+  updateTopicProcessor(
+    where: TopicWhereUniqueInput!
+    data: TopicUpdateInput!
+  ): TopicResponse!
+
+}

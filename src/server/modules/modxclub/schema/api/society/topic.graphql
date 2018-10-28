@@ -2,9 +2,9 @@
 type Topic {
   id: Int!
   name: String!
-  pagetitle: String!
+  # pagetitle: String!
   longtitle: String
-  content: Json
+  content: JSON
   alias: String
   published: Boolean!
   deleted: Boolean!
@@ -76,4 +76,23 @@ type AggregateTopic {
 
 type TopicEdge {
   node: Topic!
+}
+
+type TopicResponse {
+  success: Boolean!
+  message: String
+  errors: [Error!]!
+  data: Topic
+}
+
+input TopicCreateInput {
+  name: String!
+  content: JSON!
+  topic_tags: [String!]!
+}
+
+input TopicUpdateInput {
+  name: String
+  content: JSON
+  topic_tags: [String!]
 }

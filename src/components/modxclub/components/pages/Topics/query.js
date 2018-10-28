@@ -137,6 +137,33 @@ export const topicQuery = gql`
 `;
 
 
+export const createTopicProcessor = gql`
+ 
+
+  mutation createTopicProcessor(
+    $data:TopicCreateInput!
+    $getCommentsText:Boolean = true
+  ){
+    response: createTopicProcessor(
+      data: $data
+    ){
+      success
+      message
+      errors{
+        key
+        message
+      }
+      data{
+        ...topicsFullFragment
+      }
+    }
+  }
+
+  ${topicsFullFragment}
+
+`;
+
+
 
 
 
