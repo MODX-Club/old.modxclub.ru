@@ -42,7 +42,7 @@ export const styles = theme => {
       fontFamily,
       fontSize,
       color: primary,
-      
+
       height: "100vh",
       display: "flex",
       flexDirection: "column",
@@ -129,13 +129,18 @@ export class Renderer extends PrismaRendererCmsRenderer {
       },
       {
         exact: false,
-        path: /^\/((topics\/.+)|(blog\/.+[0-9].html$))/,
+        path: "/(topics/.+|blog/.+[0-9].html)",
+        // path: /^\/((topics\/.+)|(blog\/.+[0-9].html$))/,
         render: (props) => {
+
+          // console.log("Renderer props", props);
+
           const {
             match: {
               params: {
                 0: uri,
               },
+              // url: uri,
             },
           } = props;
 
@@ -150,8 +155,12 @@ export class Renderer extends PrismaRendererCmsRenderer {
       },
       {
         exact: false,
-        path: /^\/(blogs?\/(.+))/,
+        // path: /^\/(blogs?\/(.+))/,
+        path: "/(blogs?/.+)",
         render: (props) => {
+
+          // console.log("Renderer props", props);
+
           const {
             match: {
               params: {
