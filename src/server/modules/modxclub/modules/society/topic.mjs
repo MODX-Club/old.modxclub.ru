@@ -12,31 +12,11 @@ class TopicProcessor extends Processor {
 
 
 
-  // async create(objectType, args, info) {
-
-  //   // return await this.mutate(`create${objectType}`, args, info)
-  //   //   .catch(error => {
-  //   //     this.error({
-  //   //       message: error,
-  //   //       objectType,
-  //   //     });
-  //   //     this.addError(error);
-  //   //     throw (error);
-  //   //   })
-  //   //   ;
-
-  //   // // return this.prepareResponse();
-
-  // }
-
-
   async update(objectType, args, info) {
 
 
     let {
       data: {
-        // name,
-        // content,
         topic_tags,
         ...data
       },
@@ -57,34 +37,6 @@ class TopicProcessor extends Processor {
       id: topicId,
     } = where || {};
 
-    /**
-     * Получаем топик
-     */
-    // const topic = await modx.query.topic(null, {
-    //   where,
-    // }, ctx);
-
-
-    // console.log(chalk.green("update topic"), topic);
-
-    // if (!topic) {
-    //   return this.addError("Не был получен топик");
-    // }
-
-    // const {
-    //   id: topic_id,
-    //   name: topicName,
-    //   content: topicContent,
-    // } = topic;
-
-
-    // if (name === undefined) {
-    //   name = topicName;
-    // }
-
-    // if (content === undefined) {
-    //   content = topicContent;
-    // }
 
     /**
      * Получаем теги
@@ -98,8 +50,6 @@ class TopicProcessor extends Processor {
         },
       }, ctx);
 
-      // console.log(chalk.green("update topic tags"), tags);
-
       topic_tags = tags.map(n => n.name);
 
     }
@@ -108,8 +58,6 @@ class TopicProcessor extends Processor {
 
     args.data = {
       ...data,
-      // pagetitle: name,
-      // content,
       topic_tags,
     }
 
@@ -118,25 +66,6 @@ class TopicProcessor extends Processor {
 
 
   async mutate(method, args, info) {
-
-    // const {
-    //   db,
-    // } = this.ctx;
-
-    // // console.log("mutatoin db", db);
-    // // console.log("mutatoin db", args);
-    // // console.log("mutatoin info", info);
-
-    // if (!this.hasErrors()) {
-    //   const result = await db.mutation[method](args, info)
-    //     .catch(error => {
-    //       this.addError(error);
-    //       this.error(error);
-    //       throw (error);
-    //     });
-
-    //   return result;
-    // }
 
     const {
       ctx,
@@ -156,7 +85,7 @@ class TopicProcessor extends Processor {
       where,
     } = args;
 
-    
+
     const {
       id,
     } = where || {};
@@ -233,7 +162,6 @@ class TopicProcessor extends Processor {
             break;
 
         }
-
 
         if (key && message) {
           this.addFieldError(key, message);

@@ -56,3 +56,22 @@ type AggregateComment {
 type CommentEdge {
   node: Comment!
 }
+
+
+
+type CommentResponse {
+  success: Boolean!
+  message: String
+  errors: [Error!]!
+  data: Comment
+}
+
+input CommentCreateInput {
+  text: JSON!
+  topic_id: Int!
+}
+
+input CommentUpdateInput {
+  text: JSON
+}
+

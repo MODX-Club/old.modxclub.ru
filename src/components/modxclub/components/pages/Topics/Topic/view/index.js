@@ -24,12 +24,12 @@ import {
 
 
 // import TextEditor from "@modxclub/react-editor";
-import TopicEditor from "@modxclub/react-editor";
+import Editor from "@modxclub/react-editor";
 import { Typography } from 'material-ui';
 
 import Grid from "@prisma-cms/front/lib/modules/ui/Grid";
 
-// import TopicEditor from "@modxclub/old/editor/topiceditor";
+import CommentsView from "./Comments"; 
 
 const styles = {
   root: {
@@ -193,7 +193,7 @@ class TopicView extends EditableView {
             name: "topic_tags",
             label: "Теги",
             helperText: "Перечислите теги через запятую",
-            value: topic_tags && topic_tags.join(",")|| "",
+            value: topic_tags && topic_tags.join(",") || "",
             onChange: event => {
 
               const {
@@ -224,7 +224,7 @@ class TopicView extends EditableView {
       return null;
     }
 
-    console.log("renderDefaultView", object);
+    // console.log("renderDefaultView", object);
 
     const {
       classes,
@@ -290,7 +290,7 @@ class TopicView extends EditableView {
 
       <div>
 
-        <TopicEditor
+        <Editor
           className="topic-editor"
           content={content}
           inEditMode={inEditMode || false}
@@ -309,6 +309,10 @@ class TopicView extends EditableView {
 
 
       </div>
+
+      <CommentsView
+        topic={object}
+      />
 
 
       {/* {fullView === true && (id > 0 && inEditMode !== true) ? <ArticleInfoComments

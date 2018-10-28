@@ -51,6 +51,8 @@ export const styles = theme => {
 
     header: {
       marginBottom: 6,
+      position: "relative",
+      zIndex: 1,
     },
 
     body: {

@@ -14,7 +14,7 @@ export default class PageLayout extends PrismaCmsPageLayout {
     return content === null ? null : super.render(<div
       style={{
         padding: "20px 10px",
-        maxWidth: 1440,
+        maxWidth: 1260,
         margin: "0 auto",
       }}
     >

@@ -10,4 +10,14 @@ type Mutation {
     data: TopicUpdateInput!
   ): TopicResponse!
 
+
+  createCommentProcessor(
+    data: CommentCreateInput!
+  ): CommentResponse!
+
+  updateCommentProcessor(
+    where: CommentWhereUniqueInput!
+    data: CommentUpdateInput!
+  ): CommentResponse!
+
 }

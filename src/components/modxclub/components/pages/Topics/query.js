@@ -6,6 +6,11 @@ import gql from "graphql-tag";
 import { graphql, compose } from "react-apollo";
 
 
+import {
+  CommentNoNestingFragment,
+} from "../../../../../schema/generated/api.fragments";
+
+
 export const topicFragment = `
   fragment topicFragment on Topic{
     id
@@ -19,7 +24,7 @@ export const topicFragment = `
       ...TopicUserNoNesting
     }
     Comments(
-      orderBy: id_DESC
+      orderBy: id_ASC
     ){
       id
       createdAt
@@ -193,6 +198,58 @@ export const updateTopicProcessor = gql`
 `;
 
 
+export const createCommentProcessor = gql`
+ 
+
+  mutation createCommentProcessor(
+    $data: CommentCreateInput!
+  ){
+    response: createCommentProcessor(
+      data: $data
+    ){
+      success
+      message
+      errors{
+        key
+        message
+      }
+      data{
+        ...CommentNoNesting
+      }
+    }
+  }
+
+  ${CommentNoNestingFragment}
+
+`;
+
+
+export const updateCommentProcessor = gql`
+ 
+
+  mutation updateCommentProcessor(
+    $data: CommentUpdateInput!
+    $where: CommentWhereUniqueInput!
+  ){
+    response: updateCommentProcessor(
+      data: $data
+      where: $where
+    ){
+      success
+      message
+      errors{
+        key
+        message
+      }
+      data{
+        ...CommentNoNesting
+      }
+    }
+  }
+
+  ${CommentNoNestingFragment}
+
+`;
 
 
 
@@ -212,6 +269,7 @@ export const TopicsConnector = TopicsQuery(props => {
 
 
 const TopicQuery = compose(graphql(topicQuery), graphql(updateTopicProcessor));
+
 
 export const TopicConnector = TopicQuery(props => {
 
