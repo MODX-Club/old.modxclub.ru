@@ -16,6 +16,7 @@ import MainMenu from "../menu/mainMenu";
 
 import MainPage from "../pages/MainPage";
 import TopicPage from "../pages/Topics/Topic";
+import TopicCreatePage from "../pages/Topics/Topic/Create";
 import TagPage from "../pages/Tags/Tag";
 import BlogPage from "../pages/Blogs/Blog";
 
@@ -126,6 +127,11 @@ export class Renderer extends PrismaRendererCmsRenderer {
             {...props}
           />
         }
+      },
+      {
+        exact: true,
+        path: "/add-topic.html",
+        component: TopicCreatePage,
       },
       {
         exact: false,

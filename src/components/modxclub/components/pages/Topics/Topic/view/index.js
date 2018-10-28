@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 
 import EditableView from 'apollo-cms/lib/DataView/Object/Editable';
 
-import Card, {
-  CardHeader,
-  CardContent,
-  CardMedia,
-  CardActions,
-} from 'material-ui/Card';
+// import Card, {
+//   CardHeader,
+//   CardContent,
+//   CardMedia,
+//   CardActions,
+// } from 'material-ui/Card';
 
 import TextField from 'material-ui/TextField';
 import withStyles from 'material-ui/styles/withStyles';
@@ -25,6 +25,10 @@ import {
 
 // import TextEditor from "@modxclub/react-editor";
 import TopicEditor from "@modxclub/react-editor";
+import { Typography } from 'material-ui';
+
+import Grid from "@prisma-cms/front/lib/modules/ui/Grid";
+
 // import TopicEditor from "@modxclub/old/editor/topiceditor";
 
 const styles = {
@@ -40,9 +44,10 @@ const styles = {
   bullet: {
   },
   header: {
-    '& a': {
-      textDecoration: 'none',
-    },
+    // '& a': {
+    //   textDecoration: 'none',
+    // },
+    marginBottom: 30,
   },
 }
 
@@ -64,18 +69,124 @@ class TopicView extends EditableView {
 
     const {
       id,
+      CreatedBy,
     } = this.getObjectWithMutations() || {};
 
-    return !id || sudo === true;
+
+    const {
+      id: createdById,
+    } = CreatedBy || {}
+
+    return !id || (createdById && createdById === currentUserId) || sudo === true;
 
   }
 
+
+  getCacheKey() {
+
+    const {
+      id,
+    } = this.getObject() || {};
+
+    return `item_${id || "new"}`;
+  }
 
 
 
   addMessage = () => {
 
     console.log("addMessage");
+
+  }
+
+
+
+  renderHeader() {
+
+    const {
+      classes,
+    } = this.props;
+
+    const object = this.getObjectWithMutations();
+
+    const {
+      CreatedBy,
+      createdAt,
+    } = object || {}
+
+
+
+    const inEditMode = this.isInEditMode();
+
+    return <div
+      className={classes.header}
+    >
+      <Grid
+        container
+        spacing={16}
+      >
+
+        {CreatedBy
+          ?
+          <Grid
+            item
+          >
+
+            <UserLink
+              user={CreatedBy}
+              showName={false}
+              avatarProps={{
+                size: "medium",
+              }}
+            />
+          </Grid>
+          : null
+        }
+
+        <Grid
+          item
+        >
+          {CreatedBy
+            ?
+            <UserLink
+              user={CreatedBy}
+              withAvatar={false}
+            />
+            :
+            null
+          }
+
+          {createdAt ? <Typography
+            variant="caption"
+            color="textSecondary"
+          >
+            {moment(createdAt).format('lll')}
+          </Typography> : null}
+
+        </Grid>
+
+        <Grid
+          item
+          xs={12}
+        >
+          <Typography
+            variant="display1"
+            component="h1"
+          >
+            {this.getTitle()} {this.getButtons()}
+
+          </Typography>
+
+          {inEditMode ? this.getTextField({
+            name: "name",
+            label: "Название топика",
+            helperText: "Укажите название топика",
+          }) : null}
+
+        </Grid>
+
+      </Grid>
+    </div>
 
   }
 
@@ -87,6 +198,8 @@ class TopicView extends EditableView {
     if (!object) {
       return null;
     }
+
+    console.log("renderDefaultView", object);
 
     const {
       classes,
@@ -114,12 +227,12 @@ class TopicView extends EditableView {
 
     const allow_edit = this.canEdit();
 
-    return <Card
+    return <div
       className={classes.root}
     >
 
-      {inEditMode !== true ?
-        <CardHeader
+      {/* {inEditMode !== true ?
+        <div
           className={classes.header}
           avatar={<UserLink
             user={CreatedBy}
@@ -136,37 +249,42 @@ class TopicView extends EditableView {
         >
 
 
-        </CardHeader>
+        </div>
         :
-        <CardContent>
+        <div>
           <TextField
-            // name="name"
-            // value={name}
-            // label="Название топика"
-            // error={errors.name && errors.name != ""}
-            // onFocus={() => { this.clearError() }}
-            // onChange={(e, value) => { this.onChangename(e, value) }}
+          // name="name"
+          // value={name}
+          // label="Название топика"
+          // error={errors.name && errors.name != ""}
+          // onFocus={() => { this.clearError() }}
+          // onChange={(e, value) => { this.onChangename(e, value) }}
           />
-        </CardContent>
-      }
+        </div>
+      } */}
 
-      <CardContent>
+      <div>
 
         <TopicEditor
-          id={id}
           className="topic-editor"
           content={content}
-          // name={name}
-          // inEditMode={inEditMode || false}
-          // fullView={fullView === true || inEditMode}
-          // allow_edit={allow_edit}
-          // onRequestComplite={(state) => this.onRequestComplite(state)}
-          // setFullView={this.setFullView}
+          inEditMode={inEditMode || false}
+          fullView={true}
+          allow_edit={allow_edit}
+          onChange={(state, rawContent) => {
+            // console.log("onChange newState", state);
+            // console.log("onChange rawContent", rawContent);
+
+            this.updateObject({
+              content: rawContent,
+            });
+
+          }}
         />
 
 
-      </CardContent>
- 
+      </div>
+
 
       {/* {fullView === true && (id > 0 && inEditMode !== true) ? <ArticleInfoComments
         comments={comments}
@@ -180,13 +298,15 @@ class TopicView extends EditableView {
         onMessageEdded={this.addMessage}
         clearOnSave={true}
       /> : null} */}
-    </Card>;
+    </div>;
 
 
   }
 
 
   renderEditableView() {
+
+    return this.renderDefaultView();
 
   }
 

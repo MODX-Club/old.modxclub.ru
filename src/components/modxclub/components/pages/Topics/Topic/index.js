@@ -48,6 +48,7 @@ export class TopicPage extends Page {
 
     return super.setPageMeta({
       title: longtitle || name,
+      ...meta,
     });
 
   }
@@ -57,10 +58,29 @@ export class TopicPage extends Page {
 
     const {
       View,
+      data,
       ...other
     } = this.props;
 
+
+    const {
+      object,
+      loading,
+    } = data;
+
+    if(!object){
+
+      if(loading){
+        return null;
+      }
+      else {
+        return "Топик не найден";
+      }
+
+    }
+
     return super.render(<View
+      data={data}
       {...other}
     />);
 
@@ -70,7 +90,7 @@ export class TopicPage extends Page {
 }
 
 
-const test = (props) => {
+const TopicConnector = (props) => {
 
   const {
     getCommentsText = true,
@@ -85,4 +105,4 @@ const test = (props) => {
 }
 
 // export default TopicPage;
-export default test;
+export default TopicConnector;
