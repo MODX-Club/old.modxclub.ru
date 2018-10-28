@@ -3,7 +3,7 @@ import React from "react";
 
 import gql from "graphql-tag";
 
-import { graphql } from "react-apollo";
+import { graphql, compose } from "react-apollo";
 
 
 export const topicFragment = `
@@ -164,6 +164,35 @@ export const createTopicProcessor = gql`
 `;
 
 
+export const updateTopicProcessor = gql`
+ 
+
+  mutation updateTopicProcessor(
+    $data: TopicUpdateInput!
+    $where: TopicWhereUniqueInput!
+    $getCommentsText:Boolean = true
+  ){
+    response: updateTopicProcessor(
+      data: $data
+      where: $where
+    ){
+      success
+      message
+      errors{
+        key
+        message
+      }
+      data{
+        ...topicsFullFragment
+      }
+    }
+  }
+
+  ${topicsFullFragment}
+
+`;
+
+
 
 
 
@@ -182,7 +211,7 @@ export const TopicsConnector = TopicsQuery(props => {
 });
 
 
-const TopicQuery = graphql(topicQuery);
+const TopicQuery = compose(graphql(topicQuery), graphql(updateTopicProcessor));
 
 export const TopicConnector = TopicQuery(props => {
 

@@ -876,6 +876,30 @@ export class ModxclubDB extends ModxDB {
     ;
 
 
+
+    let {
+      where: argsWhere,
+      ...otherArgs
+    } = args;
+
+    let {
+      topic_id,
+      ...where
+    } = argsWhere;
+
+    args = {
+      ...where,
+      ...otherArgs,
+    }
+ 
+
+    if (topic_id) {
+      tags.where({
+        "tags.topic_id": topic_id,
+      });
+    }
+
+
     let query = knex(tags).as("tag");
 
 

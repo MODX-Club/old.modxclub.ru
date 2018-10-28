@@ -30,6 +30,93 @@ class TopicProcessor extends Processor {
   // }
 
 
+  async update(objectType, args, info) {
+
+
+    let {
+      data: {
+        // name,
+        // content,
+        topic_tags,
+        ...data
+      },
+      where,
+    } = args;
+
+    const {
+      ctx,
+    } = this;
+
+
+    const {
+      modx,
+    } = ctx;
+
+
+    const {
+      id: topicId,
+    } = where || {};
+
+    /**
+     * Получаем топик
+     */
+    // const topic = await modx.query.topic(null, {
+    //   where,
+    // }, ctx);
+
+
+    // console.log(chalk.green("update topic"), topic);
+
+    // if (!topic) {
+    //   return this.addError("Не был получен топик");
+    // }
+
+    // const {
+    //   id: topic_id,
+    //   name: topicName,
+    //   content: topicContent,
+    // } = topic;
+
+
+    // if (name === undefined) {
+    //   name = topicName;
+    // }
+
+    // if (content === undefined) {
+    //   content = topicContent;
+    // }
+
+    /**
+     * Получаем теги
+     */
+
+    if (topic_tags === undefined) {
+
+      const tags = await modx.query.tags(null, {
+        where: {
+          topic_id: topicId,
+        },
+      }, ctx);
+
+      // console.log(chalk.green("update topic tags"), tags);
+
+      topic_tags = tags.map(n => n.name);
+
+    }
+
+
+
+    args.data = {
+      ...data,
+      // pagetitle: name,
+      // content,
+      topic_tags,
+    }
+
+    return super.update(objectType, args, info);
+  }
+
+
   async mutate(method, args, info) {
 
     // const {
@@ -66,18 +153,24 @@ class TopicProcessor extends Processor {
         content,
         ...data
       },
+      where,
     } = args;
 
+    
+    const {
+      id,
+    } = where || {};
 
-    if(content && typeof content === "object"){
 
-      try{
-  
+    if (content && typeof content === "object") {
+
+      try {
+
         content = JSON.stringify(content)
-  
+
       }
-      catch(error){
-        throw(error);
+      catch (error) {
+        throw (error);
       }
     }
 
@@ -85,7 +178,8 @@ class TopicProcessor extends Processor {
 
     const result = await modxRequest("/assets/components/modxsite/connectors/connector.php", {
       data: {
-        pub_action: "topics/create",
+        pub_action: id ? "topics/update" : "topics/create",
+        id,
         pagetitle,
         content,
         plainText: "mock",
@@ -102,7 +196,7 @@ class TopicProcessor extends Processor {
         this.addError(error);
       });
 
-    console.log(chalk.green("result"), result);
+    // console.log(chalk.green("result"), result);
 
 
     const {
@@ -115,7 +209,7 @@ class TopicProcessor extends Processor {
 
 
     if (success && object) {
-      
+
       return object;
 
     }
@@ -131,15 +225,15 @@ class TopicProcessor extends Processor {
         } = error || {}
 
 
-        switch(key){
+        switch (key) {
 
           case "pagetitle":
-          
+
             key = "name";
             break;
 
         }
-        
+
 
         if (key && message) {
           this.addFieldError(key, message);
