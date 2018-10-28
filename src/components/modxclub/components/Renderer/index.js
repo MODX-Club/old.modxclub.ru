@@ -42,6 +42,19 @@ export const styles = theme => {
       fontFamily,
       fontSize,
       color: primary,
+      
+      height: "100vh",
+      display: "flex",
+      flexDirection: "column",
+    },
+
+    header: {
+      marginBottom: 6,
+    },
+
+    body: {
+      flex: 1,
+      overflow: "auto",
     },
   }
 
