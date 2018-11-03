@@ -7,7 +7,8 @@
 /coverage
 
 # production
-/build
+# /build
+/build/**/*.map
 
 # misc
 .DS_Store
@@ -21,4 +22,4 @@ yarn-debug.log*
 yarn-error.log*
 /*.log*
 
-yarn.lock
+# yarn.lock
