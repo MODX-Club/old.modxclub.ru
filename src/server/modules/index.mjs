@@ -2,7 +2,7 @@
 import fs from "fs";
 
 import chalk from "chalk";
- 
+
 
 
 // import {CmsModule} from "@prisma-cms/server";
@@ -67,10 +67,11 @@ class CoreModule extends CmsModule {
   }
 
 
-  getApiSchema(types = []) {
+  getApiSchema(types = [], excludeTypes = []) {
 
 
-    let apiSchema = super.getApiSchema(types, []);
+    let apiSchema = super.getApiSchema(types, excludeTypes.concat([
+    ]));
 
 
     let schema = fileLoader(__dirname + '/schema/api/', {

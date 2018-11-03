@@ -1,8 +1,9 @@
 
 
-import CoreModule from "./modules"
 
 import { ImagesMiddleware } from "@prisma-cms/upload-module";
+// import startServer from "@prisma-cms/server";
+import CoreModule from "./modules";
 
 import FormData from "form-data";
 
@@ -13,8 +14,6 @@ import startServer from "@prisma-cms/server"
 const coreModule = new CoreModule({
 });
 const resolvers = coreModule.getResolvers();
-
-const imagesMiddleware = new ImagesMiddleware().processRequest;
 
 
 async function modxRequest(url, options, ctx) {
@@ -233,7 +232,7 @@ const modx = new ModxDB({
 startServer({
   typeDefs: 'src/schema/generated/api.graphql',
   resolvers,
-  imagesMiddleware,
+  // imagesMiddleware,
   contextOptions: {
     db: null,
     getCurrentUser,
