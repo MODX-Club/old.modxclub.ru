@@ -1,354 +1,359 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// import React, { Component } from 'react';
+// import PropTypes from 'prop-types';
 
-import Editor from "@modxclub/react-editor";
+// import Editor from "@modxclub/react-editor";
 
-import EditableView from 'apollo-cms/lib/DataView/Object/Editable';
+// import EditableView from 'apollo-cms/lib/DataView/Object/Editable';
 
-import withStyles from "material-ui/styles/withStyles";
-import { Typography } from 'material-ui';
-import SendIcon from 'material-ui-icons/Send';
+// import withStyles from "material-ui/styles/withStyles";
+// import { Typography } from 'material-ui';
+// import SendIcon from 'material-ui-icons/Send';
 
-import Grid from "@prisma-cms/front/lib/modules/ui/Grid";
+// import Grid from "@prisma-cms/front/lib/modules/ui/Grid";
 
-import moment from "moment";
+// import moment from "moment";
 
-import {
-  TopicLink,
-  UserLink,
-  BlogLink,
-} from "@modxclub/ui"
+// import {
+//   TopicLink,
+//   UserLink,
+//   BlogLink,
+//   CommentLink,
+// } from "@modxclub/ui"
 
-const styles = theme => {
+// const styles = theme => {
 
-  return {
+//   return {
 
-    root: {
-      margin: "30px 0 0",
-      borderTop: "1px solid #ddd",
-      padding: "20px 0",
-    },
+//     root: {
+//       margin: "30px 0 0",
+//       borderTop: "1px solid #ddd",
+//       padding: "20px 0",
+//     },
 
-    addCommentTitle: {
-      marginBottom: 15,
-    },
-  }
+//     addCommentTitle: {
+//       marginBottom: 15,
+//     },
+//   }
 
-}
+// }
 
-class CommentView extends EditableView {
+// class CommentView extends EditableView {
 
 
-  static propTypes = {
-    ...EditableView.propTypes,
-    classes: PropTypes.object.isRequired,
-  };
+//   static propTypes = {
+//     ...EditableView.propTypes,
+//     classes: PropTypes.object.isRequired,
+//   };
 
-  static defaultProps = {
-    ...EditableView.defaultProps,
-    SaveIcon: SendIcon,
-  };
+//   static defaultProps = {
+//     ...EditableView.defaultProps,
+//     SaveIcon: SendIcon,
+//   };
 
-  static contextTypes = {
-    ...EditableView.contextTypes,
-    openLoginForm: PropTypes.func.isRequired,
-  };
+//   static contextTypes = {
+//     ...EditableView.contextTypes,
+//     openLoginForm: PropTypes.func.isRequired,
+//   };
 
 
-  // constructor(props){
+//   // constructor(props){
 
-  //   super(props);
+//   //   super(props);
 
-  //   console.log("CommentView constructor", this);
+//   //   console.log("CommentView constructor", this);
 
-  // }
+//   // }
 
 
-  canEdit() {
+//   canEdit() {
 
-    const {
-      user: currentUser,
-    } = this.context;
+//     const {
+//       user: currentUser,
+//     } = this.context;
 
-    const {
-      id: currentUserId,
-      sudo,
-    } = currentUser || {};
+//     const {
+//       id: currentUserId,
+//       sudo,
+//     } = currentUser || {};
 
 
-    const {
-      id,
-      CreatedBy,
-    } = this.getObjectWithMutations() || {};
+//     const {
+//       id,
+//       CreatedBy,
+//     } = this.getObjectWithMutations() || {};
 
 
-    const {
-      id: createdById,
-    } = CreatedBy || {}
+//     const {
+//       id: createdById,
+//     } = CreatedBy || {}
 
-    return !id || (createdById && createdById === currentUserId) || sudo === true;
-  }
+//     return !id || (createdById && createdById === currentUserId) || sudo === true;
+//   }
 
 
-  save() {
+//   save() {
 
-    const {
-      user: currentUser,
-      openLoginForm,
-    } = this.context;
+//     const {
+//       user: currentUser,
+//       openLoginForm,
+//     } = this.context;
 
-    if (!currentUser) {
+//     if (!currentUser) {
+
+//       return openLoginForm();
+//     }
 
-      return openLoginForm();
-    }
+//     return super.save();
+//   }
+
+
+//   getCacheKey() {
+
+//     const {
+//       id,
+//     } = this.getObject() || {};
+
+//     return `comment_${id || "new"}`;
+//   }
 
-    return super.save();
-  }
-
-
-  getCacheKey() {
-
-    const {
-      id,
-    } = this.getObject() || {};
 
-    return `comment_${id || "new"}`;
-  }
 
+//   renderHeader() {
 
+//     const {
+//       classes,
+//     } = this.props;
 
-  renderHeader() {
+//     const object = this.getObjectWithMutations();
 
-    const {
-      classes,
-    } = this.props;
+//     const {
+//       id: commentId,
+//       CreatedBy,
+//       createdAt,
+//     } = object || {}
 
-    const object = this.getObjectWithMutations();
 
-    const {
-      id: commentId,
-      CreatedBy,
-      createdAt,
-    } = object || {}
 
+//     const inEditMode = this.isInEditMode();
 
+//     if (!commentId) {
 
-    const inEditMode = this.isInEditMode();
+//       return <Typography
+//         variant="subheading"
+//         className={classes.addCommentTitle}
+//       >
+//         Добавить комментарий
+//     </Typography>;
+//     }
 
-    if (!commentId) {
+//     return <div
+//       className={classes.header}
+//     >
+//       <Grid
+//         container
+//         spacing={16}
+//       >
 
-      return <Typography
-        variant="subheading"
-        className={classes.addCommentTitle}
-      >
-        Добавить комментарий
-    </Typography>;
-    }
+//         {CreatedBy
+//           ?
+//           <Grid
+//             item
+//           >
 
-    return <div
-      className={classes.header}
-    >
-      <Grid
-        container
-        spacing={16}
-      >
+//             <UserLink
+//               user={CreatedBy}
+//               showName={false}
+//             // avatarProps={{
+//             //   size: "medium",
+//             // }}
+//             />
+//           </Grid>
+//           : null
+//         }
 
-        {CreatedBy
-          ?
-          <Grid
-            item
-          >
+//         <Grid
+//           item
+//           xs
+//         >
 
-            <UserLink
-              user={CreatedBy}
-              showName={false}
-            // avatarProps={{
-            //   size: "medium",
-            // }}
-            />
-          </Grid>
-          : null
-        }
+//           <Grid
+//             container
+//           >
 
-        <Grid
-          item
-          xs
-        >
+//             <Grid
+//               item
+//               xs
+//             >
+//               {CreatedBy
+//                 ?
+//                 <UserLink
+//                   user={CreatedBy}
+//                   withAvatar={false}
+//                 />
+//                 :
+//                 null
+//               }
 
-          <Grid
-            container
-          >
+//             </Grid>
 
-            <Grid
-              item
-              xs
-            >
-              {CreatedBy
-                ?
-                <UserLink
-                  user={CreatedBy}
-                  withAvatar={false}
-                />
-                :
-                null
-              }
+//             <Grid
+//               item
+//             >
 
-            </Grid>
+//               {/* {createdAt ? <Typography
+//                 variant="caption"
+//                 color="textSecondary"
+//               >
+//                 {moment(createdAt).format('lll')}
+//               </Typography> : null} */}
 
-            <Grid
-              item
-            >
+//               {createdAt ? <CommentLink
+//                 object={object}
+//               /> : null}
 
-              {createdAt ? <Typography
-                variant="caption"
-                color="textSecondary"
-              >
-                {moment(createdAt).format('lll')}
-              </Typography> : null}
+//             </Grid>
 
-            </Grid>
+//           </Grid>
 
-          </Grid>
 
 
+//         </Grid>
 
-        </Grid>
 
+//       </Grid>
+//     </div>
 
-      </Grid>
-    </div>
+//   }
 
-  }
 
+//   renderDefaultView() {
 
-  renderDefaultView() {
+//     const {
+//       classes,
+//     } = this.props;
 
-    const {
-      classes,
-    } = this.props;
 
+//     const comment = this.getObjectWithMutations();
 
-    const comment = this.getObjectWithMutations();
 
+//     if (!comment) {
+//       return null;
+//     }
 
-    if (!comment) {
-      return null;
-    }
+//     const {
+//       text,
+//     } = comment;
 
-    const {
-      text,
-    } = comment;
 
+//     const inEditMode = this.isInEditMode();
+//     const allow_edit = this.canEdit();
 
-    const inEditMode = this.isInEditMode();
-    const allow_edit = this.canEdit();
 
+//     const editor = <Editor
+//       // className="topic-editor"
+//       content={text}
+//       inEditMode={inEditMode || false}
+//       fullView={true}
+//       allow_edit={allow_edit}
+//       onChange={(state, rawContent) => {
+//         // console.log("onChange newState", state);
+//         // console.log("onChange rawContent", rawContent);
 
-    const editor = <Editor
-      // className="topic-editor"
-      content={text}
-      inEditMode={inEditMode || false}
-      fullView={true}
-      allow_edit={allow_edit}
-      onChange={(state, rawContent) => {
-        // console.log("onChange newState", state);
-        // console.log("onChange rawContent", rawContent);
+//         this.updateObject({
+//           text: rawContent,
+//         });
 
-        this.updateObject({
-          text: rawContent,
-        });
+//       }}
+//     />;
 
-      }}
-    />;
+//     return <Grid
+//       container
+//     >
 
-    return <Grid
-      container
-    >
+//       <Grid
+//         item
+//         xs
+//       >
+//         {editor}
+//       </Grid>
 
-      <Grid
-        item
-        xs
-      >
-        {editor}
-      </Grid>
+//       <Grid
+//         item
+//       >
 
-      <Grid
-        item
-      >
+//         {this.getButtons()}
 
-        {this.getButtons()}
+//       </Grid>
 
-      </Grid>
 
+//     </Grid>;
+//   }
 
-    </Grid>;
-  }
 
+//   renderEditableView() {
 
-  renderEditableView() {
+//     return this.renderDefaultView();
 
-    return this.renderDefaultView();
 
+//     return <Grid
+//       container
+//     >
 
-    return <Grid
-      container
-    >
+//       <Grid
+//         item
+//         xs
+//       >
+//         {this.renderDefaultView()}
+//       </Grid>
 
-      <Grid
-        item
-        xs
-      >
-        {this.renderDefaultView()}
-      </Grid>
+//       <Grid
+//         item
+//       >
 
-      <Grid
-        item
-      >
+//         {this.getButtons()}
 
-        {this.getButtons()}
+//       </Grid>
 
-      </Grid>
 
+//     </Grid>
 
-    </Grid>
+//   }
 
-  }
 
 
+//   renderResetButton() {
 
-  renderResetButton() {
+//     const {
+//       id,
+//     } = this.getObjectWithMutations() || {}
 
-    const {
-      id,
-    } = this.getObjectWithMutations() || {}
+//     return id ? super.renderResetButton() : null;
+//   }
 
-    return id ? super.renderResetButton() : null;
-  }
 
 
+//   render() {
 
-  render() {
+//     const object = this.getObjectWithMutations();
 
-    const object = this.getObjectWithMutations();
+//     if (!object) {
+//       return null;
+//     }
 
-    if (!object) {
-      return null;
-    }
+//     const {
+//       classes,
+//     } = this.props;
 
-    const {
-      classes,
-    } = this.props;
+//     return <div
+//       className={classes.root}
+//     >
 
-    return <div
-      className={classes.root}
-    >
+//       {super.render()}
 
-      {super.render()}
+//     </div>
 
-    </div>
+//   }
+// }
 
-  }
-}
 
-
-export default withStyles(styles)(CommentView);
+// export default withStyles(styles)(CommentView);

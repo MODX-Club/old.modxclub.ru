@@ -1,0 +1,15 @@
+
+
+type Route {
+  id: ID!
+  name: String
+  path: String!
+  exact: Boolean!
+  component: String!
+  Parent: Route
+  Childs: [Route!]! 
+}
+
+input RouteWhereUniqueInput {
+  path: String!
+}

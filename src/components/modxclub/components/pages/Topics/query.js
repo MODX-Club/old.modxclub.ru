@@ -7,19 +7,14 @@ import { graphql, compose } from "react-apollo";
 
 
 import {
-  CommentNoNestingFragment,
+  TopicNoNestingFragment,
+  VoteNoNestingFragment,
 } from "../../../../../schema/generated/api.fragments";
 
 
 export const topicFragment = `
   fragment topicFragment on Topic{
-    id
-    name
-    longtitle
-    uri
-    thread_id
-    createdAt
-    updatedAt
+    ...TopicNoNesting
     CreatedBy{
       ...TopicUserNoNesting
     }
@@ -60,17 +55,10 @@ export const topicFragment = `
     fullname
     image
   }
+  
 
-  fragment VoteNoNesting on Vote {
-    id
-    target_id
-    target_class
-    thread_id
-    user_id
-    direction
-    value
-    createdAt
-  }
+  ${TopicNoNestingFragment}
+  ${VoteNoNestingFragment}
 `
 
 
@@ -197,59 +185,6 @@ export const updateTopicProcessor = gql`
 
 `;
 
-
-export const createCommentProcessor = gql`
- 
-
-  mutation createCommentProcessor(
-    $data: CommentCreateInput!
-  ){
-    response: createCommentProcessor(
-      data: $data
-    ){
-      success
-      message
-      errors{
-        key
-        message
-      }
-      data{
-        ...CommentNoNesting
-      }
-    }
-  }
-
-  ${CommentNoNestingFragment}
-
-`;
-
-
-export const updateCommentProcessor = gql`
- 
-
-  mutation updateCommentProcessor(
-    $data: CommentUpdateInput!
-    $where: CommentWhereUniqueInput!
-  ){
-    response: updateCommentProcessor(
-      data: $data
-      where: $where
-    ){
-      success
-      message
-      errors{
-        key
-        message
-      }
-      data{
-        ...CommentNoNesting
-      }
-    }
-  }
-
-  ${CommentNoNestingFragment}
-
-`;
 
 
 
