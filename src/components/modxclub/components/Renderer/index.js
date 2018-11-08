@@ -20,6 +20,7 @@ import TopicCreatePage from "../pages/Topics/Topic/Create";
 import TagPage from "../pages/Tags/Tag";
 import BlogPage from "../pages/Blogs/Blog";
 import CommentsPage from "../pages/Comments";
+import CommentPage from "../pages/Comments/Comment";
 
 
 
@@ -215,25 +216,28 @@ export class Renderer extends PrismaRendererCmsRenderer {
         render: (props) => {
 
           // console.log("Renderer props", props);
+          // return null;
 
-          return null;
-          // const {
-          //   match: {
-          //     params: {
-          //       0: commentId,
-          //     },
-          //     // url: uri,
-          //   },
-          // } = props;
+          const {
+            match: {
+              params: {
+                0: commentId,
+              },
+              // url: uri,
+            },
+          } = props;
 
-          // return <TopicPage
-          //   key={uri}
-          //   where={{
-          //     id: parseInt(commentId),
-          //   }}
-          //   {...props}
-          // />
+          return <CommentPage
+            key={commentId}
+            where={{
+              id: parseInt(commentId),
+            }}
+            {...props}
+          />
         }
+      }, {
+        path: "*",
+        render: props => this.renderOtherPages(props),
       },
     ].concat(baseRoutes);
 

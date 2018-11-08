@@ -25,9 +25,22 @@ class CommentsPage extends Page {
     View,
   }
 
+
+
+  setPageMeta(meta = {}) {
+
+    return super.setPageMeta({
+      title: "Комментарии",
+      ...meta,
+    });
+
+  }
+
+
   render() {
 
     const {
+      first,
       ...other
     } = this.props;
 
@@ -36,12 +49,24 @@ class CommentsPage extends Page {
     } = this.context;
 
 
-    const {
+    let {
       page,
     } = uri.query(true);
 
+
+
+    let skip;
+
+    page = page && parseInt(page) || 0;
+
+    if (first && page > 1) {
+      skip = (page - 1) * first;
+    }
+
     return super.render(
       <CommentsConnector
+        first={first}
+        skip={skip}
         page={page ? parseInt(page) : undefined}
         {...other}
       />

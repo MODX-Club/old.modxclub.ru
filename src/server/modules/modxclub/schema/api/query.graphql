@@ -117,4 +117,6 @@ type Query {
     first: Int!
   ): ProjectMemberConnection!
 
+  route(where: RouteWhereUniqueInput!): Route
+
 }

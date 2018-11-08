@@ -71,9 +71,25 @@ export const commentsConnectionQuery = gql`
 
 `;
 
+export const commentQuery = gql`
+
+  query comment(
+    $where: CommentWhereUniqueInput!
+  ){
+    object: comment(
+      where: $where
+    ){ 
+      ...commentFragment 
+    }
+  }
+
+  ${commentFragment}
+
+`;
+
+
 
 const CommentsQuery = graphql(commentsConnectionQuery);
-
 export const CommentsConnector = CommentsQuery(props => {
 
   const {
@@ -85,3 +101,19 @@ export const CommentsConnector = CommentsQuery(props => {
     {...other}
   />;
 });
+
+
+
+const CommentQuery = graphql(commentQuery);
+export const Comment = CommentQuery(props => {
+
+  const {
+    View,
+    ...other
+  } = props;
+
+  return <View
+    {...other}
+  />;
+});
+
