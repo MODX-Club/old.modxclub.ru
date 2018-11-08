@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Comment from "./Comment";
+// import Comment from "./Comment";
+
 import Typography from 'material-ui/Typography'
 
 import {
   createCommentProcessor,
   updateCommentProcessor,
-} from "../../../query";
+} from "@modxclub/ui/src/Comments/query.js";
 
 import { graphql } from "react-apollo";
 
 
+import Comment from "@modxclub/ui/src/Comments/Comment";
 const NewComment = graphql(createCommentProcessor)(Comment);
 const UpdateComment = graphql(updateCommentProcessor)(Comment);
 
